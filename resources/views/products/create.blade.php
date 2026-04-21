@@ -36,7 +36,7 @@
                     <!-- Description -->
                     <div>
                         <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
-                            Deskripsi
+                            Deskripsi Produk
                         </label>
                         <textarea name="description" 
                                   id="description"
