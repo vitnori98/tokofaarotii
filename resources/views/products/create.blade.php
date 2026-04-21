@@ -36,7 +36,7 @@
                     <!-- Description -->
                     <div>
                         <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
-                            Deskripsi Produk Testing Baru
+                            Deskripsi Produk Testing Baru baru bcbcbc
                         </label>
                         <textarea name="description" 
                                   id="description"
