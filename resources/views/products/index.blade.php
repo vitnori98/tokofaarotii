@@ -6,28 +6,43 @@
 @section('content')
 <div class="bg-white rounded-xl shadow-sm border">
     <!-- Header -->
-    <div class="px-6 py-4 border-b">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <div>
-                <h2 class="text-xl font-semibold text-gray-900">Daftar Produk</h2>
-                <p class="text-sm text-gray-500">Kelola semua produk di inventori</p>
-            </div>
-            <div class="flex items-center space-x-3">
-                <!-- Search -->
-                <div class="relative">
-                    <input type="text" 
-                           placeholder="Cari produk..." 
-                           class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 w-full sm:w-64">
-                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
-                </div>
-                <!-- Add Product Button -->
-                <a href="{{ route('products.create') }}"
-                   class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg flex items-center transition-colors">
-                    <i class="fas fa-plus mr-2"></i>
-                    Tambah Produk
-                </a>
+    <div class="flex items-center justify-between mb-6">
+    <h2 class="text-xl font-semibold">Daftar Produk</h2>
+    
+    <!-- FORM PENCARIAN & FILTER -->
+    <form action="{{ route('products.index') }}" method="GET" class="flex gap-2">
+        
+        <!-- Filter Kategori -->
+        <select name="category_id" onchange="this.form.submit()" class="border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500">
+            <option value="">Semua Kategori</option>
+            @foreach($categories as $cat)
+                <option value="{{ $cat->id }}" {{ request('category_id') == $cat->id ? 'selected' : '' }}>
+                    {{ $cat->name }}
+                </option>
+            @endforeach
+        </select>
+
+        <!-- Input Cari -->
+        <div class="relative">
+            <input type="text" 
+                   name="search" 
+                   value="{{ request('search') }}" 
+                   placeholder="Cari produk atau SKU..." 
+                   class="border rounded-lg pl-10 pr-4 py-2 w-64 focus:ring-2 focus:ring-indigo-500">
+            <div class="absolute left-3 top-2.5 text-gray-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
             </div>
         </div>
+
+        <button type="submit" class="hidden">Cari</button>
+    </form>
+
+    <a href="{{ route('products.create') }}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition">
+        + Tambah Produk
+    </a>
+    </div>
     </div>
 
     <!-- Success Message -->

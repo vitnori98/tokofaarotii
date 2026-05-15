@@ -67,7 +67,7 @@
                         <td>{{ $sale->product->name ?? '-' }}</td>
                         <td>{{ $sale->quantity_sold }}</td>
                         <td>Rp {{ number_format($sale->total_price, 0, ',', '.') }}</td>
-                        <td>{{ \Carbon\Carbon::parse($sale->created_at)->format('d/m/Y') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($sale->sale_date)->format('d/m/Y') }}</td>
                     </tr>
                     @empty
                     <tr>

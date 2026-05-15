@@ -36,7 +36,7 @@
                     <!-- Description -->
                     <div>
                         <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
-                            Deskripsi Produk Testing Baru baru bcbcbc
+                            Deskripsi Produk
                         </label>
                         <textarea name="description" 
                                   id="description"
@@ -111,12 +111,30 @@
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
-                        
-                        <!-- Image -->
+
+                        <!-- Unit -->
                         <div>
-                            <label for="image" class="block text-sm font-medium text-gray-700 mb-2">
-                                Gambar Produk
+                            <label for="unit" class="block text-sm font-medium text-gray-700 mb-2">
+                                Satuan *
                             </label>
+                            <input type="text" 
+                                   name="unit" 
+                                   id="unit"
+                                   value="{{ old('unit', 'pcs') }}"
+                                   required
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('unit') border-red-500 @enderror"
+                                   placeholder="Contoh: pcs, box, kg">
+                            @error('unit')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <!-- Image -->
+                    <div>
+                        <label for="image" class="block text-sm font-medium text-gray-700 mb-2">
+                            Gambar Produk
+                        </label>
                             <div class="flex items-center justify-center w-full">
                                 <label for="image" class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
                                     <div class="flex flex-col items-center justify-center pt-5 pb-6">
@@ -147,7 +165,7 @@
                             </a>
                             <button type="submit"
                                     class="px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                Simpan Produk
+                                <i class="fas fa-save mr-2"></i> Simpan Perubahan
                             </button>
                         </div>
                     </div>

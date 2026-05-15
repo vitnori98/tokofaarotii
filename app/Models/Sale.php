@@ -6,7 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Sale extends Model
 {
-    protected $fillable = ['product_id', 'quantity_sold', 'sale_date', 'total_price'];
+    protected $fillable = [
+        'product_id', 
+        'quantity_sold', 
+        'total_price', 
+        'sale_date' // Wajib ada
+    ];
+
+    protected static function booted()
+    {
+        static::creating(function ($sale) {
+            // Mengisi sale_date otomatis dengan tanggal hari ini jika kosong
+            $sale->sale_date = $sale->sale_date ?? now();
+        });
+    }
 
     public function product()
     {

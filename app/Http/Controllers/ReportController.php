@@ -19,12 +19,12 @@ class ReportController extends Controller
 
     public function sales(Request $request)
     {
-        $startDate = $request->get('start_date', Carbon::now()->startOfMonth());
-        $endDate = $request->get('end_date', Carbon::now()->endOfMonth());
+        $startDate = $request->get('start_date', Carbon::now()->startOfMonth()->format('Y-m-d'));
+        $endDate = $request->get('end_date', Carbon::now()->endOfMonth()->format('Y-m-d'));
 
         $sales = Sale::with('product')
-            ->whereBetween('created_at', [$startDate, $endDate])
-            ->orderBy('created_at', 'DESC')
+            ->whereBetween('sale_date', [$startDate, $endDate])
+            ->orderBy('sale_date', 'DESC')
             ->get();
 
         $totalSales = $sales->sum('total_price');
@@ -37,16 +37,15 @@ class ReportController extends Controller
     {
         $products = Product::with(['stockEntries', 'sales', 'category'])
             ->get()
-            ->map(function ($product) {
-                $totalStock = $product->stockEntries->sum('quantity');
-                $totalSold = $product->sales->sum('quantity_sold');
-                $product->current_stock = $totalStock - $totalSold;
-                return $product;
-            })
-            ->sortByDesc('current_stock');
+            ->sortByDesc('total_stok');
 
-        $lowStock = $products->where('current_stock', '<', 10)->where('current_stock', '>', 0);
-        $outOfStock = $products->where('current_stock', '<=', 0);
+        $lowStock = $products->filter(function($product) {
+            return $product->total_stok < 10 && $product->total_stok > 0;
+        });
+        
+        $outOfStock = $products->filter(function($product) {
+            return $product->total_stok <= 0;
+        });
 
         return view('reports.stock', compact('products', 'lowStock', 'outOfStock'));
     }
@@ -66,34 +65,30 @@ class ReportController extends Controller
 
     private function exportSales(Request $request)
     {
-        $startDate = $request->get('start_date', Carbon::now()->startOfMonth());
-        $endDate = $request->get('end_date', Carbon::now()->endOfMonth());
+        $startDate = $request->get('start_date', Carbon::now()->startOfMonth()->format('Y-m-d'));
+        $endDate = $request->get('end_date', Carbon::now()->endOfMonth()->format('Y-m-d'));
 
         $sales = Sale::with('product')
-            ->whereBetween('created_at', [$startDate, $endDate])
-            ->orderBy('created_at', 'DESC')
+            ->whereBetween('sale_date', [$startDate, $endDate])
+            ->orderBy('sale_date', 'DESC')
             ->get();
 
         // Implement CSV atau PDF export di sini
         return response()->json([
-            'message' => 'Export sales report feature coming soon'
+            'message' => 'Export sales report feature coming soon',
+            'data_count' => $sales->count()
         ]);
     }
 
     private function exportStock(Request $request)
     {
         $products = Product::with(['stockEntries', 'sales'])
-            ->get()
-            ->map(function ($product) {
-                $totalStock = $product->stockEntries->sum('quantity');
-                $totalSold = $product->sales->sum('quantity_sold');
-                $product->current_stock = $totalStock - $totalSold;
-                return $product;
-            });
+            ->get();
 
         // Implement CSV atau PDF export di sini
         return response()->json([
-            'message' => 'Export stock report feature coming soon'
+            'message' => 'Export stock report feature coming soon',
+            'data_count' => $products->count()
         ]);
     }
 }

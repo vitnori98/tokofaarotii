@@ -12,13 +12,27 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $categories = Category::all();
+
         $products = Product::with('category')
+            // Filter Kategori
+            ->when($request->category_id, function ($query) use ($request) {
+                $query->where('category_id', $request->category_id);
+            })
+            // Filter Pencarian Nama atau SKU
+            ->when($request->search, function ($query) use ($request) {
+                $query->where(function($q) use ($request) {
+                    $q->where('name', 'like', '%' . $request->search . '%')
+                    ->orWhere('sku', 'like', '%' . $request->search . '%');
+                });
+            })
             ->latest()
-            ->paginate(10);
-            
-        return view('products.index', compact('products'));
+            ->paginate(10)
+            ->withQueryString(); // Menjaga filter tetap ada saat pindah halaman
+
+        return view('products.index', compact('products', 'categories'));
     }
 
     /**
@@ -37,10 +51,11 @@ class ProductController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'sku' => 'nullable|string|max:50',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'category_id' => 'required|exists:categories,id',
-            'sku' => 'nullable|string|unique:products,sku',
+            'unit' => 'required|string|max:20',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -78,10 +93,11 @@ class ProductController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'sku' => 'nullable|string|max:50',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'category_id' => 'required|exists:categories,id',
-            'sku' => 'nullable|string|unique:products,sku,' . $product->id,
+            'unit' => 'required|string|max:20',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 

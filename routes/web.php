@@ -54,7 +54,7 @@ Route::prefix('stock')->name('stock.')->group(function () {
 Route::prefix('stock-entries')->name('stock-entries.')->group(function () {
     Route::get('/', [StockEntryController::class, 'index'])->name('index');
     Route::get('/create', [StockEntryController::class, 'create'])->name('create');
-    Route::post('/', [StockEntryController::class, 'store'])->name('store');
+    Route::post('/', [StockEntryController::class, 'store'])->name('store'); // Ini adalah 'stock-entries.store'
     Route::get('/{stockEntry}', [StockEntryController::class, 'show'])->name('show');
     Route::get('/{stockEntry}/edit', [StockEntryController::class, 'edit'])->name('edit');
     Route::put('/{stockEntry}', [StockEntryController::class, 'update'])->name('update');

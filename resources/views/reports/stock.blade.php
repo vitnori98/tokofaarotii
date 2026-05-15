@@ -56,11 +56,11 @@
                         <td>{{ $product->category->name ?? '-' }}</td>
                         <td>{{ $product->stockEntries->sum('quantity') }}</td>
                         <td>{{ $product->sales->sum('quantity_sold') }}</td>
-                        <td><strong>{{ $product->current_stock }}</strong></td>
+                        <td><strong>{{ $product->total_stok }}</strong></td>
                         <td>
-                            @if($product->current_stock <= 0)
+                            @if($product->total_stok <= 0)
                                 <span class="badge bg-danger">Habis</span>
-                            @elseif($product->current_stock < 10)
+                            @elseif($product->total_stok < 10)
                                 <span class="badge bg-warning text-dark">Menipis</span>
                             @else
                                 <span class="badge bg-success">Aman</span>

@@ -108,7 +108,7 @@
                                 {{ $entry->type == 'in' ? '+' : '-' }}{{ number_format($entry->quantity) }}
                             </div>
                             <div class="text-sm text-gray-500">
-                                Stok: {{ number_format($entry->product->current_stock ?? 0) }}
+                                Stok: {{ number_format($entry->product->total_stok) }}
                             </div>
                         </td>
                         <td class="px-6 py-4">

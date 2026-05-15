@@ -14,6 +14,29 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        // Initialize all variables to avoid undefined variable errors in catch block
+        $totalProducts = 0;
+        $totalCategories = 0;
+        $totalStock = 0;
+        $totalSales = 0;
+        $totalItemSold = 0;
+        $averageMonthlySales = 0;
+        $topProducts = collect();
+        $monthlySales = collect();
+        $lowStock = collect();
+        $outOfStock = collect();
+        $topCategories = collect();
+        $totalTransactions = 0;
+        $todaySales = 0;
+        $currentMonthSales = 0;
+        $growthPercentage = 0;
+        
+        $chartLabels = [];
+        $chartData = [];
+        $chartItems = [];
+        $categoryLabels = [];
+        $categoryData = [];
+
         try {
             // ==================== STATISTIK DASAR ====================
             $totalProducts = Product::count();
@@ -67,33 +90,40 @@ class DashboardController extends Controller
             $growthPercentage = $this->calculateGrowthPercentage($dateColumn);
             
             // ==================== PREPARE DATA UNTUK CHART ====================
-            $chartData = $this->prepareChartData($monthlySales);
+            $preparedChartData = $this->prepareChartData($monthlySales);
+            $chartLabels = $preparedChartData['chartLabels'];
+            $chartData = $preparedChartData['chartData'];
+            $chartItems = $preparedChartData['chartItems'];
+            $categoryLabels = $preparedChartData['categoryLabels'];
+            $categoryData = $preparedChartData['categoryData'];
             
-            return view('dashboard.index', array_merge(
-                compact(
-                    'totalProducts',
-                    'totalCategories',
-                    'totalStock',
-                    'totalSales',
-                    'totalItemSold',
-                    'averageMonthlySales',
-                    'topProducts',
-                    'monthlySales',
-                    'lowStock',
-                    'outOfStock',
-                    'topCategories',
-                    'totalTransactions',
-                    'todaySales',
-                    'currentMonthSales',
-                    'growthPercentage'
-                ),
-                $chartData
+            return view('dashboard.index', compact(
+                'totalProducts',
+                'totalCategories',
+                'totalStock',
+                'totalSales',
+                'totalItemSold',
+                'averageMonthlySales',
+                'topProducts',
+                'monthlySales',
+                'lowStock',
+                'outOfStock',
+                'topCategories',
+                'totalTransactions',
+                'todaySales',
+                'currentMonthSales',
+                'growthPercentage',
+                'chartLabels',
+                'chartData',
+                'chartItems',
+                'categoryLabels',
+                'categoryData'
             ));
             
         } catch (\Exception $e) {
             \Log::error('Dashboard Error: ' . $e->getMessage());
             
-            // Return data kosong jika error
+            // Return initialized default data if error
             return view('dashboard.index', [
                 'totalProducts' => $totalProducts,
                 'totalCategories' => $totalCategories,
@@ -106,11 +136,15 @@ class DashboardController extends Controller
                 'lowStock' => $lowStock,
                 'outOfStock' => $outOfStock,
                 'topCategories' => $topCategories,
-                'chartLabels' => $chartLabels, // Tambahkan ini
-                'chartData' => $chartData,     // Tambahkan ini
-                'chartItems' => $chartItems,   // Tambahkan ini
-                'categoryLabels' => $categoryLabels, // Tambahkan ini
-                'categoryData' => $categoryData,     // Tambahkan ini
+                'totalTransactions' => $totalTransactions,
+                'todaySales' => $todaySales,
+                'currentMonthSales' => $currentMonthSales,
+                'growthPercentage' => $growthPercentage,
+                'chartLabels' => $chartLabels,
+                'chartData' => $chartData,
+                'chartItems' => $chartItems,
+                'categoryLabels' => $categoryLabels,
+                'categoryData' => $categoryData,
             ]);
         }
     }
@@ -193,12 +227,7 @@ class DashboardController extends Controller
         $outOfStock = collect();
         
         foreach ($products as $product) {
-            $totalStockEntries = $product->stockEntries->sum('quantity');
-            $totalSold = $product->sales->sum('quantity_sold');
-            $currentStock = $totalStockEntries - $totalSold;
-            
-            $product->current_stock = $currentStock;
-            $product->total_sold = $totalSold;
+            $currentStock = $product->total_stok;
             
             if ($currentStock < 10 && $currentStock > 0) {
                 $lowStock->push($product);

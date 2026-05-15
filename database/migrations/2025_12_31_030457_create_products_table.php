@@ -9,16 +9,18 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
+            $table->string('sku', 50)->unique()->nullable(); 
             $table->string('name', 100);
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2);
             $table->string('image')->nullable();
-            $table->string('unit', 20);
+            $table->string('unit', 20)->nullable();
             $table->timestamps();
         });
     }

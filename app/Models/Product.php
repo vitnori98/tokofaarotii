@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    protected $fillable = ['category_id', 'name', 'description', 'price', 'image', 'unit'];
+    protected $fillable = ['name', 'description', 'sku', 'price', 'unit', 'image', 'category_id'];
+   // protected $fillable = ['category_id', 'sku', 'name', 'description', 'price', 'image', 'unit'];
 
     public function category()
     {
@@ -23,10 +24,20 @@ class Product extends Model
         return $this->hasMany(Sale::class);
     }
 
-    public function getStockAttribute()
+    /**
+     * Menghitung saldo stok asli dari selisih Masuk - Keluar
+     */
+    public function getTotalStokAttribute()
     {
-        return $this->stockEntries()->sum('quantity')
-            - $this->sales()->sum('quantity');
+        $masuk = $this->relationLoaded('stockEntries') 
+            ? $this->stockEntries->sum('quantity') 
+            : $this->stockEntries()->sum('quantity');
+            
+        $keluar = $this->relationLoaded('sales') 
+            ? $this->sales->sum('quantity_sold') 
+            : $this->sales()->sum('quantity_sold');
+
+        return $masuk - $keluar;
     }
 
 }

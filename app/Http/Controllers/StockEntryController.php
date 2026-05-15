@@ -53,17 +53,15 @@ class StockEntryController extends Controller
     {
         $request->validate([
             'product_id' => 'required|exists:products,id',
-            'type'       => 'required|in:in,out',
             'quantity'   => 'required|integer|min:1',
             'entry_date' => 'required|date',
-            'supplier'   => 'nullable|string|max:255',
-            'notes'      => 'nullable|string',
         ]);
 
+        // Simpan riwayat stok masuk
         StockEntry::create($request->all());
 
         return redirect()->route('stock-entries.index')
-            ->with('success', 'Stok berhasil ditambahkan');
+                        ->with('success', 'Stok berhasil ditambahkan!');
     }
 
     public function show(StockEntry $stockEntry)
