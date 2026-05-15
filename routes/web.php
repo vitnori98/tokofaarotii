@@ -70,6 +70,9 @@ Route::prefix('sales')->name('sales.')->group(function () {
     Route::put('/{sale}', [SaleController::class, 'update'])->name('update');
     Route::delete('/{sale}', [SaleController::class, 'destroy'])->name('destroy');
     Route::get('/{sale}', [SaleController::class, 'show'])->name('show');
+    
+    // Route Tambahan untuk Logika Kasir Modern
+    Route::post('/pos/store', [SaleController::class, 'storePos'])->name('pos.store');
 });
 
 // Reports Routes

@@ -1,77 +1,96 @@
 @extends('layouts.app')
 
-@section('content')
-<div class="container">
-    <h1 class="mb-4">Laporan Penjualan</h1>
+@section('title', 'Laporan Penjualan - Faa Frozen')
 
-    {{-- Filter Tanggal --}}
-    <div class="card shadow-sm mb-4">
-        <div class="card-body">
-            <form method="GET" action="{{ url('/reports/sales') }}">
-                <div class="row">
-                    <div class="col-md-4">
-                        <label>Tanggal Mulai</label>
-                        <input type="date" name="start_date" class="form-control"
-                            value="{{ $startDate instanceof \Carbon\Carbon ? $startDate->format('Y-m-d') : $startDate }}">
-                    </div>
-                    <div class="col-md-4">
-                        <label>Tanggal Akhir</label>
-                        <input type="date" name="end_date" class="form-control"
-                            value="{{ $endDate instanceof \Carbon\Carbon ? $endDate->format('Y-m-d') : $endDate }}">
-                    </div>
-                    <div class="col-md-4 d-flex align-items-end">
-                        <button type="submit" class="btn btn-primary w-100">Filter</button>
-                    </div>
+@section('content')
+<div class="max-w-6xl mx-auto px-4 sm:px-6">
+    <div class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div>
+            <h2 class="text-3xl font-black text-gray-900 tracking-tight">Laporan Penjualan</h2>
+            <p class="text-gray-500 mt-1">Data transaksi berdasarkan rentang waktu tertentu.</p>
+        </div>
+        
+        <div class="bg-white p-4 rounded-3xl border border-gray-100 shadow-sm">
+            <form method="GET" action="{{ url('/reports/sales') }}" class="flex flex-col md:flex-row items-end gap-4">
+                <div>
+                    <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Mulai</label>
+                    <input type="date" name="start_date" 
+                           class="block w-full bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-indigo-500"
+                           value="{{ $startDate instanceof \Carbon\Carbon ? $startDate->format('Y-m-d') : $startDate }}">
                 </div>
+                <div>
+                    <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Sampai</label>
+                    <input type="date" name="end_date" 
+                           class="block w-full bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-indigo-500"
+                           value="{{ $endDate instanceof \Carbon\Carbon ? $endDate->format('Y-m-d') : $endDate }}">
+                </div>
+                <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-xl font-bold transition-all transform hover:-translate-y-1">
+                    <i class="fas fa-filter mr-2 text-xs"></i> Filter
+                </button>
             </form>
         </div>
     </div>
 
-    {{-- Ringkasan --}}
-    <div class="row mb-4">
-        <div class="col-md-6">
-            <div class="card shadow-sm border-success">
-                <div class="card-body">
-                    <h6 class="text-muted">Total Pendapatan</h6>
-                    <h3 class="text-success">Rp {{ number_format($totalSales, 0, ',', '.') }}</h3>
-                </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex items-center">
+            <div class="w-14 h-14 bg-green-50 rounded-2xl flex items-center justify-center text-green-600 mr-4">
+                <i class="fas fa-money-bill-wave text-xl"></i>
+            </div>
+            <div>
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">Total Pendapatan</p>
+                <p class="text-2xl font-black text-gray-900">Rp {{ number_format($totalSales, 0, ',', '.') }}</p>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="card shadow-sm border-primary">
-                <div class="card-body">
-                    <h6 class="text-muted">Total Item Terjual</h6>
-                    <h3 class="text-primary">{{ number_format($totalItems, 0, ',', '.') }}</h3>
-                </div>
+        <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex items-center">
+            <div class="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 mr-4">
+                <i class="fas fa-shopping-basket text-xl"></i>
+            </div>
+            <div>
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">Total Item Terjual</p>
+                <p class="text-2xl font-black text-gray-900">{{ number_format($totalItems, 0, ',', '.') }} <span class="text-sm font-medium text-gray-400">Unit</span></p>
             </div>
         </div>
     </div>
 
-    {{-- Tabel --}}
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <table class="table table-bordered table-hover">
-                <thead class="table-dark">
-                    <tr>
-                        <th>No</th>
-                        <th>Produk</th>
-                        <th>Qty Terjual</th>
-                        <th>Total Harga</th>
-                        <th>Tanggal</th>
+    <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead>
+                    <tr class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] bg-gray-50/50">
+                        <th class="px-6 py-5">No</th>
+                        <th class="px-6 py-5">Tanggal</th>
+                        <th class="px-6 py-5">Produk</th>
+                        <th class="px-6 py-5 text-center">Qty</th>
+                        <th class="px-6 py-5 text-right">Total Harga</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="divide-y divide-gray-50">
                     @forelse($sales as $index => $sale)
-                    <tr>
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ $sale->product->name ?? '-' }}</td>
-                        <td>{{ $sale->quantity_sold }}</td>
-                        <td>Rp {{ number_format($sale->total_price, 0, ',', '.') }}</td>
-                        <td>{{ \Carbon\Carbon::parse($sale->sale_date)->format('d/m/Y') }}</td>
+                    <tr class="hover:bg-gray-50/50 transition-colors group">
+                        <td class="px-6 py-4 text-sm font-bold text-gray-400">{{ $index + 1 }}</td>
+                        <td class="px-6 py-4 text-sm font-semibold text-gray-700">
+                            {{ \Carbon\Carbon::parse($sale->sale_date)->format('d M Y') }}
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-sm font-bold text-gray-900">{{ $sale->product->name ?? '-' }}</span>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            <span class="px-3 py-1 bg-gray-100 rounded-full text-xs font-black text-gray-600">
+                                {{ $sale->quantity_sold }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <span class="text-sm font-black text-indigo-600">
+                                Rp {{ number_format($sale->total_price, 0, ',', '.') }}
+                            </span>
+                        </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="5" class="text-center text-muted">Belum ada data penjualan</td>
+                        <td colspan="5" class="px-6 py-20 text-center text-gray-400">
+                            <i class="fas fa-folder-open text-4xl mb-4 block opacity-20"></i>
+                            Belum ada data penjualan pada rentang waktu ini.
+                        </td>
                     </tr>
                     @endforelse
                 </tbody>

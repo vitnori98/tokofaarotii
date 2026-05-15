@@ -1,75 +1,98 @@
 @extends('layouts.app')
 
-@section('content')
-<div class="container">
-    <h1 class="mb-4">Laporan Stok</h1>
+@section('title', 'Laporan Stok - Faa Frozen')
 
-    {{-- Ringkasan --}}
-    <div class="row mb-4">
-        <div class="col-md-4">
-            <div class="card shadow-sm border-primary">
-                <div class="card-body">
-                    <h6 class="text-muted">Total Produk</h6>
-                    <h3 class="text-primary">{{ $products->count() }}</h3>
-                </div>
+@section('content')
+<div class="max-w-6xl mx-auto px-4 sm:px-6">
+    <div class="mb-8">
+        <h2 class="text-3xl font-black text-gray-900 tracking-tight">Laporan Inventaris</h2>
+        <p class="text-gray-500 mt-1">Pantau ketersediaan stok produk Frozen & Bakery secara real-time.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex items-center">
+            <div class="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 mr-4">
+                <i class="fas fa-boxes text-xl"></i>
+            </div>
+            <div>
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">Total Produk</p>
+                <p class="text-2xl font-black text-gray-900">{{ $products->count() }}</p>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card shadow-sm border-warning">
-                <div class="card-body">
-                    <h6 class="text-muted">Stok Menipis (< 10)</h6>
-                    <h3 class="text-warning">{{ $lowStock->count() }}</h3>
-                </div>
+
+        <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex items-center">
+            <div class="w-14 h-14 bg-amber-50 rounded-2xl flex items-center justify-center text-amber-600 mr-4">
+                <i class="fas fa-exclamation-triangle text-xl"></i>
+            </div>
+            <div>
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">Stok Menipis</p>
+                <p class="text-2xl font-black text-gray-900">{{ $lowStock->count() }} <span class="text-sm font-medium text-gray-400">Item</span></p>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card shadow-sm border-danger">
-                <div class="card-body">
-                    <h6 class="text-muted">Stok Habis</h6>
-                    <h3 class="text-danger">{{ $outOfStock->count() }}</h3>
-                </div>
+
+        <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex items-center">
+            <div class="w-14 h-14 bg-red-50 rounded-2xl flex items-center justify-center text-red-600 mr-4">
+                <i class="fas fa-times-circle text-xl"></i>
+            </div>
+            <div>
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">Stok Habis</p>
+                <p class="text-2xl font-black text-gray-900">{{ $outOfStock->count() }} <span class="text-sm font-medium text-gray-400">Item</span></p>
             </div>
         </div>
     </div>
 
-    {{-- Tabel Semua Produk --}}
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <h5 class="mb-3">Semua Produk</h5>
-            <table class="table table-bordered table-hover">
-                <thead class="table-dark">
-                    <tr>
-                        <th>No</th>
-                        <th>Produk</th>
-                        <th>Kategori</th>
-                        <th>Total Masuk</th>
-                        <th>Total Terjual</th>
-                        <th>Stok Saat Ini</th>
-                        <th>Status</th>
+    <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="px-6 py-5 border-b border-gray-50 flex justify-between items-center">
+            <h5 class="font-black text-gray-800 uppercase tracking-wider text-sm">Status Stok Semua Produk</h5>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead>
+                    <tr class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] bg-gray-50/50">
+                        <th class="px-6 py-5">Produk</th>
+                        <th class="px-6 py-5">Kategori</th>
+                        <th class="px-6 py-5 text-center">Masuk</th>
+                        <th class="px-6 py-5 text-center">Terjual</th>
+                        <th class="px-6 py-5 text-center">Sisa Stok</th>
+                        <th class="px-6 py-5 text-center">Status</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @forelse($products as $index => $product)
-                    <tr>
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ $product->name }}</td>
-                        <td>{{ $product->category->name ?? '-' }}</td>
-                        <td>{{ $product->stockEntries->sum('quantity') }}</td>
-                        <td>{{ $product->sales->sum('quantity_sold') }}</td>
-                        <td><strong>{{ $product->total_stok }}</strong></td>
-                        <td>
+                <tbody class="divide-y divide-gray-50">
+                    @forelse($products as $product)
+                    <tr class="hover:bg-gray-50/50 transition-colors group">
+                        <td class="px-6 py-4">
+                            <span class="text-sm font-bold text-gray-900 block">{{ $product->name }}</span>
+                            <span class="text-[10px] text-gray-400 font-medium tracking-tight">SKU: {{ $product->sku ?? '-' }}</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-xs font-semibold text-gray-600">{{ $product->category->name ?? '-' }}</span>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            <span class="text-sm font-medium text-gray-500">{{ $product->stockEntries->sum('quantity') }}</span>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            <span class="text-sm font-medium text-gray-500">{{ $product->sales->sum('quantity_sold') }}</span>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            <span class="text-sm font-black {{ $product->total_stok < 10 ? 'text-amber-500' : 'text-gray-900' }}">
+                                {{ $product->total_stok }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-center">
                             @if($product->total_stok <= 0)
-                                <span class="badge bg-danger">Habis</span>
+                                <span class="px-3 py-1 bg-red-50 text-red-600 rounded-lg text-[10px] font-black uppercase tracking-wider">Habis</span>
                             @elseif($product->total_stok < 10)
-                                <span class="badge bg-warning text-dark">Menipis</span>
+                                <span class="px-3 py-1 bg-amber-50 text-amber-600 rounded-lg text-[10px] font-black uppercase tracking-wider">Menipis</span>
                             @else
-                                <span class="badge bg-success">Aman</span>
+                                <span class="px-3 py-1 bg-green-50 text-green-600 rounded-lg text-[10px] font-black uppercase tracking-wider">Aman</span>
                             @endif
                         </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="7" class="text-center text-muted">Belum ada data produk</td>
+                        <td colspan="6" class="px-6 py-20 text-center text-gray-400 italic text-sm">
+                            Belum ada data produk yang tersedia.
+                        </td>
                     </tr>
                     @endforelse
                 </tbody>

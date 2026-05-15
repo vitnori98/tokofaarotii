@@ -19,9 +19,13 @@ return new class extends Migration
             $table->date('sale_date')->useCurrent(); 
             $table->decimal('total_price', 10, 2);
             $table->timestamps();
+            $table->enum('source', ['online', 'offline'])->default('offline');
+            $table->enum('status', ['pending', 'completed', 'cancelled'])->default('completed');
+            $table->string('customer_name')->nullable(); // Menyesuaikan controller kamu yang sudah ada customer_name
+            $table->text('notes')->nullable(); // Menyesuaikan controller kamu yang sudah ada notes
         });
     }
-
+    
     /**
      * Reverse the migrations.
      */
