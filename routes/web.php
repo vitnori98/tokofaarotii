@@ -9,6 +9,10 @@ use App\Http\Controllers\SaleController;
 use App\Http\Controllers\StockEntryController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PegawaiController;
+use App\Http\Controllers\BeritaController;
+use App\Http\Controllers\FaqController;
+
 
 // Home - Redirect ke dashboard jika sudah login
 Route::get('/', function () {
@@ -82,6 +86,16 @@ Route::prefix('reports')->name('reports.')->group(function () {
     Route::get('/stock', [ReportController::class, 'stock'])->name('stock');
     Route::get('/export', [ReportController::class, 'export'])->name('export');
 });
+
+// Pegawai Routes
+Route::resource('pegawai', PegawaiController::class);
+
+// Berita Routes
+Route::resource('berita', BeritaController::class);
+
+// FAQ Routes
+Route::resource('faq', FaqController::class);
+
 
 // Profile & Settings Routes
 Route::middleware('auth')->group(function () {

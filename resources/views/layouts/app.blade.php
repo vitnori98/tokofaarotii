@@ -21,9 +21,28 @@
             top: 0;
             left: 0;
             z-index: 30;
+            /* PERBAIKAN: Menggunakan flexbox vertikal agar ruang terbagi sempurna */
+            display: flex;
+            flex-direction: column; 
         }
 
-        /* 2. Menu Navigasi - Kunci Animasi */
+        /* PERBAIKAN: Container khusus navigasi agar area ini saja yang bisa di-scroll */
+        .sidebar-nav-container {
+            flex: 1;
+            overflow-y: auto;
+            scrollbar-width: thin; /* Untuk Firefox */
+        }
+        
+        /* Opsional: Mempercantik tampilan scrollbar di Chrome/Safari */
+        .sidebar-nav-container::-webkit-scrollbar {
+            width: 4px;
+        }
+        .sidebar-nav-container::-webkit-scrollbar-thumb {
+            background-color: #e5e7eb;
+            border-radius: 4px;
+        }
+
+        /* 2. Menu Navigasi */
         .sidebar .nav-link {
             transition: all 0.3s ease-in-out !important;
             padding: 0.75rem 1rem;
@@ -80,10 +99,8 @@
 <body class="bg-gray-50">
     <div class="overlay" id="overlay"></div>
     
-    <!-- Sidebar -->
     <aside class="sidebar shadow-lg">
-        <!-- Sidebar Header -->
-        <div class="p-6 border-b">
+        <div class="p-6 border-b bg-white">
             <div class="flex items-center space-x-3">
                 <div class="h-10 w-10 bg-indigo-600 rounded-lg flex items-center justify-center">
                     <i class="fas fa-store text-white"></i>
@@ -95,63 +112,84 @@
             </div>
         </div>
         
-        <!-- Sidebar Menu -->
-        <nav class="p-4 space-y-1">
-            <a href="{{ route('dashboard') }}" 
-               class="nav-link {{ request()->routeIs('dashboard*') ? 'active' : '' }}">
-                <i class="fas fa-home"></i>
-                <span class="sidebar-text">Dashboard</span>
-            </a>
-            
-            <a href="{{ route('products.index') }}" 
-               class="nav-link {{ request()->routeIs('products.*') ? 'active' : '' }}">
-                <i class="fas fa-box"></i>
-                <span class="sidebar-text">Produk</span>
-            </a>
-            
-            <a href="{{ route('categories.index') }}" 
-               class="nav-link {{ request()->routeIs('categories.*') ? 'active' : '' }}">
-                <i class="fas fa-tags"></i>
-                <span class="sidebar-text">Kategori</span>
-            </a>
-            
-            <a href="{{ route('stock-entries.index') }}" 
-               class="nav-link {{ request()->routeIs('stock-entries.*') ? 'active' : '' }}">
-                <i class="fas fa-warehouse"></i>
-                <span class="sidebar-text">Stok</span>
-            </a>
-            
-            <a href="{{ route('sales.index') }}" 
-               class="nav-link {{ request()->routeIs('sales.*') ? 'active' : '' }}">
-                <i class="fas fa-shopping-cart"></i>
-                <span class="sidebar-text">Penjualan</span>
-            </a>
-            
-            <a href="{{ route('reports.index') }}" 
-               class="nav-link {{ request()->routeIs('reports.*') ? 'active' : '' }}">
-                <i class="fas fa-chart-bar"></i>
-                <span class="sidebar-text">Laporan</span>
-            </a>
-            
-            <div class="pt-4 border-t mt-4">
-                <a href="{{ route('settings.index') }}" 
-                   class="nav-link {{ request()->routeIs('settings.*') ? 'active' : '' }}">
-                    <i class="fas fa-cog"></i>
-                    <span class="sidebar-text">Setting</span>
+        <div class="sidebar-nav-container p-4">
+            <nav class="space-y-1">
+                <a href="{{ route('dashboard') }}" 
+                   class="nav-link {{ request()->routeIs('dashboard*') ? 'active' : '' }}">
+                    <i class="fas fa-home w-5 text-center"></i>
+                    <span class="sidebar-text">Dashboard</span>
                 </a>
                 
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="nav-link text-red-600 w-full border-0 bg-transparent">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span class="sidebar-text">Keluar</span>
-                    </button>
-                </form>
-            </div>
-        </nav>
+                <a href="{{ route('products.index') }}" 
+                   class="nav-link {{ request()->routeIs('products.*') ? 'active' : '' }}">
+                    <i class="fas fa-box w-5 text-center"></i>
+                    <span class="sidebar-text">Produk</span>
+                </a>
+                
+                <a href="{{ route('categories.index') }}" 
+                   class="nav-link {{ request()->routeIs('categories.*') ? 'active' : '' }}">
+                    <i class="fas fa-tags w-5 text-center"></i>
+                    <span class="sidebar-text">Kategori</span>
+                </a>
+                
+                <a href="{{ route('stock-entries.index') }}" 
+                   class="nav-link {{ request()->routeIs('stock-entries.*') ? 'active' : '' }}">
+                    <i class="fas fa-warehouse w-5 text-center"></i>
+                    <span class="sidebar-text">Stock</span>
+                </a>
+                
+                <a href="{{ route('sales.index') }}" 
+                   class="nav-link {{ request()->routeIs('sales.*') ? 'active' : '' }}">
+                    <i class="fas fa-shopping-cart w-5 text-center"></i>
+                    <span class="sidebar-text">Penjualan</span>
+                </a>
+                
+                <a href="{{ route('reports.index') }}" 
+                   class="nav-link {{ request()->routeIs('reports.*') ? 'active' : '' }}">
+                    <i class="fas fa-chart-bar w-5 text-center"></i>
+                    <span class="sidebar-text">Laporan</span>
+                </a>
+
+                <a href="{{ route('pegawai.index') }}" 
+                   class="nav-link {{ request()->routeIs('pegawai.*') ? 'active' : '' }}">
+                    <i class="fas fa-users-cog w-5 text-center"></i>
+                    <span class="sidebar-text">Kelola Pegawai</span>
+                </a>
+
+                <a href="#" class="nav-link {{ request()->routeIs('dokumentasi.*') ? 'active' : '' }}">
+                    <i class="fas fa-file-alt w-5 text-center"></i>
+                    <span class="sidebar-text">Dokumentasi</span>
+                </a>
+
+                <a href="{{ route('berita.index') }}" class="nav-link {{ request()->routeIs('berita.*') ? 'active' : '' }}">
+                    <i class="fas fa-newspaper w-5 text-center"></i>
+                    <span class="sidebar-text">Kelola Berita</span>
+                </a>
+
+                <a href="{{ route('faq.index') }}" class="nav-link {{ request()->routeIs('faq.*') ? 'active' : '' }}">
+                    <i class="fas fa-question-circle w-5 text-center"></i>
+                    <span class="sidebar-text">FAQ</span>
+                </a>
+                
+                <div class="pt-4 border-t mt-4">
+                    <a href="{{ route('settings.index') }}" 
+                       class="nav-link {{ request()->routeIs('settings.*') ? 'active' : '' }}">
+                        <i class="fas fa-cog w-5 text-center"></i>
+                        <span class="sidebar-text">Setting</span>
+                    </a>
+                    
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="nav-link text-red-600 w-full border-0 bg-transparent text-left">
+                            <i class="fas fa-sign-out-alt w-5 text-center"></i>
+                            <span class="sidebar-text">Keluar</span>
+                        </button>
+                    </form>
+                </div>
+            </nav>
+        </div>
         
-        <!-- Sidebar Footer -->
-        <div class="absolute bottom-0 w-full p-4 border-t bg-gray-50">
+        <div class="p-4 border-t bg-gray-50">
             <div class="flex items-center space-x-2 text-sm text-gray-500">
                 <i class="fas fa-shield-alt"></i>
                 <span class="sidebar-text">vTKFAA</span>
@@ -159,7 +197,6 @@
         </div>
     </aside>
 
-    <!-- Main Content -->
     <div class="main-content">
         <header class="bg-white shadow-sm border-b sticky top-0 z-20">
             <div class="flex items-center justify-between px-6 py-4">
