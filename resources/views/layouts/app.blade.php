@@ -4,286 +4,798 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toko FAA - Admin Master</title>
-    
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <style>
-        /* 1. Base Sidebar Style */
+        /* =========================================
+           ROOT VARIABLES
+        ========================================= */
+        :root {
+            --sidebar-width: 260px;
+            --topbar-height: 60px;
+            --color-primary:    #f97316; /* orange brand */
+            --color-primary-bg: #fff7ed;
+            --color-primary-lt: #ffedd5;
+            --sidebar-bg:       #ffffff;
+            --sidebar-border:   #f1f5f9;
+            --body-bg:          #f8fafc;
+            --text-main:        #1e293b;
+            --text-muted:       #64748b;
+            --text-soft:        #94a3b8;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--body-bg);
+            color: var(--text-main);
+        }
+
+        /* =========================================
+           OVERLAY (mobile)
+        ========================================= */
+        .overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(2px);
+            z-index: 25;
+        }
+        .overlay.active { display: block; }
+
+        /* =========================================
+           SIDEBAR
+        ========================================= */
         .sidebar {
-            width: 280px;
+            width: var(--sidebar-width);
             height: 100vh;
-            transition: all 0.3s ease;
-            background-color: white;
-            border-right: 1px solid #dee2e6;
             position: fixed;
             top: 0;
             left: 0;
             z-index: 30;
-            /* PERBAIKAN: Menggunakan flexbox vertikal agar ruang terbagi sempurna */
             display: flex;
-            flex-direction: column; 
+            flex-direction: column;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--sidebar-border);
+            transition: left 0.3s cubic-bezier(.4,0,.2,1);
         }
 
-        /* PERBAIKAN: Container khusus navigasi agar area ini saja yang bisa di-scroll */
-        .sidebar-nav-container {
-            flex: 1;
-            overflow-y: auto;
-            scrollbar-width: thin; /* Untuk Firefox */
-        }
-        
-        /* Opsional: Mempercantik tampilan scrollbar di Chrome/Safari */
-        .sidebar-nav-container::-webkit-scrollbar {
-            width: 4px;
-        }
-        .sidebar-nav-container::-webkit-scrollbar-thumb {
-            background-color: #e5e7eb;
-            border-radius: 4px;
-        }
-
-        /* 2. Menu Navigasi */
-        .sidebar .nav-link {
-            transition: all 0.3s ease-in-out !important;
-            padding: 0.75rem 1rem;
-            border-radius: 0.5rem;
-            color: #4b5563 !important; 
-            background-color: transparent;
+        /* Brand area */
+        .sidebar-brand {
             display: flex;
             align-items: center;
-            margin-bottom: 4px;
-            text-decoration: none;
-            font-weight: 500;
+            gap: 0.75rem;
+            padding: 1.125rem 1.25rem;
+            border-bottom: 1px solid var(--sidebar-border);
+            flex-shrink: 0;
+        }
+        .sidebar-brand-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(249,115,22,.35);
+        }
+        .sidebar-brand-icon i { color: #fff; font-size: 0.875rem; }
+        .sidebar-brand-name {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-main);
+            line-height: 1.2;
+        }
+        .sidebar-brand-role {
+            font-size: 0.7rem;
+            color: var(--text-soft);
+            margin-top: 1px;
         }
 
-        /* 3. State AKTIF */
-        .sidebar .nav-link.active {
-            background-color: #eef2ff !important; 
-            color: #4f46e5 !important; 
+        /* Scrollable nav */
+        .sidebar-nav-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0.75rem;
+            scrollbar-width: thin;
+            scrollbar-color: #e2e8f0 transparent;
+        }
+        .sidebar-nav-scroll::-webkit-scrollbar { width: 3px; }
+        .sidebar-nav-scroll::-webkit-scrollbar-thumb {
+            background-color: #e2e8f0;
+            border-radius: 99px;
+        }
+
+        /* Section label */
+        .nav-section-label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-soft);
+            padding: 1rem 0.5rem 0.35rem;
+        }
+        .nav-section-label:first-child { padding-top: 0.25rem; }
+
+        /* Nav link */
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            padding: 0.5625rem 0.75rem;
+            border-radius: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.825rem;
+            font-weight: 500;
+            text-decoration: none;
+            margin-bottom: 1px;
+            transition: background-color 0.18s ease, color 0.18s ease;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+        }
+        .nav-link:hover {
+            background-color: #f1f5f9;
+            color: var(--text-main);
+        }
+        .nav-link i {
+            width: 1.125rem;
+            text-align: center;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+        /* Active state — orange brand */
+        .nav-link.active {
+            background-color: var(--color-primary-lt);
+            color: var(--color-primary);
             font-weight: 600;
         }
+        .nav-link.active i { color: var(--color-primary); }
 
-        .sidebar .nav-link.active i {
-            color: #4f46e5 !important;
+        /* Collapse toggle */
+        .nav-collapse-toggle {
+            justify-content: space-between;
+        }
+        .nav-collapse-toggle .nc-left {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+        }
+        .collapse-arrow {
+            font-size: 0.6rem;
+            color: #cbd5e1;
+            transition: transform 0.22s ease;
+            flex-shrink: 0;
+        }
+        .collapse-arrow.open { transform: rotate(90deg); }
+
+        /* Submenu */
+        .submenu {
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.28s ease;
+        }
+        .submenu.open { max-height: 260px; }
+        .submenu-item {
+            display: flex;
+            align-items: center;
+            padding: 0.45rem 0.75rem 0.45rem 2.625rem;
+            border-radius: 0.5rem;
+            font-size: 0.775rem;
+            font-weight: 500;
+            color: #94a3b8;
+            text-decoration: none;
+            margin-bottom: 1px;
+            transition: background-color 0.15s ease, color 0.15s ease;
+            position: relative;
+        }
+        .submenu-item::before {
+            content: '';
+            position: absolute;
+            left: 1.625rem;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background-color: currentColor;
+            opacity: 0.5;
+        }
+        .submenu-item:hover { background-color: #f1f5f9; color: #475569; }
+        .submenu-item.active {
+            color: var(--color-primary);
+            background-color: var(--color-primary-lt);
+            font-weight: 600;
+        }
+        .submenu-item.active::before { opacity: 1; }
+
+        /* Logout */
+        .nav-link-danger { color: #f43f5e !important; }
+        .nav-link-danger i { color: #f43f5e !important; }
+        .nav-link-danger:hover {
+            background-color: #fff1f2 !important;
+            color: #e11d48 !important;
         }
 
-        /* Efek Hover */
-        .sidebar .nav-link:hover:not(.active) {
-            background-color: #f9fafb;
-            color: #111827 !important;
+        /* Sidebar footer */
+        .sidebar-footer {
+            padding: 0.875rem 1.25rem;
+            border-top: 1px solid var(--sidebar-border);
+            flex-shrink: 0;
+            background-color: #fafafa;
+        }
+        .sidebar-footer-inner {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.7rem;
+            color: var(--text-soft);
+        }
+        .sidebar-footer-inner i { color: #cbd5e1; }
+
+        /* =========================================
+           TOPBAR
+        ========================================= */
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            background: #fff;
+            border-bottom: 1px solid var(--sidebar-border);
+            height: var(--topbar-height);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.5rem;
+            gap: 1rem;
         }
 
-        /* 4. Responsive & Overlay */
+        .topbar-left { display: flex; align-items: center; gap: 0.875rem; }
+        .topbar-right { display: flex; align-items: center; gap: 0.5rem; }
+
+        /* Hamburger */
+        .btn-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 0.5rem;
+            border: 1px solid #e2e8f0;
+            background: #fff;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.15s ease, color 0.15s ease;
+            flex-shrink: 0;
+        }
+        .btn-icon:hover { background: #f1f5f9; color: var(--text-main); }
+        .btn-icon i { font-size: 0.875rem; }
+
+        /* Page title in topbar */
+        .topbar-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        /* Breadcrumb (optional slot) */
+        .topbar-date {
+            font-size: 0.75rem;
+            color: var(--text-soft);
+        }
+
+        /* Bell */
+        .btn-bell {
+            position: relative;
+        }
+        .btn-bell .badge-dot {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 8px;
+            height: 8px;
+            background: #f43f5e;
+            border-radius: 50%;
+            border: 2px solid #fff;
+        }
+
+        /* Avatar */
+        .topbar-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            flex-shrink: 0;
+            border: 2px solid var(--color-primary-lt);
+        }
+
+        /* Dropdown */
+        .topbar-dropdown {
+            position: relative;
+        }
+        .dropdown-panel {
+            display: none;
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            box-shadow: 0 8px 32px rgba(15,23,42,.12);
+            min-width: 200px;
+            overflow: hidden;
+            z-index: 50;
+        }
+        .dropdown-panel.open { display: block; }
+        .dropdown-panel-header {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            padding: 0.875rem 1rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .dropdown-panel-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 0.8rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .dropdown-panel-name {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+        .dropdown-panel-role {
+            font-size: 0.7rem;
+            color: var(--text-soft);
+            margin-top: 1px;
+        }
+        .dropdown-panel-body { padding: 0.5rem; }
+        .dropdown-panel-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.625rem;
+            border-radius: 0.375rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: background 0.15s;
+        }
+        .dropdown-panel-item:hover { background: #f8fafc; color: var(--text-main); }
+        .dropdown-panel-item i { width: 1rem; text-align: center; font-size: 0.75rem; }
+
+        /* Notification dropdown */
+        .notif-panel {
+            min-width: 280px;
+        }
+        .notif-panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.875rem 1rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .notif-panel-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+        .notif-badge {
+            background: #f97316;
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 1px 6px;
+            border-radius: 99px;
+        }
+        .notif-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.625rem;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #f8fafc;
+            transition: background 0.15s;
+        }
+        .notif-item:hover { background: #fafafa; }
+        .notif-item-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #f97316;
+            margin-top: 5px;
+            flex-shrink: 0;
+        }
+        .notif-item-text { font-size: 0.775rem; color: var(--text-main); line-height: 1.4; }
+        .notif-item-time { font-size: 0.7rem; color: var(--text-soft); margin-top: 2px; }
+        .notif-footer {
+            padding: 0.625rem 1rem;
+            text-align: center;
+        }
+        .notif-footer a {
+            font-size: 0.775rem;
+            color: #f97316;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .notif-footer a:hover { text-decoration: underline; }
+
+        /* =========================================
+           MAIN CONTENT
+        ========================================= */
         .main-content {
-            transition: margin-left 0.3s ease;
-            margin-left: 280px;
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: margin-left 0.3s cubic-bezier(.4,0,.2,1);
+        }
+        .main-content main {
+            flex: 1;
+            padding: 1.5rem;
         }
 
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
         @media (max-width: 1024px) {
-            .sidebar { left: -280px; }
-            .sidebar.active { left: 0; }
-            .main-content { margin-left: 0; }
-            .overlay {
-                display: none;
-                position: fixed;
-                top: 0; left: 0; right: 0; bottom: 0;
-                background: rgba(0, 0, 0, 0.5);
-                z-index: 25;
+            .sidebar { left: calc(-1 * var(--sidebar-width)); }
+            .sidebar.open {
+                left: 0;
+                box-shadow: 8px 0 32px rgba(15,23,42,.12);
             }
-            .overlay.active { display: block; }
+            .main-content { margin-left: 0; }
+            .topbar-date { display: none; }
         }
 
-        .sidebar-text { margin-left: 0.75rem; }
+        /* Show toggle btn only on mobile */
+        .sidebar-toggle-btn { display: none; }
+        @media (max-width: 1024px) {
+            .sidebar-toggle-btn { display: flex; }
+        }
     </style>
 </head>
-<body class="bg-gray-50">
+<body>
+
+    {{-- Overlay (mobile) --}}
     <div class="overlay" id="overlay"></div>
-    
-    <aside class="sidebar shadow-lg">
-        <div class="p-6 border-b bg-white">
-            <div class="flex items-center space-x-3">
-                <div class="h-10 w-10 bg-indigo-600 rounded-lg flex items-center justify-center">
-                    <i class="fas fa-store text-white"></i>
-                </div>
-                <div>
-                    <h2 class="text-lg font-bold text-gray-900">Toko FAA</h2>
-                    <p class="text-xs text-gray-500">Admin Master</p>
-                </div>
+
+    {{-- ================================================ --}}
+    {{-- SIDEBAR                                          --}}
+    {{-- ================================================ --}}
+    <aside class="sidebar" id="sidebar">
+
+        {{-- Brand --}}
+        <div class="sidebar-brand">
+            <div class="sidebar-brand-icon">
+                <i class="fas fa-store"></i>
+            </div>
+            <div>
+                <div class="sidebar-brand-name">Toko FAA</div>
+                <div class="sidebar-brand-role">Admin Master</div>
             </div>
         </div>
-        
-        <div class="sidebar-nav-container p-4">
-            <nav class="space-y-1">
-                <a href="{{ route('dashboard') }}" 
+
+        {{-- Nav --}}
+        <div class="sidebar-nav-scroll">
+            <nav>
+
+                <p class="nav-section-label">Menu Utama</p>
+
+                <a href="{{ route('dashboard') }}"
                    class="nav-link {{ request()->routeIs('dashboard*') ? 'active' : '' }}">
-                    <i class="fas fa-home w-5 text-center"></i>
-                    <span class="sidebar-text">Dashboard</span>
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
                 </a>
-                
-           
-                <a href="{{ route('products.index') }}" 
+
+                <a href="{{ route('products.index') }}"
                    class="nav-link {{ request()->routeIs('products.*') ? 'active' : '' }}">
-                    <i class="fas fa-box w-5 text-center"></i>
-                    <span class="sidebar-text">Produk</span>
+                    <i class="fas fa-box"></i>
+                    <span>Produk</span>
                 </a>
-                
-          
-                <a href="{{ route('categories.index') }}" 
+
+                <a href="{{ route('categories.index') }}"
                    class="nav-link {{ request()->routeIs('categories.*') ? 'active' : '' }}">
-                    <i class="fas fa-tags w-5 text-center"></i>
-                    <span class="sidebar-text">Kategori</span>
+                    <i class="fas fa-tags"></i>
+                    <span>Kategori</span>
                 </a>
-                
-    
-                <a href="{{ route('stock-entries.index') }}" 
+
+                <a href="{{ route('stock-entries.index') }}"
                    class="nav-link {{ request()->routeIs('stock-entries.*') ? 'active' : '' }}">
-                    <i class="fas fa-warehouse w-5 text-center"></i>
-                    <span class="sidebar-text">Stock</span>
+                    <i class="fas fa-warehouse"></i>
+                    <span>Stock</span>
                 </a>
-                
-          
-                <a href="{{ route('sales.index') }}" 
+
+                <a href="{{ route('sales.index') }}"
                    class="nav-link {{ request()->routeIs('sales.*') ? 'active' : '' }}">
-                    <i class="fas fa-shopping-cart w-5 text-center"></i>
-                    <span class="sidebar-text">Penjualan</span>
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Penjualan</span>
                 </a>
-                
-          
-                <a href="{{ route('reports.index') }}" 
+
+                <a href="{{ route('reports.index') }}"
                    class="nav-link {{ request()->routeIs('reports.*') ? 'active' : '' }}">
-                    <i class="fas fa-chart-bar w-5 text-center"></i>
-                    <span class="sidebar-text">Laporan</span>
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Laporan</span>
                 </a>
 
-        
-                <a href="{{ route('pegawai.index') }}" 
-                   class="nav-link {{ request()->routeIs('pegawai.*') ? 'active' : '' }}">
-                    <i class="fas fa-users-cog w-5 text-center"></i>
-                    <span class="sidebar-text">Kelola Pegawai</span>
+                <p class="nav-section-label">Manajemen</p>
+
+                @if(in_array(auth()->user()->role ?? 'pegawai', ['admin_master', 'pemilik']))
+                <a href="{{ route('kelola-user.index') }}"
+                   class="nav-link {{ request()->routeIs('kelola-user.*') ? 'active' : '' }}">
+                    <i class="fas fa-user-shield"></i>
+                    <span>Kelola User</span>
+                </a>
+                @endif
+
+                <a href="{{ route('pegawai.index') }}"                   class="nav-link {{ request()->routeIs('pegawai.*') ? 'active' : '' }}">
+                    <i class="fas fa-users-cog"></i>
+                    <span>Kelola Pegawai</span>
                 </a>
 
-           
-                <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('dokumentasi.*') ? '' : 'collapsed' }}" 
-                href="#" 
-                data-bs-toggle="collapse" 
-                data-bs-target="#collapseDokumentasi" 
-                aria-expanded="{{ request()->routeIs('dokumentasi.*') ? 'true' : 'false' }}" 
-                aria-controls="collapseDokumentasi">
-                    <i class="fas fa-cloud w-5 text-center"></i>
-                    <span class="sidebar-text">Dokumentasi</span>
-                </a>
-                
-                <div id="collapseDokumentasi" 
-                    class="collapse {{ request()->routeIs('dokumentasi.*') ? 'show' : '' }}" 
-                    aria-labelledby="headingDokumentasi">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <ul class="list-unstyled ps-4 ms-2">
-                            <li class="py-1">
-                                <a class="nav-link d-inline-block p-0 text-muted {{ request()->routeIs('dokumentasi.album') ? 'active font-weight-bold' : '' }}" 
-                                href="{{ route('dokumentasi.album') }}">
-                                    <span class="me-2" style="font-size: 8px; vertical-align: middle;">●</span> Album Kegiatan
-                                </a>
-                            </li>
-                            
-                            <li class="py-1">
-                                <a class="nav-link d-inline-block p-0 text-muted {{ request()->routeIs('dokumentasi.infografis') ? 'active font-weight-bold' : '' }}" 
-                                href="{{ route('dokumentasi.infografis') }}">
-                                    <span class="me-2" style="font-size: 8px; vertical-align: middle;">●</span> Infografis
-                                </a>
-                            </li>
-                            
-                            <li class="py-1">
-                                <a class="nav-link d-inline-block p-0 text-muted {{ request()->routeIs('dokumentasi.video') ? 'active font-weight-bold' : '' }}" 
-                                href="{{ route('dokumentasi.video') }}">
-                                    <span class="me-2" style="font-size: 8px; vertical-align: middle;">●</span> Video
-                                </a>
-                            </li>
-                        </ul>
+                {{-- Dokumentasi Collapsible --}}
+                <button type="button"
+                        class="nav-link nav-collapse-toggle {{ request()->routeIs('dokumentasi.*') ? 'active' : '' }}"
+                        onclick="toggleCollapse('collapseDokumentasi', this)">
+                    <div class="nc-left">
+                        <i class="fas fa-cloud"></i>
+                        <span>Dokumentasi</span>
                     </div>
-                </div>
-            </li>
+                    <i class="fas fa-chevron-right collapse-arrow {{ request()->routeIs('dokumentasi.*') ? 'open' : '' }}"></i>
+                </button>
 
-     
-                <a href="{{ route('berita.index') }}" class="nav-link {{ request()->routeIs('berita.*') ? 'active' : '' }}">
-                    <i class="fas fa-newspaper w-5 text-center"></i>
-                    <span class="sidebar-text">Kelola Berita</span>
-                </a>
-
-     
-                <a href="{{ route('faq.index') }}" class="nav-link {{ request()->routeIs('faq.*') ? 'active' : '' }}">
-                    <i class="fas fa-question-circle w-5 text-center"></i>
-                    <span class="sidebar-text">FAQ</span>
-                </a>
-                
-                <div class="pt-4 border-t mt-4">
-                    <a href="{{ route('settings.index') }}" 
-                    class="nav-link {{ request()->routeIs('settings.*') ? 'active' : '' }}">
-                        <i class="fas fa-cog w-5 text-center"></i>
-                        <span class="sidebar-text">Setting</span>
+                <div class="submenu {{ request()->routeIs('dokumentasi.*') ? 'open' : '' }}" id="collapseDokumentasi">
+                    <a href="{{ route('dokumentasi.album') }}"
+                       class="submenu-item {{ request()->routeIs('dokumentasi.album') ? 'active' : '' }}">
+                        Album Kegiatan
+                    </a>
+                    <a href="{{ route('dokumentasi.infografis') }}"
+                       class="submenu-item {{ request()->routeIs('dokumentasi.infografis') ? 'active' : '' }}">
+                        Infografis
+                    </a>
+                    <a href="{{ route('dokumentasi.video') }}"
+                       class="submenu-item {{ request()->routeIs('dokumentasi.video') ? 'active' : '' }}">
+                        Video
                     </a>
                 </div>
-                    
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit" class="nav-link text-red-600 w-full border-0 bg-transparent text-left">
-                            <i class="fas fa-sign-out-alt w-5 text-center"></i>
-                            <span class="sidebar-text">Keluar</span>
-                        </button>
-                    </form>
-                </div>
+
+                <a href="{{ route('berita.index') }}"
+                   class="nav-link {{ request()->routeIs('berita.*') ? 'active' : '' }}">
+                    <i class="fas fa-newspaper"></i>
+                    <span>Kelola Berita</span>
+                </a>
+
+                <a href="{{ route('faq.index') }}"
+                   class="nav-link {{ request()->routeIs('faq.*') ? 'active' : '' }}">
+                    <i class="fas fa-question-circle"></i>
+                    <span>FAQ</span>
+                </a>
+
+                <p class="nav-section-label">Sistem</p>
+
+                <a href="{{ route('settings.index') }}"
+                   class="nav-link {{ request()->routeIs('settings.*') ? 'active' : '' }}">
+                    <i class="fas fa-cog"></i>
+                    <span>Pengaturan</span>
+                </a>
+
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="nav-link nav-link-danger">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Keluar</span>
+                    </button>
+                </form>
+
             </nav>
         </div>
-        
-        <div class="p-4 border-t bg-gray-50">
-            <div class="flex items-center space-x-2 text-sm text-gray-500">
+
+        {{-- Footer --}}
+        <div class="sidebar-footer">
+            <div class="sidebar-footer-inner">
                 <i class="fas fa-shield-alt"></i>
-                <span class="sidebar-text">vTKFAA</span>
+                <span>vTKFAA &nbsp;·&nbsp; v1.0</span>
             </div>
         </div>
+
     </aside>
 
-    <div class="main-content">
-        <header class="bg-white shadow-sm border-b sticky top-0 z-20">
-            <div class="flex items-center justify-between px-6 py-4">
-                <div class="flex items-center space-x-4">
-                    <button id="sidebarToggle" class="lg:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100">
-                        <i class="fas fa-bars text-xl"></i>
+    {{-- ================================================ --}}
+    {{-- MAIN CONTENT                                     --}}
+    {{-- ================================================ --}}
+    <div class="main-content" id="mainContent">
+
+        {{-- TOPBAR --}}
+        <header class="topbar">
+            {{-- Left --}}
+            <div class="topbar-left">
+                {{-- Hamburger (mobile only) --}}
+                <button class="btn-icon sidebar-toggle-btn" id="sidebarToggle" aria-label="Toggle sidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+                {{-- Sidebar collapse (desktop) --}}
+                <button class="btn-icon" id="sidebarCollapseBtn" aria-label="Collapse sidebar" style="display:flex;">
+                    <i class="fas fa-table-columns"></i>
+                </button>
+
+                <div>
+                    <div class="topbar-title">@yield('title', 'Dashboard')</div>
+                </div>
+            </div>
+
+            {{-- Right --}}
+            <div class="topbar-right">
+                {{-- Date --}}
+                <span class="topbar-date">{{ now()->translatedFormat('l, d F Y') }}</span>
+
+                {{-- Notification Bell --}}
+                <div class="topbar-dropdown">
+                    <button class="btn-icon btn-bell" id="notifToggle" aria-label="Notifikasi">
+                        <i class="fas fa-bell" style="font-size:0.8rem;"></i>
+                        <span class="badge-dot"></span>
                     </button>
-                    <div class="hidden md:block">
-                        <h1 class="text-xl font-bold text-gray-900">@yield('title', 'Dashboard')</h1>
+                    <div class="dropdown-panel notif-panel" id="notifPanel">
+                        <div class="notif-panel-header">
+                            <span class="notif-panel-title">Notifikasi</span>
+                            <span class="notif-badge">3</span>
+                        </div>
+                        <div class="notif-item">
+                            <div class="notif-item-dot"></div>
+                            <div>
+                                <div class="notif-item-text">Stok produk hampir habis</div>
+                                <div class="notif-item-time">5 menit yang lalu</div>
+                            </div>
+                        </div>
+                        <div class="notif-item">
+                            <div class="notif-item-dot"></div>
+                            <div>
+                                <div class="notif-item-text">Penjualan baru masuk #00123</div>
+                                <div class="notif-item-time">30 menit yang lalu</div>
+                            </div>
+                        </div>
+                        <div class="notif-item">
+                            <div class="notif-item-dot"></div>
+                            <div>
+                                <div class="notif-item-text">Laporan bulanan siap diunduh</div>
+                                <div class="notif-item-time">1 jam yang lalu</div>
+                            </div>
+                        </div>
+                        <div class="notif-footer">
+                            <a href="#">Lihat semua notifikasi</a>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="flex items-center space-x-4">
-                    <span class="hidden md:block text-sm text-gray-600">{{ now()->format('l, d F Y') }}</span>
-                    <div class="h-10 w-10 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600">
-                        <i class="fas fa-user"></i>
+
+                {{-- Avatar / Profile Dropdown --}}
+                <div class="topbar-dropdown">
+                    <div class="topbar-avatar" id="avatarToggle">
+                        {{ strtoupper(substr(Auth::user()->name ?? 'A', 0, 1)) }}
+                    </div>
+                    <div class="dropdown-panel" id="avatarPanel">
+                        <div class="dropdown-panel-header">
+                            <div class="dropdown-panel-avatar">
+                                {{ strtoupper(substr(Auth::user()->name ?? 'A', 0, 1)) }}
+                            </div>
+                            <div>
+                                <div class="dropdown-panel-name">{{ Auth::user()->name ?? 'Admin' }}</div>
+                                <div class="dropdown-panel-role">Admin Master</div>
+                            </div>
+                        </div>
+                        <div class="dropdown-panel-body">
+                            <a href="{{ route('settings.index') }}" class="dropdown-panel-item">
+                                <i class="fas fa-user-circle"></i>
+                                <span>Profil Saya</span>
+                            </a>
+                            <a href="{{ route('settings.index') }}" class="dropdown-panel-item">
+                                <i class="fas fa-cog"></i>
+                                <span>Pengaturan</span>
+                            </a>
+                            <div style="border-top:1px solid #f1f5f9;margin:0.25rem 0;"></div>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="dropdown-panel-item" style="border:none;background:none;width:100%;cursor:pointer;color:#f43f5e;">
+                                    <i class="fas fa-sign-out-alt" style="color:#f43f5e;"></i>
+                                    <span>Keluar</span>
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </header>
 
-        <main class="p-6">
+        {{-- Page Content --}}
+        <main>
             @yield('content')
         </main>
+
     </div>
 
     <script>
-        const sidebarToggle = document.getElementById('sidebarToggle');
-        const sidebar = document.querySelector('.sidebar');
-        const overlay = document.getElementById('overlay');
-        
-        sidebarToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('active');
+        // ── Sidebar mobile toggle ───────────────────────────
+        const sidebar      = document.getElementById('sidebar');
+        const overlay      = document.getElementById('overlay');
+        const toggleBtn    = document.getElementById('sidebarToggle');
+        const collapseBtn  = document.getElementById('sidebarCollapseBtn');
+        const mainContent  = document.getElementById('mainContent');
+
+        toggleBtn?.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
             overlay.classList.toggle('active');
         });
-        
+
         overlay.addEventListener('click', () => {
-            sidebar.classList.remove('active');
+            sidebar.classList.remove('open');
             overlay.classList.remove('active');
         });
+
+        // ── Sidebar desktop collapse ────────────────────────
+        let sidebarCollapsed = false;
+        collapseBtn?.addEventListener('click', () => {
+            if (window.innerWidth < 1024) return; // mobile handled by toggleBtn
+            sidebarCollapsed = !sidebarCollapsed;
+            if (sidebarCollapsed) {
+                sidebar.style.left = 'calc(-1 * var(--sidebar-width))';
+                mainContent.style.marginLeft = '0';
+            } else {
+                sidebar.style.left = '0';
+                mainContent.style.marginLeft = 'var(--sidebar-width)';
+            }
+        });
+
+        // ── Collapse submenu ────────────────────────────────
+        function toggleCollapse(id, btn) {
+            const menu  = document.getElementById(id);
+            const arrow = btn.querySelector('.collapse-arrow');
+            menu.classList.toggle('open');
+            arrow.classList.toggle('open');
+        }
+
+        // ── Topbar dropdowns ────────────────────────────────
+        function setupDropdown(triggerId, panelId) {
+            const trigger = document.getElementById(triggerId);
+            const panel   = document.getElementById(panelId);
+            if (!trigger || !panel) return;
+            trigger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                // Close all other panels first
+                document.querySelectorAll('.dropdown-panel.open').forEach(p => {
+                    if (p !== panel) p.classList.remove('open');
+                });
+                panel.classList.toggle('open');
+            });
+        }
+
+        setupDropdown('notifToggle', 'notifPanel');
+        setupDropdown('avatarToggle', 'avatarPanel');
+
+        // Close dropdowns on outside click
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.dropdown-panel.open')
+                    .forEach(p => p.classList.remove('open'));
+        });
     </script>
+
     @stack('scripts')
 </body>
 </html>

@@ -1,201 +1,232 @@
 @extends('layouts.app')
 
 @section('title', 'Album Kegiatan')
-@section('subtitle', 'Daftar dokumentasi kegiatan perusahaan')
+@section('subtitle', 'Kumpulan dokumentasi foto kegiatan Toko Faa')
 
 @section('content')
-<div class="bg-white rounded-xl shadow-sm border p-6">
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-        <div>
-            <h3 class="text-lg font-bold text-gray-800">Koleksi Album</h3>
-            <p class="text-sm text-gray-500">Politeknik Manufaktur Negeri Bangka Belitung</p>
-        </div>
-        <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
-            <div class="inline-flex rounded-md shadow-sm" role="group">
-                <button type="button" class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-50">
-                    <i class="fas fa-file-excel text-green-600 mr-1"></i> Excel
-                </button>
-                <button type="button" class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border-t border-b border-r border-gray-300 rounded-r-lg hover:bg-gray-50">
-                    <i class="fas fa-file-pdf text-red-600 mr-1"></i> PDF
-                </button>
+
+{{-- ── ALERT ── --}}
+@if(session('success'))
+<div class="alert-banner alert-success">
+    <div class="alert-inner"><i class="fas fa-check-circle"></i><span>{{ session('success') }}</span></div>
+    <button onclick="this.closest('.alert-banner').remove()"><i class="fas fa-times"></i></button>
+</div>
+@endif
+
+{{-- ── TOOLBAR ── --}}
+<div class="toolbar-wrap">
+    <div class="toolbar-left">
+        <h3 class="toolbar-title">Galeri Album</h3>
+    </div>
+    <div class="toolbar-right">
+        <button onclick="toggleModal('modal-tambah')" class="btn-primary">
+            <i class="fas fa-plus"></i> Tambah Album
+        </button>
+    </div>
+</div>
+
+{{-- ── GRID ALBUM ── --}}
+@if($albums->isEmpty())
+    <div class="empty-state-card">
+        <i class="fas fa-images"></i>
+        <p>Belum ada album kegiatan</p>
+    </div>
+@else
+    <div class="album-grid">
+        @foreach($albums as $album)
+        <div class="album-card">
+            <div class="album-img-wrap">
+                @if($album->gambar)
+                    <img src="{{ asset('storage/' . $album->gambar) }}" alt="{{ $album->judul }}">
+                @else
+                    <div class="img-placeholder">
+                        <i class="fas fa-image"></i>
+                    </div>
+                @endif
+                <div class="album-date">
+                    <i class="far fa-calendar-alt"></i> 
+                    {{ $album->tanggal ? \Carbon\Carbon::parse($album->tanggal)->format('d M Y') : 'N/A' }}
+                </div>
             </div>
-            
-            <button onclick="toggleModal('modal-tambah')" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition flex items-center shadow-sm">
-                <i class="fas fa-plus mr-2"></i> Tambah Album
-            </button>
+            <div class="album-content">
+                <h4 class="album-title">{{ $album->judul }}</h4>
+                <p class="album-desc">{{ Str::limit($album->deskripsi, 80) }}</p>
+                <div class="album-actions">
+                    <button onclick="editAlbum({{ json_encode($album) }})" class="btn-edit-sm" title="Edit">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <form action="{{ route('dokumentasi.album.destroy', $album->id) }}" method="POST" onsubmit="return confirm('Hapus album ini?')" style="margin:0;">
+                        @csrf @method('DELETE')
+                        <button type="submit" class="btn-delete-sm" title="Hapus">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
+        @endforeach
     </div>
+@endif
 
-    {{-- Alert Success --}}
-    @if(session('success'))
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
-            <span class="block sm:inline">{{ session('success') }}</span>
+{{-- ── MODAL TAMBAH ── --}}
+<div id="modal-tambah" class="modal-overlay hidden">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3 class="modal-title">Tambah Album Baru</h3>
+            <button onclick="toggleModal('modal-tambah')" class="btn-close-modal"><i class="fas fa-times"></i></button>
         </div>
-    @endif
-
-    {{-- Grid Card Layout --}}
-    @if($albums->isEmpty())
-        <div class="text-center py-12">
-            <i class="fas fa-images text-gray-300 text-6xl mb-4"></i>
-            <h3 class="text-xl font-medium text-gray-900 mb-2">Belum ada Album</h3>
-            <p class="text-gray-500">Data album akan muncul setelah ditambahkan.</p>
-        </div>
-    @else
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            @foreach($albums as $index => $album)
-                <div class="border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition bg-white flex flex-col justify-between group">
-                    
-                    <div class="relative overflow-hidden bg-gray-100 aspect-video border-b">
-                        <span class="absolute top-2 left-2 bg-black/60 text-white text-xs px-2 py-1 rounded-md z-10 font-mono">
-                            #{{ $index + 1 }}
-                        </span>
-
-                        @if($album->gambar)
-                            <img src="{{ asset('storage/' . $album->gambar) }}" alt="{{ $album->nama_kegiatan }}" class="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300">
-                        @else
-                            <div class="w-full h-full flex items-center justify-center bg-gray-50">
-                                <i class="fas fa-image text-gray-300 text-4xl"></i>
-                            </div>
-                        @endif
-                    </div>
-                    
-                    <div class="p-4 flex-1 flex flex-col justify-between">
-                        <div>
-                            <h4 class="font-bold text-gray-800 text-base mb-1 line-clamp-2 capitalize">
-                                {{ $album->nama_kegiatan }}
-                            </h4>
-                            
-                            <p class="text-xs text-gray-400 mb-3 flex items-center gap-1">
-                                <i class="far fa-calendar-alt"></i>
-                                {{ $album->tanggal ? \Carbon\Carbon::parse($album->tanggal)->format('d M Y') : '-' }}
-                            </p>
-
-                            @if(isset($album->deskripsi))
-                                <p class="text-gray-600 text-sm line-clamp-2 mb-4 bg-gray-50 p-2 rounded-lg border border-gray-100">
-                                    {{ $album->deskripsi }}
-                                </p>
-                            @else
-                                <p class="text-gray-400 text-sm italic mb-4">Tidak ada deskripsi kegiatan.</p>
-                            @endif
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-2 border-t pt-3 mt-auto">
-                            <button onclick="editAlbum({{ $album }})" class="w-full bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold py-2 px-3 rounded-lg transition flex items-center justify-center gap-1.5 shadow-sm">
-                                <i class="fas fa-edit"></i> Edit
-                            </button>
-                            
-                            <form action="{{ route('dokumentasi.album.destroy', $album->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus kegiatan ini?')" class="w-full">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white text-xs font-semibold py-2 px-3 rounded-lg transition flex items-center justify-center gap-1.5 shadow-sm">
-                                    <i class="fas fa-trash"></i> Hapus
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-
+        <form action="{{ route('dokumentasi.album.store') }}" method="POST" enctype="multipart/form-data" class="modal-form">
+            @csrf
+            <div class="form-group">
+                <label>Judul Kegiatan</label>
+                <input type="text" name="judul" required placeholder="Contoh: Grand Opening Cabang Baru">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Tanggal</label>
+                    <input type="date" name="tanggal">
                 </div>
-            @endforeach
-        </div>
-    @endif
-</div>
-
-{{-- Modal Tambah --}}
-<div id="modal-tambah" class="fixed inset-0 z-50 hidden overflow-y-auto">
-    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-        <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-        </div>
-        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-            <form action="{{ route('dokumentasi.album.store') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <h3 class="text-lg font-bold leading-6 text-gray-900 mb-4">Tambah Album Kegiatan Baru</h3>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Nama Kegiatan</label>
-                            <input type="text" name="nama_kegiatan" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Tanggal Kegiatan</label>
-                            <input type="date" name="tanggal" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Deskripsi</label>
-                            <textarea name="deskripsi" rows="3" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"></textarea>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Gambar Cover</label>
-                            <input type="file" name="gambar" accept="image/*" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
-                        </div>
-                    </div>
+                <div class="form-group">
+                    <label>Cover Album</label>
+                    <input type="file" name="gambar" accept="image/*" required>
                 </div>
-                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse gap-2">
-                    <button type="submit" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 sm:w-auto sm:text-sm">Simpan</button>
-                    <button type="button" onclick="toggleModal('modal-tambah')" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 sm:mt-0 sm:w-auto sm:text-sm">Batal</button>
-                </div>
-            </form>
-        </div>
+            </div>
+            <div class="form-group">
+                <label>Deskripsi Singkat</label>
+                <textarea name="deskripsi" rows="3" placeholder="Ceritakan singkat tentang kegiatan ini..."></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="toggleModal('modal-tambah')" class="btn-cancel">Batal</button>
+                <button type="submit" class="btn-submit">Simpan Album</button>
+            </div>
+        </form>
     </div>
 </div>
 
-{{-- Modal Edit --}}
-<div id="modal-edit" class="fixed inset-0 z-50 hidden overflow-y-auto">
-    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-        <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+{{-- ── MODAL EDIT ── --}}
+<div id="modal-edit" class="modal-overlay hidden">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3 class="modal-title">Edit Album</h3>
+            <button onclick="toggleModal('modal-edit')" class="btn-close-modal"><i class="fas fa-times"></i></button>
         </div>
-        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-            <form id="form-edit" method="POST" enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
-                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <h3 class="text-lg font-bold leading-6 text-gray-900 mb-4">Edit Album Kegiatan</h3>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Nama Kegiatan</label>
-                            <input type="text" name="nama_kegiatan" id="edit-nama-kegiatan" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Tanggal Kegiatan</label>
-                            <input type="date" name="tanggal" id="edit-tanggal" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Deskripsi</label>
-                            <textarea name="deskripsi" id="edit-deskripsi" rows="3" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"></textarea>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Gambar Cover (Kosongkan jika tidak diubah)</label>
-                            <input type="file" name="gambar" accept="image/*" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
-                        </div>
-                    </div>
+        <form id="form-edit" method="POST" enctype="multipart/form-data" class="modal-form">
+            @csrf @method('PUT')
+            <div class="form-group">
+                <label>Judul Kegiatan</label>
+                <input type="text" name="judul" id="edit-judul" required>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Tanggal</label>
+                    <input type="date" name="tanggal" id="edit-tanggal">
                 </div>
-                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse gap-2">
-                    <button type="submit" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 sm:w-auto sm:text-sm">Update</button>
-                    <button type="button" onclick="toggleModal('modal-edit')" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 sm:mt-0 sm:w-auto sm:text-sm">Batal</button>
+                <div class="form-group">
+                    <label>Ganti Cover (Opsional)</label>
+                    <input type="file" name="gambar" accept="image/*">
                 </div>
-            </form>
-        </div>
+            </div>
+            <div class="form-group">
+                <label>Deskripsi Singkat</label>
+                <textarea name="deskripsi" id="edit-deskripsi" rows="3"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="toggleModal('modal-edit')" class="btn-cancel">Batal</button>
+                <button type="submit" class="btn-submit">Update Album</button>
+            </div>
+        </form>
     </div>
 </div>
+
+<style>
+    /* ── Toolbar ── */
+    .toolbar-wrap { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; }
+    .toolbar-title { font-size: 1.25rem; font-weight: 800; color: #1e293b; margin: 0; }
+    .btn-primary { background: #6366f1; color: #fff; border: none; padding: .625rem 1.25rem; border-radius: .75rem; font-size: .85rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: .5rem; transition: all .2s; }
+    .btn-primary:hover { background: #4f46e5; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(99, 102, 241, .2); }
+
+    /* ── Grid ── */
+    .album-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+    .album-card { background: #fff; border-radius: 1.25rem; border: 1px solid #f1f5f9; overflow: hidden; box-shadow: 0 1px 3px rgba(15,23,42,.05); transition: all .3s; }
+    .album-card:hover { transform: translateY(-5px); box-shadow: 0 12px 20px rgba(15,23,42,.08); }
+    
+    .album-img-wrap { position: relative; width: 100%; aspect-ratio: 16/9; background: #f8fafc; overflow: hidden; }
+    .album-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+    .img-placeholder { height: 100%; display: flex; align-items: center; justify-content: center; color: #cbd5e1; font-size: 2rem; }
+    
+    .album-date { position: absolute; bottom: .75rem; left: .75rem; background: rgba(15,23,42,.7); color: #fff; padding: .25rem .6rem; border-radius: .5rem; font-size: .65rem; font-weight: 700; backdrop-filter: blur(4px); }
+
+    .album-content { padding: 1.25rem; }
+    .album-title { font-size: .95rem; font-weight: 800; color: #1e293b; margin: 0 0 .5rem; line-height: 1.4; }
+    .album-desc { font-size: .8rem; color: #64748b; line-height: 1.5; margin-bottom: 1.25rem; }
+
+    .album-actions { display: flex; align-items: center; gap: .5rem; border-top: 1px solid #f8fafc; pt: 1rem; }
+    .btn-edit-sm { background: #fffbeb; color: #d97706; border: 1px solid #fef3c7; width: 32px; height: 32px; border-radius: .5rem; display: flex; align-items: center; justify-content: center; font-size: .75rem; cursor: pointer; transition: all .2s; }
+    .btn-edit-sm:hover { background: #d97706; color: #fff; }
+    .btn-delete-sm { background: #fef2f2; color: #ef4444; border: 1px solid #fee2e2; width: 32px; height: 32px; border-radius: .5rem; display: flex; align-items: center; justify-content: center; font-size: .75rem; cursor: pointer; transition: all .2s; }
+    .btn-delete-sm:hover { background: #ef4444; color: #fff; }
+
+    /* ── Modal ── */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(15,23,42,.6); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+    .modal-card { background: #fff; border-radius: 1.5rem; width: 100%; max-width: 550px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); overflow: hidden; animation: zoomIn .2s ease-out; }
+    @keyframes zoomIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .modal-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between; }
+    .modal-title { font-size: 1.1rem; font-weight: 800; color: #1e293b; margin: 0; }
+    .btn-close-modal { background: none; border: none; color: #94a3b8; font-size: 1.2rem; cursor: pointer; }
+    
+    .modal-form { padding: 1.5rem; }
+    .form-group { margin-bottom: 1.25rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+    .form-group label { display: block; font-size: .8rem; font-weight: 700; color: #475569; margin-bottom: .5rem; }
+    .form-group input, .form-group textarea { width: 100%; padding: .625rem 1rem; border: 1.5px solid #e2e8f0; border-radius: .625rem; font-size: .85rem; outline: none; transition: all .2s; box-sizing: border-box; }
+    .form-group input:focus, .form-group textarea:focus { border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99, 102, 241, .1); }
+    .form-group input[type="file"] { padding: .5rem; font-size: .75rem; }
+
+    .modal-footer { display: flex; justify-content: flex-end; gap: .75rem; margin-top: 2rem; }
+    .btn-cancel { background: #fff; border: 1.5px solid #e2e8f0; color: #64748b; padding: .625rem 1.25rem; border-radius: .625rem; font-size: .85rem; font-weight: 700; cursor: pointer; }
+    .btn-submit { background: #6366f1; border: none; color: #fff; padding: .625rem 1.25rem; border-radius: .625rem; font-size: .85rem; font-weight: 700; cursor: pointer; transition: all .2s; }
+    .btn-submit:hover { background: #4f46e5; }
+
+    .empty-state-card { background: #fff; border-radius: 1.5rem; padding: 4rem 1rem; text-align: center; border: 1px solid #f1f5f9; color: #cbd5e1; }
+    .empty-state-card i { font-size: 3rem; margin-bottom: 1rem; display: block; }
+    .empty-state-card p { font-size: .9rem; font-weight: 700; color: #94a3b8; }
+
+    .hidden { display: none !important; }
+
+    /* ── Alert ── */
+    .alert-banner { display:flex;align-items:flex-start;justify-content:space-between;gap:.75rem;padding:.875rem 1.125rem;border-radius:.75rem;margin-bottom:1.5rem;font-size:.85rem;font-weight:600; }
+    .alert-success { background:#f0fdf4;border:1px solid #bbf7d0;color:#166534; }
+    .alert-inner { display:flex;align-items:flex-start;gap:.5rem; }
+    .alert-banner button { background:none;border:none;cursor:pointer;color:inherit;opacity:.6; }
+
+    @media (max-width: 600px) {
+        .form-row { grid-template-columns: 1fr; }
+        .toolbar-wrap { flex-direction: column; align-items: flex-start; gap: 1rem; }
+        .btn-primary { width: 100%; justify-content: center; }
+    }
+</style>
 
 <script>
     function toggleModal(id) {
-        const modal = document.getElementById(id);
-        modal.classList.toggle('hidden');
+        document.getElementById(id).classList.toggle('hidden');
     }
 
     function editAlbum(album) {
-        document.getElementById('edit-nama-kegiatan').value = album.nama_kegiatan;
+        document.getElementById('edit-judul').value = album.judul;
         document.getElementById('edit-tanggal').value = album.tanggal || '';
         document.getElementById('edit-deskripsi').value = album.deskripsi || '';
-        
-        const form = document.getElementById('form-edit');
-        form.action = `/dokumentasi/album/${album.id}`;
-        
+        document.getElementById('form-edit').action = `{{ url('dokumentasi/album') }}/${album.id}`;
         toggleModal('modal-edit');
     }
+
+    // Auto-dismiss alerts
+    setTimeout(() => {
+        document.querySelectorAll('.alert-banner').forEach(el => {
+            el.style.transition = 'opacity .4s';
+            el.style.opacity = '0';
+            setTimeout(() => el.remove(), 400);
+        });
+    }, 4000);
 </script>
+
 @endsection

@@ -1,25 +1,40 @@
 <x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
-        {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+    <div class="form-header">
+        <h2 class="form-title">Lupa Password?</h2>
+        <p class="form-subtitle">Jangan khawatir. Masukkan email Anda dan kami akan mengirimkan tautan reset.</p>
     </div>
 
     <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+    @if (session('status'))
+        <div class="mb-4 font-medium text-sm text-green-600 bg-green-50 p-3 rounded-lg border border-green-100">
+            {{ session('status') }}
+        </div>
+    @endif
 
     <form method="POST" action="{{ route('password.email') }}">
         @csrf
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        {{-- Email --}}
+        <div class="auth-input-group">
+            <label class="auth-label">Email Address</label>
+            <div class="auth-input-wrap">
+                <i class="fas fa-envelope auth-input-icon"></i>
+                <input type="email" name="email" value="{{ old('email') }}" required autofocus class="auth-input" placeholder="admin@tokofaa.com">
+            </div>
+            @if($errors->has('email'))
+                <span class="auth-error">{{ $errors->first('email') }}</span>
+            @endif
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Email Password Reset Link') }}
-            </x-primary-button>
+        <button type="submit" class="btn-auth-submit">
+            <span>Kirim Tautan Reset</span>
+            <i class="fas fa-paper-plane"></i>
+        </button>
+
+        <div class="mt-8 text-center">
+            <a href="{{ route('login') }}" class="auth-link">
+                <i class="fas fa-arrow-left mr-1"></i> Kembali ke Login
+            </a>
         </div>
     </form>
 </x-guest-layout>

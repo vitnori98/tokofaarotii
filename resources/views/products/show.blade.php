@@ -1,212 +1,351 @@
 @extends('layouts.app')
 
 @section('title', 'Detail Produk - ' . $product->name)
+@section('subtitle', 'Informasi lengkap produk')
 
 @section('content')
-<div class="max-w-6xl mx-auto px-4 sm:px-6 pb-12">
-    <!-- Header & Breadcrumb -->
-    <div class="mb-8">
-        <nav class="flex mb-4" aria-label="Breadcrumb">
-            <ol class="inline-flex items-center space-x-2 text-sm text-gray-400">
-                <li>
-                    <a href="{{ route('products.index') }}" class="hover:text-indigo-600 transition-colors flex items-center">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
-                        Produk
-                    </a>
-                </li>
-                <li><svg class="w-3 h-3 text-gray-300" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg></li>
-                <li class="text-gray-900 font-semibold italic">Detail Item</li>
-            </ol>
-        </nav>
 
-        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div>
-                <span class="px-3 py-1 bg-indigo-100 text-indigo-700 text-[10px] font-bold rounded-full uppercase tracking-widest mb-2 inline-block">
-                    {{ $product->category->name ?? 'Uncategorized' }}
-                </span>
-                <h2 class="text-4xl font-black text-gray-900 tracking-tight italic">{{ $product->name }}</h2>
-                <p class="text-gray-500 mt-1 font-medium flex items-center">
-                    <span class="mr-3">SKU: <span class="font-mono text-indigo-600">{{ $product->sku ?? 'N/A' }}</span></span>
-                    <span class="w-1.5 h-1.5 bg-gray-300 rounded-full mr-3"></span>
-                    <span>Ditambahkan {{ $product->created_at->format('d M Y') }}</span>
-                </p>
-            </div>
-            <div class="flex items-center gap-3">
-                <a href="{{ route('products.edit', $product->id) }}" 
-                   class="inline-flex items-center px-5 py-2.5 bg-white border border-gray-200 rounded-2xl font-bold text-gray-700 hover:bg-gray-50 hover:border-indigo-300 hover:text-indigo-600 transition-all shadow-sm">
-                    <i class="fas fa-edit mr-2"></i> Edit
-                </a>
-                <form action="{{ route('products.destroy', $product->id) }}" method="POST" onsubmit="return confirm('Hapus produk ini secara permanen?')" class="inline">
-                    @csrf @method('DELETE')
-                    <button type="submit" class="inline-flex items-center px-5 py-2.5 bg-red-50 border border-red-100 rounded-2xl font-bold text-red-600 hover:bg-red-100 transition-all shadow-sm">
-                        <i class="fas fa-trash-alt mr-2"></i> Hapus
-                    </button>
-                </form>
-            </div>
+{{-- ── ALERT ── --}}
+@if(session('success'))
+<div class="alert-banner alert-success">
+    <div class="alert-inner"><i class="fas fa-check-circle"></i><span>{{ session('success') }}</span></div>
+    <button onclick="this.closest('.alert-banner').remove()"><i class="fas fa-times"></i></button>
+</div>
+@endif
+
+{{-- ── BREADCRUMB ── --}}
+<div class="breadcrumb-wrap">
+    <a href="{{ route('products.index') }}" class="bc-link">
+        <i class="fas fa-box"></i> Produk
+    </a>
+    <i class="fas fa-chevron-right bc-sep"></i>
+    <span class="bc-current">{{ Str::limit($product->name, 40) }}</span>
+</div>
+
+{{-- ── MAIN LAYOUT ── --}}
+<div class="detail-layout">
+
+    {{-- ── SIDEBAR ── --}}
+    <div class="detail-sidebar">
+
+        {{-- Gambar Produk --}}
+        <div class="detail-card img-card">
+            @if($product->image)
+                <img src="{{ asset('storage/'.$product->image) }}" alt="{{ $product->name }}"
+                     style="width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:.625rem;border:1px solid #f1f5f9;">
+            @else
+                <div class="img-placeholder-lg">
+                    <i class="fas fa-box"></i>
+                    <p>Belum ada gambar</p>
+                </div>
+            @endif
         </div>
+
+        {{-- Stok Realtime --}}
+        @php
+            $currentStock = $product->stockEntries->sum('quantity') - $product->sales->sum('quantity_sold');
+        @endphp
+        <div class="stock-dark-card">
+            <div class="stock-header">
+                <span class="stock-label-top">REAL-TIME INVENTORI</span>
+                <i class="fas fa-cube" style="color:#6366f1;"></i>
+            </div>
+            <div class="stock-number-wrap">
+                <span class="stock-big-num">{{ $currentStock }}</span>
+                <span class="stock-unit">{{ $product->unit ?? 'pcs' }}</span>
+            </div>
+            @if($currentStock <= 0)
+                <div class="stock-status-badge status-red">
+                    <span class="status-dot dot-red"></span> STOK HABIS
+                </div>
+            @elseif($currentStock < 10)
+                <div class="stock-status-badge status-yellow">
+                    <span class="status-dot dot-yellow dot-pulse"></span> STOK RENDAH
+                </div>
+            @else
+                <div class="stock-status-badge status-green">
+                    <span class="status-dot dot-green"></span> STOK AMAN
+                </div>
+            @endif
+
+            <a href="{{ route('stock-entries.create', ['product_id' => $product->id]) }}"
+               class="stock-refill-btn">
+                <i class="fas fa-plus"></i> ISI ULANG STOK
+            </a>
+        </div>
+
+        {{-- Aksi --}}
+        <div class="detail-card" style="display:flex;flex-direction:column;gap:.625rem;">
+            <p style="font-size:.7rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em;margin:0;">Aksi Produk</p>
+            <a href="{{ route('products.edit', $product->id) }}" class="action-btn-full btn-edit-full">
+                <i class="fas fa-pencil-alt"></i> Edit Produk
+            </a>
+            <form action="{{ route('products.destroy', $product->id) }}" method="POST"
+                  onsubmit="return confirm('Hapus produk ini secara permanen?')">
+                @csrf @method('DELETE')
+                <button type="submit" class="action-btn-full btn-delete-full">
+                    <i class="fas fa-trash-alt"></i> Hapus Produk
+                </button>
+            </form>
+        </div>
+
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <!-- Sidebar -->
-        <div class="lg:col-span-4 space-y-6">
-            <!-- Visual Card -->
-            <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-4 relative overflow-hidden group">
-                <div class="aspect-square bg-gray-50 rounded-[1.5rem] flex items-center justify-center overflow-hidden border border-gray-100">
-                    @if($product->image)
-                        <img src="{{ asset('storage/'.$product->image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                    @else
-                        <div class="text-center group-hover:scale-110 transition-transform duration-500">
-                            <i class="fas fa-box text-gray-200 text-8xl mb-4"></i>
-                            <p class="text-gray-400 text-xs font-bold uppercase tracking-widest">No Preview Available</p>
-                        </div>
+    {{-- ── CONTENT ── --}}
+    <div class="detail-content">
+
+        {{-- Header Info --}}
+        <div class="detail-card">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
+                <div>
+                    @if($product->category)
+                        <span class="cat-badge">{{ $product->category->name }}</span>
                     @endif
-                </div>
-            </div>
-
-            <!-- Enhanced Stock Card -->
-            <div class="bg-gray-900 rounded-[2rem] shadow-2xl p-8 text-white relative overflow-hidden">
-                <div class="relative z-10">
-                    <div class="flex justify-between items-start mb-6">
-                        <h3 class="text-gray-400 text-[10px] font-black uppercase tracking-[0.2em]">Real-time Inventory</h3>
-                        <i class="fas fa-cube text-indigo-500"></i>
-                    </div>
-                    
-                    @php
-                        $currentStock = $product->stockEntries->sum('quantity') - $product->sales->sum('quantity_sold');
-                    @endphp
-
-                    <div class="flex items-baseline gap-2 mb-2">
-                        <span class="text-6xl font-black tracking-tighter">{{ $currentStock }}</span>
-                        <span class="text-indigo-400 font-bold uppercase text-sm">{{ $product->unit ?? 'pcs' }}</span>
-                    </div>
-
-                    <div class="mb-8">
-                        @if($currentStock <= 0)
-                            <div class="inline-flex items-center px-3 py-1 bg-red-500/10 border border-red-500/20 text-red-400 text-[10px] font-black rounded-full">
-                                <span class="w-1.5 h-1.5 bg-red-500 rounded-full mr-2 animate-pulse"></span> OUT OF STOCK
-                            </div>
-                        @elseif($currentStock < 10)
-                            <div class="inline-flex items-center px-3 py-1 bg-orange-500/10 border border-orange-500/20 text-orange-400 text-[10px] font-black rounded-full">
-                                <span class="w-1.5 h-1.5 bg-orange-500 rounded-full mr-2 animate-pulse"></span> LOW STOCK
-                            </div>
-                        @else
-                            <div class="inline-flex items-center px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-black rounded-full">
-                                <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full mr-2"></span> IN STOCK
-                            </div>
+                    <h1 class="prod-title">{{ $product->name }}</h1>
+                    <div class="prod-meta">
+                        @if($product->sku)
+                            <span><i class="fas fa-barcode"></i> SKU: <strong>{{ $product->sku }}</strong></span>
+                            <span class="meta-sep">·</span>
                         @endif
+                        <span><i class="far fa-calendar-alt"></i> {{ $product->created_at->format('d M Y') }}</span>
                     </div>
-
-                    <a href="{{ route('stock-entries.create', ['product_id' => $product->id]) }}" 
-                       class="flex items-center justify-center w-full py-4 bg-indigo-600 hover:bg-indigo-500 text-white rounded-2xl font-black text-sm transition-all shadow-lg shadow-indigo-900/20 group">
-                        <i class="fas fa-plus mr-2 group-hover:rotate-90 transition-transform"></i> ISI ULANG STOK
-                    </a>
                 </div>
-                <!-- Abstract BG -->
-                <div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-indigo-600/10 rounded-full blur-3xl"></div>
             </div>
         </div>
 
-        <!-- Content -->
-        <div class="lg:col-span-8 space-y-8">
-            <!-- Info Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm flex items-center gap-6">
-                    <div class="w-16 h-16 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 text-2xl shadow-inner">
-                        <i class="fas fa-tag"></i>
-                    </div>
-                    <div>
-                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Harga Jual</p>
-                        <h4 class="text-3xl font-black text-gray-900 leading-none">
-                            <span class="text-sm font-bold text-gray-400 mr-1">Rp</span>{{ number_format($product->price, 0, ',', '.') }}
-                        </h4>
-                    </div>
+        {{-- Price & Unit --}}
+        <div class="info-grid">
+            <div class="info-tile">
+                <div class="tile-icon" style="background:#eff6ff;">
+                    <i class="fas fa-tag" style="color:#3b82f6;"></i>
                 </div>
-
-                <div class="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm flex items-center gap-6">
-                    <div class="w-16 h-16 bg-gray-50 rounded-2xl flex items-center justify-center text-gray-600 text-2xl shadow-inner">
-                        <i class="fas fa-layer-group"></i>
-                    </div>
-                    <div>
-                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Satuan</p>
-                        <h4 class="text-3xl font-black text-gray-900 leading-none">{{ $product->unit ?? 'Pcs' }}</h4>
-                    </div>
+                <div>
+                    <p class="tile-label">Harga Jual</p>
+                    <p class="tile-value">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
                 </div>
             </div>
+            <div class="info-tile">
+                <div class="tile-icon" style="background:#f0fdf4;">
+                    <i class="fas fa-cube" style="color:#22c55e;"></i>
+                </div>
+                <div>
+                    <p class="tile-label">Satuan</p>
+                    <p class="tile-value">{{ $product->unit ?? 'pcs' }}</p>
+                </div>
+            </div>
+            <div class="info-tile">
+                <div class="tile-icon" style="background:#fff7ed;">
+                    <i class="fas fa-layer-group" style="color:#f97316;"></i>
+                </div>
+                <div>
+                    <p class="tile-label">Total Masuk</p>
+                    <p class="tile-value">{{ $product->stockEntries->sum('quantity') }}</p>
+                </div>
+            </div>
+            <div class="info-tile">
+                <div class="tile-icon" style="background:#fef2f2;">
+                    <i class="fas fa-shopping-cart" style="color:#ef4444;"></i>
+                </div>
+                <div>
+                    <p class="tile-label">Total Terjual</p>
+                    <p class="tile-value">{{ $product->sales->sum('quantity_sold') }}</p>
+                </div>
+            </div>
+        </div>
 
-            <!-- Description -->
-            <div class="bg-white p-8 md:p-10 rounded-[2rem] border border-gray-100 shadow-sm">
-                <h3 class="text-lg font-black text-gray-900 mb-6 flex items-center">
-                    <span class="w-8 h-8 bg-indigo-600 rounded-xl flex items-center justify-center text-white text-xs mr-4 shadow-lg shadow-indigo-200">
-                        <i class="fas fa-align-left"></i>
-                    </span>
-                    Deskripsi Produk
-                </h3>
-                <p class="text-gray-600 leading-relaxed font-medium italic italic">
-                    {{ $product->description ?: 'Product owner belum memberikan deskripsi detail mengenai item ini.' }}
-                </p>
+        {{-- Deskripsi --}}
+        <div class="detail-card">
+            <div class="section-title">
+                <div class="section-icon" style="background:linear-gradient(135deg,#f97316,#ea580c);">
+                    <i class="fas fa-align-left"></i>
+                </div>
+                Deskripsi Produk
+            </div>
+            <p class="desc-text">
+                {{ $product->description ?: 'Belum ada deskripsi untuk produk ini.' }}
+            </p>
+        </div>
+
+        {{-- Log Stok --}}
+        <div class="detail-card" style="padding:0;overflow:hidden;">
+            <div class="log-header">
+                <div class="section-title" style="margin:0;">
+                    <div class="section-icon" style="background:linear-gradient(135deg,#6366f1,#4f46e5);">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    Log Aktivitas Stok
+                </div>
+                <span style="font-size:.7rem;font-weight:700;color:#94a3b8;text-transform:uppercase;">5 Terakhir</span>
             </div>
 
-            <!-- History Section -->
-            <div class="bg-white rounded-[2rem] border border-gray-100 shadow-sm overflow-hidden">
-                <div class="px-8 py-6 border-b border-gray-50 flex items-center justify-between">
-                    <h3 class="font-black text-gray-900 tracking-tight italic">
-                        <i class="fas fa-history mr-2 text-indigo-600"></i> Log Aktivitas Stok
-                    </h3>
-                    <span class="text-[10px] font-bold text-gray-400 uppercase">5 Transaksi Terakhir</span>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left">
-                        <thead>
-                            <tr class="bg-gray-50/50">
-                                <th class="px-8 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">Detail</th>
-                                <th class="px-8 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest text-center">Qty</th>
-                                <th class="px-8 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest text-right">Balance</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-50">
-                            @php 
-                                $runningBalance = $currentStock; 
-                                $entries = $product->stockEntries()->latest()->take(5)->get();
-                            @endphp
-                            @forelse($entries as $entry)
-                            <tr class="hover:bg-gray-50 transition-colors">
-                                <td class="px-8 py-5">
-                                    <div class="flex items-center gap-4">
-                                        <div class="w-10 h-10 rounded-full flex items-center justify-center {{ $entry->type == 'in' ? 'bg-emerald-100 text-emerald-600' : 'bg-red-100 text-red-600' }}">
-                                            <i class="fas {{ $entry->type == 'in' ? 'fa-arrow-down' : 'fa-arrow-up' }} text-xs"></i>
-                                        </div>
-                                        <div>
-                                            <p class="text-sm font-bold text-gray-900">{{ $entry->type == 'in' ? 'Barang Masuk' : 'Barang Keluar' }}</p>
-                                            <p class="text-[10px] font-medium text-gray-400">{{ $entry->created_at->format('d M, H:i') }} WIB</p>
-                                        </div>
+            <div class="table-wrap">
+                <table class="log-table">
+                    <thead>
+                        <tr>
+                            <th>DETAIL</th>
+                            <th style="text-align:center;width:80px;">QTY</th>
+                            <th style="text-align:right;width:100px;">SALDO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php
+                            $runningBalance = $currentStock;
+                            $entries = $product->stockEntries()->latest()->take(5)->get();
+                        @endphp
+                        @forelse($entries as $entry)
+                        <tr class="log-row">
+                            <td>
+                                <div style="display:flex;align-items:center;gap:.75rem;">
+                                    <div class="log-icon {{ $entry->type == 'in' ? 'log-in' : 'log-out' }}">
+                                        <i class="fas {{ $entry->type == 'in' ? 'fa-arrow-down' : 'fa-arrow-up' }}"></i>
                                     </div>
-                                </td>
-                                <td class="px-8 py-5 text-center">
-                                    <span class="text-sm font-black {{ $entry->type == 'in' ? 'text-emerald-600' : 'text-red-600' }}">
-                                        {{ $entry->type == 'in' ? '+' : '-' }}{{ $entry->quantity }}
-                                    </span>
-                                </td>
-                                <td class="px-8 py-5 text-right font-mono text-sm font-bold text-gray-900">
-                                    {{ number_format($runningBalance, 0) }}
-                                    @php 
-                                        // Update balance for next row (reverse math since we show latest first)
-                                        $runningBalance += ($entry->type == 'in' ? -$entry->quantity : $entry->quantity); 
-                                    @endphp
-                                </td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="3" class="px-8 py-16 text-center">
-                                    <i class="fas fa-stream text-gray-200 text-3xl mb-4"></i>
-                                    <p class="text-gray-400 text-xs font-bold uppercase tracking-widest">Belum ada riwayat stok</p>
-                                </td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
+                                    <div>
+                                        <p class="log-type">{{ $entry->type == 'in' ? 'Barang Masuk' : 'Barang Keluar' }}</p>
+                                        <p class="log-date">{{ $entry->created_at->format('d M Y, H:i') }} WIB</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="text-align:center;">
+                                <span class="log-qty {{ $entry->type == 'in' ? 'qty-in' : 'qty-out' }}">
+                                    {{ $entry->type == 'in' ? '+' : '-' }}{{ $entry->quantity }}
+                                </span>
+                            </td>
+                            <td style="text-align:right;">
+                                <span class="log-balance">{{ number_format($runningBalance) }}</span>
+                                @php $runningBalance += ($entry->type == 'in' ? -$entry->quantity : $entry->quantity); @endphp
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="3" class="log-empty">
+                                <i class="fas fa-stream"></i>
+                                <p>Belum ada riwayat stok</p>
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
+
     </div>
 </div>
+
+<style>
+    /* ─ Alert ─ */
+    .alert-banner { display:flex;align-items:flex-start;justify-content:space-between;gap:.75rem;padding:.875rem 1.125rem;border-radius:.625rem;margin-bottom:1.25rem;font-size:.85rem;font-weight:500;animation:slideDown .3s ease; }
+    @keyframes slideDown { from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)} }
+    .alert-success { background:#f0fdf4;border:1px solid #bbf7d0;color:#166534; }
+    .alert-inner { display:flex;align-items:flex-start;gap:.5rem; }
+    .alert-banner button { background:none;border:none;cursor:pointer;color:inherit;opacity:.6;padding:2px; }
+
+    /* ─ Breadcrumb ─ */
+    .breadcrumb-wrap { display:flex;align-items:center;gap:.5rem;margin-bottom:1.25rem;font-size:.8rem; }
+    .bc-link { color:#f97316;font-weight:600;text-decoration:none;display:flex;align-items:center;gap:.3rem; }
+    .bc-link:hover { text-decoration:underline; }
+    .bc-sep { font-size:.6rem;color:#cbd5e1; }
+    .bc-current { color:#64748b;font-weight:500; }
+
+    /* ─ Layout ─ */
+    .detail-layout { display:grid;grid-template-columns:280px 1fr;gap:1.5rem;align-items:start; }
+    .detail-sidebar { display:flex;flex-direction:column;gap:1rem; }
+    .detail-content { display:flex;flex-direction:column;gap:1rem; }
+
+    /* ─ Card Base ─ */
+    .detail-card { background:#fff;border-radius:.875rem;border:1px solid #f1f5f9;box-shadow:0 1px 4px rgba(15,23,42,.06);padding:1.25rem; }
+
+    /* ─ Image Card ─ */
+    .img-card { padding:.75rem; }
+    .img-placeholder-lg { width:100%;aspect-ratio:1/1;background:#f8fafc;border-radius:.625rem;border:1px solid #e2e8f0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#cbd5e1; }
+    .img-placeholder-lg i { font-size:3rem;margin-bottom:.5rem; }
+    .img-placeholder-lg p { font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:#94a3b8; }
+
+    /* ─ Stock Dark Card ─ */
+    .stock-dark-card { background:#0f172a;border-radius:.875rem;padding:1.5rem;color:#fff;position:relative;overflow:hidden; }
+    .stock-dark-card::before { content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:rgba(99,102,241,.12);border-radius:50%;pointer-events:none; }
+    .stock-header { display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem; }
+    .stock-label-top { font-size:.6rem;font-weight:800;letter-spacing:.12em;color:#475569;text-transform:uppercase; }
+    .stock-number-wrap { display:flex;align-items:baseline;gap:.5rem;margin-bottom:.75rem; }
+    .stock-big-num { font-size:3.5rem;font-weight:900;line-height:1;letter-spacing:-2px; }
+    .stock-unit { font-size:.8rem;font-weight:700;color:#6366f1;text-transform:uppercase; }
+    .stock-status-badge { display:inline-flex;align-items:center;gap:.4rem;padding:.25rem .75rem;border-radius:9999px;font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:1.25rem; }
+    .status-green { background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);color:#4ade80; }
+    .status-yellow { background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);color:#fbbf24; }
+    .status-red { background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#f87171; }
+    .status-dot { display:inline-block;width:6px;height:6px;border-radius:50%; }
+    .dot-green { background:#22c55e; }
+    .dot-yellow { background:#f59e0b; }
+    .dot-red { background:#ef4444; }
+    .dot-pulse { animation:pulse 1.5s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1}50%{opacity:.4} }
+    .stock-refill-btn { display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;padding:.75rem;background:#6366f1;color:#fff;border-radius:.625rem;font-size:.775rem;font-weight:700;text-decoration:none;text-transform:uppercase;letter-spacing:.06em;transition:background .15s,transform .1s; }
+    .stock-refill-btn:hover { background:#4f46e5;transform:translateY(-1px);color:#fff; }
+
+    /* ─ Aksi Sidebar ─ */
+    .action-btn-full { display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;padding:.6rem 1rem;border-radius:.5rem;font-size:.8rem;font-weight:600;cursor:pointer;transition:filter .15s,transform .1s;text-decoration:none;border:none;box-sizing:border-box; }
+    .action-btn-full:hover { filter:brightness(1.08);transform:translateY(-1px); }
+    .btn-edit-full { background:#f59e0b;color:#fff; }
+    .btn-delete-full { background:#ef4444;color:#fff; }
+
+    /* ─ Header Info ─ */
+    .cat-badge { display:inline-block;padding:.2rem .65rem;background:#dbeafe;color:#1d4ed8;border-radius:9999px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.5rem; }
+    .prod-title { font-size:1.5rem;font-weight:800;color:#1e293b;margin:0 0 .5rem;line-height:1.2; }
+    .prod-meta { display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.775rem;color:#64748b; }
+    .prod-meta i { color:#f97316;font-size:.65rem; }
+    .meta-sep { color:#cbd5e1; }
+
+    /* ─ Info Grid ─ */
+    .info-grid { display:grid;grid-template-columns:repeat(2,1fr);gap:.875rem; }
+    .info-tile { background:#fff;border-radius:.875rem;border:1px solid #f1f5f9;box-shadow:0 1px 4px rgba(15,23,42,.06);padding:1rem 1.125rem;display:flex;align-items:center;gap:.875rem; }
+    .tile-icon { width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0; }
+    .tile-label { font-size:.7rem;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.04em;margin:0 0 2px; }
+    .tile-value { font-size:1.1rem;font-weight:800;color:#1e293b;margin:0;line-height:1; }
+
+    /* ─ Deskripsi ─ */
+    .section-title { display:flex;align-items:center;gap:.625rem;font-size:.875rem;font-weight:700;color:#1e293b;margin-bottom:.875rem; }
+    .section-icon { width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.65rem;flex-shrink:0; }
+    .desc-text { font-size:.85rem;color:#475569;line-height:1.7;margin:0; }
+
+    /* ─ Log Table ─ */
+    .log-header { display:flex;align-items:center;justify-content:space-between;padding:1.125rem 1.25rem;border-bottom:1px solid #f1f5f9; }
+    .table-wrap { overflow-x:auto; }
+    .log-table { width:100%;border-collapse:collapse;font-size:.8rem; }
+    .log-table thead tr { background:#f8fafc; }
+    .log-table thead th { padding:.625rem 1.25rem;text-align:left;font-size:.65rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:#94a3b8; }
+    .log-row { border-bottom:1px solid #f8fafc;transition:background .12s; }
+    .log-row:hover { background:#fffbf7; }
+    .log-row td { padding:.875rem 1.25rem;vertical-align:middle; }
+    .log-icon { width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.65rem;flex-shrink:0; }
+    .log-in { background:#dcfce7;color:#16a34a; }
+    .log-out { background:#fee2e2;color:#dc2626; }
+    .log-type { font-size:.8rem;font-weight:600;color:#1e293b;margin:0; }
+    .log-date { font-size:.68rem;color:#94a3b8;margin:2px 0 0; }
+    .log-qty { font-size:.8rem;font-weight:800; }
+    .qty-in { color:#16a34a; }
+    .qty-out { color:#dc2626; }
+    .log-balance { font-size:.8rem;font-weight:700;color:#1e293b;font-family:monospace; }
+    .log-empty { text-align:center;padding:2.5rem 1rem !important;color:#94a3b8; }
+    .log-empty i { font-size:1.75rem;display:block;margin-bottom:.5rem; }
+    .log-empty p { font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin:0; }
+
+    /* ─ Responsive ─ */
+    @media(max-width:900px) {
+        .detail-layout { grid-template-columns:1fr; }
+        .info-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media(max-width:480px) {
+        .info-grid { grid-template-columns:1fr; }
+    }
+</style>
+
+<script>
+    setTimeout(() => {
+        document.querySelectorAll('.alert-banner').forEach(el => {
+            el.style.transition = 'opacity .4s';
+            el.style.opacity = '0';
+            setTimeout(() => el.remove(), 400);
+        });
+    }, 4000);
+</script>
+
 @endsection

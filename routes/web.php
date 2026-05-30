@@ -15,6 +15,7 @@ use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\DokumentasiController;
+use App\Http\Controllers\UserController;
 
 
 // Home - Redirect ke dashboard jika sudah login
@@ -57,16 +58,12 @@ Route::prefix('stock')->name('stock.')->group(function () {
     })->name('index');
 });
 
+
 // Stock Entries Routes
-Route::prefix('stock-entries')->name('stock-entries.')->group(function () {
-    Route::get('/', [StockEntryController::class, 'index'])->name('index');
-    Route::get('/create', [StockEntryController::class, 'create'])->name('create');
-    Route::post('/', [StockEntryController::class, 'store'])->name('store'); // Ini adalah 'stock-entries.store'
-    Route::get('/{stockEntry}', [StockEntryController::class, 'show'])->name('show');
-    Route::get('/{stockEntry}/edit', [StockEntryController::class, 'edit'])->name('edit');
-    Route::put('/{stockEntry}', [StockEntryController::class, 'update'])->name('update');
-    Route::delete('/{stockEntry}', [StockEntryController::class, 'destroy'])->name('destroy');
+Route::middleware(['web'])->group(function () {
+    Route::resource('stock-entries', StockEntryController::class);
 });
+
 
 // Sales Routes
 Route::prefix('sales')->name('sales.')->group(function () {
@@ -97,8 +94,12 @@ Route::resource('pegawai', PegawaiController::class);
 // Berita Routes
 Route::resource('berita', BeritaController::class);
 
-// FAQ Routes
+Route::get('faq/export/excel', [FaqController::class, 'exportExcel'])->name('faq.export.excel');
+Route::get('faq/export/pdf',   [FaqController::class, 'exportPdf'])->name('faq.export.pdf');
+
+// FAQ Routes (resource route sudah didefinisikan di bawah agar tidak bentrok dengan export routes)
 Route::resource('faq', FaqController::class);
+
 
 // Dokumentasi Routes
 Route::prefix('dokumentasi')->name('dokumentasi.')->group(function () {
@@ -108,13 +109,28 @@ Route::prefix('dokumentasi')->name('dokumentasi.')->group(function () {
     Route::delete('/album/{album}', [DokumentasiController::class, 'destroyAlbum'])->name('album.destroy');
     
     Route::get('/infografis', [DokumentasiController::class, 'infografis'])->name('infografis');
+    Route::post('/infografis', [DokumentasiController::class, 'storeInfografis'])->name('infografis.store');
+    Route::put('/infografis/{infografis}', [DokumentasiController::class, 'updateInfografis'])->name('infografis.update');
+    Route::delete('/infografis/{infografis}', [DokumentasiController::class, 'destroyInfografis'])->name('infografis.destroy');
+    
     Route::get('/video', [DokumentasiController::class, 'video'])->name('video');
+    Route::post('/video', [DokumentasiController::class, 'storeVideo'])->name('video.store');
+    Route::put('/video/{video}', [DokumentasiController::class, 'updateVideo'])->name('video.update');
+    Route::delete('/video/{video}', [DokumentasiController::class, 'destroyVideo'])->name('video.destroy');
 });
 
 
 // Profile & Settings Routes
 Route::middleware('auth')->group(function () {
     
+    // Kelola User Routes
+    Route::prefix('kelola-user')->name('kelola-user.')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('index');
+        Route::post('/', [UserController::class, 'store'])->name('store');
+        Route::put('/{user}', [UserController::class, 'update'])->name('update');
+        Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy');
+    });
+
     // Group untuk Settings
     Route::prefix('settings')->name('settings.')->group(function () {
         Route::get('/', function () {

@@ -4,223 +4,215 @@
 @section('subtitle', 'Tambahkan produk baru ke inventori')
 
 @section('content')
-<div class="max-w-3xl mx-auto">
-    <div class="bg-white rounded-xl shadow-sm border">
-        <div class="px-6 py-4 border-b">
-            <h2 class="text-lg font-semibold text-gray-900">Tambah Produk Baru</h2>
-            <p class="text-sm text-gray-500">Isi form berikut untuk menambahkan produk baru</p>
-        </div>
-        
-        <div class="p-6">
-            <form method="POST" action="{{ route('products.store') }}" enctype="multipart/form-data">
-                @csrf
-                
-                <div class="space-y-6">
-                    <!-- Product Name -->
-                    <div>
-                        <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
-                            Nama Produk *
-                        </label>
-                        <input type="text" 
-                               name="name" 
-                               id="name"
-                               value="{{ old('name') }}"
-                               required
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('name') border-red-500 @enderror"
-                               placeholder="Masukkan nama produk">
-                        @error('name')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-                    
-                    <!-- Description -->
-                    <div>
-                        <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
-                            Deskripsi Produk
-                        </label>
-                        <textarea name="description" 
-                                  id="description"
-                                  rows="3"
-                                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('description') border-red-500 @enderror"
-                                  placeholder="Masukkan deskripsi produk">{{ old('description') }}</textarea>
-                        @error('description')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Category -->
-                        <div>
-                            <label for="category_id" class="block text-sm font-medium text-gray-700 mb-2">
-                                Kategori *
-                            </label>
-                            <select name="category_id" 
-                                    id="category_id"
-                                    required
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('category_id') border-red-500 @enderror">
-                                <option value="">Pilih Kategori</option>
-                                @foreach($categories as $category)
-                                    <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                                        {{ $category->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('category_id')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        
-                        <!-- Price -->
-                        <div>
-                            <label for="price" class="block text-sm font-medium text-gray-700 mb-2">
-                                Harga *
-                            </label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <span class="text-gray-500">Rp</span>
-                                </div>
-                                <input type="number" 
-                                       name="price" 
-                                       id="price"
-                                       value="{{ old('price') }}"
-                                       required
-                                       min="0"
-                                       step="100"
-                                       class="pl-12 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('price') border-red-500 @enderror"
-                                       placeholder="0">
-                            </div>
-                            @error('price')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- SKU -->
-                        <div>
-                            <label for="sku" class="block text-sm font-medium text-gray-700 mb-2">
-                                SKU (Kode Produk)
-                            </label>
-                            <input type="text" 
-                                   name="sku" 
-                                   id="sku"
-                                   value="{{ old('sku') }}"
-                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('sku') border-red-500 @enderror"
-                                   placeholder="SKU-001">
-                            @error('sku')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
 
-                        <!-- Unit -->
-                        <div>
-                            <label for="unit" class="block text-sm font-medium text-gray-700 mb-2">
-                                Satuan *
-                            </label>
-                            <input type="text" 
-                                   name="unit" 
-                                   id="unit"
-                                   value="{{ old('unit', 'pcs') }}"
-                                   required
-                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('unit') border-red-500 @enderror"
-                                   placeholder="Contoh: pcs, box, kg">
-                            @error('unit')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <!-- Image -->
-                    <div>
-                        <label for="image" class="block text-sm font-medium text-gray-700 mb-2">
-                            Gambar Produk
-                        </label>
-                            <div class="flex items-center justify-center w-full">
-                                <label for="image" class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
-                                    <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                                        <i class="fas fa-cloud-upload-alt text-2xl text-gray-400 mb-2"></i>
-                                        <p class="text-sm text-gray-500">
-                                            <span class="font-semibold">Klik untuk upload</span> atau drag & drop
-                                        </p>
-                                        <p class="text-xs text-gray-500">PNG, JPG, GIF (Max 2MB)</p>
-                                    </div>
-                                    <input id="image" name="image" type="file" class="hidden" accept="image/*">
-                                </label>
-                            </div>
-                            <div id="image-preview" class="mt-2 hidden">
-                                <img class="h-32 w-32 object-cover rounded-lg border" src="" alt="Preview">
-                            </div>
-                            @error('image')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-                    
-                    <!-- Buttons -->
-                    <div class="pt-6 border-t">
-                        <div class="flex items-center justify-end space-x-4">
-                            <a href="{{ route('products.index') }}"
-                               class="px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                                Batal
-                            </a>
-                            <button type="submit"
-                                    class="px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                <i class="fas fa-save mr-2"></i> Simpan Perubahan
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
+{{-- ── ALERT ERROR ── --}}
+@if(isset($errors) && $errors->any())
+<div class="alert-banner alert-danger">
+    <div class="alert-inner">
+        <i class="fas fa-exclamation-circle"></i>
+        <ul style="margin:0;padding-left:1rem;">
+            @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
     </div>
+    <button onclick="this.closest('.alert-banner').remove()">
+        <i class="fas fa-times"></i>
+    </button>
 </div>
-@endsection
+@endif
+
+<div class="form-card">
+
+    {{-- Card Header --}}
+    <div class="form-card-header">
+        <div class="form-card-title">
+            <i class="fas fa-box"></i>
+            <div>
+                <h2>Tambah Produk Baru</h2>
+                <p>Isi form berikut untuk menambahkan produk ke inventori</p>
+            </div>
+        </div>
+        <a href="{{ route('products.index') }}" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Kembali
+        </a>
+    </div>
+
+    {{-- Form Body --}}
+    <form method="POST" action="{{ route('products.store') }}" enctype="multipart/form-data" class="form-body">
+        @csrf
+
+        {{-- Upload Gambar --}}
+        <div class="form-section">
+            <div class="form-section-label">
+                <i class="fas fa-image"></i> Gambar Produk
+            </div>
+            <div class="upload-area">
+                <img id="preview" src="https://via.placeholder.com/120x120?text=No+Image"
+                     style="width:90px;height:90px;object-fit:cover;border-radius:10px;border:2px solid #e2e8f0;background:#fff;flex-shrink:0;">
+                <div style="flex:1;">
+                    <input type="file" name="image" id="image" accept="image/*"
+                           onchange="previewImage(this)" class="form-input" style="padding:.4rem;">
+                    <p class="upload-hint">Format: JPG, JPEG, PNG · Maks. 2MB</p>
+                </div>
+            </div>
+            @error('image')<p class="field-error">{{ $message }}</p>@enderror
+        </div>
+
+        {{-- Nama Produk --}}
+        <div class="form-section">
+            <label class="form-section-label" for="name">
+                <i class="fas fa-tag"></i> Nama Produk <span class="required">*</span>
+            </label>
+            <input type="text" name="name" id="name" required
+                   value="{{ old('name') }}"
+                   placeholder="Masukkan nama produk..."
+                   class="form-input @error('name') input-error @enderror">
+            @error('name')<p class="field-error">{{ $message }}</p>@enderror
+        </div>
+
+        {{-- Deskripsi --}}
+        <div class="form-section">
+            <label class="form-section-label" for="description">
+                <i class="fas fa-align-left"></i> Deskripsi Produk
+            </label>
+            <textarea name="description" id="description" rows="3"
+                      placeholder="Masukkan deskripsi produk..."
+                      class="form-input @error('description') input-error @enderror">{{ old('description') }}</textarea>
+            @error('description')<p class="field-error">{{ $message }}</p>@enderror
+        </div>
+
+        {{-- Grid: Kategori & Harga --}}
+        <div class="form-grid">
+            <div class="form-section">
+                <label class="form-section-label" for="category_id">
+                    <i class="fas fa-layer-group"></i> Kategori <span class="required">*</span>
+                </label>
+                <select name="category_id" id="category_id" required
+                        class="form-input @error('category_id') input-error @enderror">
+                    <option value="">— Pilih Kategori —</option>
+                    @foreach($categories as $category)
+                        <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                            {{ $category->name }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('category_id')<p class="field-error">{{ $message }}</p>@enderror
+            </div>
+
+            <div class="form-section">
+                <label class="form-section-label" for="price">
+                    <i class="fas fa-money-bill-wave"></i> Harga <span class="required">*</span>
+                </label>
+                <div class="input-prefix-wrap">
+                    <span class="input-prefix">Rp</span>
+                    <input type="number" name="price" id="price" required min="0" step="100"
+                           value="{{ old('price') }}"
+                           placeholder="0"
+                           class="form-input with-prefix @error('price') input-error @enderror">
+                </div>
+                @error('price')<p class="field-error">{{ $message }}</p>@enderror
+            </div>
+        </div>
+
+        {{-- Grid: SKU & Satuan --}}
+        <div class="form-grid">
+            <div class="form-section">
+                <label class="form-section-label" for="sku">
+                    <i class="fas fa-barcode"></i> SKU (Kode Produk)
+                </label>
+                <input type="text" name="sku" id="sku"
+                       value="{{ old('sku') }}"
+                       placeholder="Contoh: SKU-001"
+                       class="form-input @error('sku') input-error @enderror">
+                @error('sku')<p class="field-error">{{ $message }}</p>@enderror
+            </div>
+
+            <div class="form-section">
+                <label class="form-section-label" for="unit">
+                    <i class="fas fa-cube"></i> Satuan <span class="required">*</span>
+                </label>
+                <input type="text" name="unit" id="unit" required
+                       value="{{ old('unit', 'pcs') }}"
+                       placeholder="Contoh: pcs, box, kg"
+                       class="form-input @error('unit') input-error @enderror">
+                @error('unit')<p class="field-error">{{ $message }}</p>@enderror
+            </div>
+        </div>
+
+        {{-- Footer Buttons --}}
+        <div class="form-footer">
+            <a href="{{ route('products.index') }}" class="btn-cancel">
+                <i class="fas fa-times"></i> Batal
+            </a>
+            <button type="submit" class="btn-submit">
+                <i class="fas fa-save"></i> Simpan Produk
+            </button>
+        </div>
+    </form>
+</div>
+
+<style>
+    .alert-banner { display:flex;align-items:flex-start;justify-content:space-between;gap:.75rem;padding:.875rem 1.125rem;border-radius:.625rem;margin-bottom:1.25rem;font-size:.85rem;font-weight:500;animation:slideDown .3s ease; }
+    @keyframes slideDown { from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)} }
+    .alert-danger { background:#fef2f2;border:1px solid #fecaca;color:#991b1b; }
+    .alert-inner { display:flex;align-items:flex-start;gap:.5rem; }
+    .alert-banner button { background:none;border:none;cursor:pointer;color:inherit;opacity:.6;padding:2px; }
+    .alert-banner button:hover { opacity:1; }
+
+    .form-card { background:#fff;border-radius:.875rem;border:1px solid #f1f5f9;box-shadow:0 1px 4px rgba(15,23,42,.06);overflow:hidden;max-width:720px;margin:0 auto; }
+    .form-card-header { display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid #f1f5f9;gap:1rem;flex-wrap:wrap; }
+    .form-card-title { display:flex;align-items:center;gap:.75rem; }
+    .form-card-title > i { font-size:1.25rem;color:#f97316; }
+    .form-card-title h2 { font-size:.95rem;font-weight:700;color:#1e293b;margin:0; }
+    .form-card-title p { font-size:.75rem;color:#94a3b8;margin:2px 0 0; }
+
+    .btn-back { display:inline-flex;align-items:center;gap:.4rem;padding:.45rem 1rem;border:1.5px solid #e2e8f0;background:#fff;color:#64748b;border-radius:.5rem;font-size:.8rem;font-weight:600;text-decoration:none;transition:background .15s,border-color .15s; }
+    .btn-back:hover { background:#f8fafc;border-color:#cbd5e1;color:#374151; }
+
+    .form-body { padding:1.5rem;display:flex;flex-direction:column;gap:1.25rem; }
+    .form-grid { display:grid;grid-template-columns:1fr 1fr;gap:1.25rem; }
+    .form-section { display:flex;flex-direction:column;gap:.375rem; }
+    .form-section-label { font-size:.8rem;font-weight:600;color:#374151;display:flex;align-items:center;gap:.375rem; }
+    .form-section-label i { color:#f97316;font-size:.7rem; }
+    .required { color:#ef4444; }
+
+    .form-input { width:100%;border:1.5px solid #e2e8f0;border-radius:.5rem;padding:.625rem .875rem;font-size:.825rem;color:#1e293b;background:#fafafa;outline:none;transition:border-color .18s,box-shadow .18s,background .18s;font-family:inherit;box-sizing:border-box; }
+    .form-input:focus { border-color:#f97316;box-shadow:0 0 0 3px rgba(249,115,22,.12);background:#fff; }
+    .input-error { border-color:#fca5a5 !important; }
+    .field-error { font-size:.75rem;color:#ef4444;margin:2px 0 0; }
+
+    .upload-area { display:flex;align-items:center;gap:1.5rem;background:#fafafa;padding:1rem;border-radius:.5rem;border:1px dashed #cbd5e1; }
+    .upload-hint { font-size:.7rem;color:#94a3b8;margin:4px 0 0 2px; }
+
+    .input-prefix-wrap { position:relative;display:flex;align-items:center; }
+    .input-prefix { position:absolute;left:.75rem;font-size:.8rem;color:#64748b;font-weight:600;pointer-events:none; }
+    .form-input.with-prefix { padding-left:2.5rem; }
+
+    .form-footer { display:flex;justify-content:flex-end;gap:.625rem;padding-top:1.25rem;border-top:1px solid #f1f5f9;margin-top:.25rem; }
+    .btn-cancel { display:inline-flex;align-items:center;gap:.375rem;padding:.5rem 1.125rem;border:1.5px solid #e2e8f0;background:#fff;color:#64748b;border-radius:.5rem;font-size:.825rem;font-weight:600;cursor:pointer;text-decoration:none;transition:background .15s,border-color .15s; }
+    .btn-cancel:hover { background:#f8fafc;border-color:#cbd5e1;color:#374151; }
+    .btn-submit { display:inline-flex;align-items:center;gap:.375rem;padding:.5rem 1.375rem;background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;border:none;border-radius:.5rem;font-size:.825rem;font-weight:600;cursor:pointer;box-shadow:0 3px 10px rgba(249,115,22,.35);transition:box-shadow .2s,transform .15s; }
+    .btn-submit:hover { box-shadow:0 5px 16px rgba(249,115,22,.45);transform:translateY(-1px); }
+
+    @media(max-width:640px) {
+        .form-grid { grid-template-columns:1fr; }
+        .form-card-header { flex-direction:column;align-items:flex-start; }
+    }
+</style>
 
 @push('scripts')
 <script>
-// Image preview
-document.getElementById('image').addEventListener('change', function(e) {
-    const preview = document.getElementById('image-preview');
-    const previewImg = preview.querySelector('img');
-    
-    if (this.files && this.files[0]) {
-        const reader = new FileReader();
-        
-        reader.onload = function(e) {
-            previewImg.src = e.target.result;
-            preview.classList.remove('hidden');
+    function previewImage(input) {
+        const preview = document.getElementById('preview');
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = e => { preview.src = e.target.result; };
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            preview.src = 'https://via.placeholder.com/120x120?text=No+Image';
         }
-        
-        reader.readAsDataURL(this.files[0]);
-    } else {
-        preview.classList.add('hidden');
     }
-});
-
-// Auto format price
-document.getElementById('price').addEventListener('input', function(e) {
-    // Remove non-numeric characters
-    let value = this.value.replace(/[^\d]/g, '');
-    
-    // Format with thousand separators
-    if (value.length > 0) {
-        value = parseInt(value, 10).toLocaleString('id-ID');
-        // Store the numeric value in a data attribute
-        this.dataset.numericValue = value.replace(/\./g, '');
-    } else {
-        this.dataset.numericValue = '';
-    }
-    
-    // Update display (remove Rp prefix for calculation)
-    this.value = value;
-});
-
-// Before form submit, convert formatted price back to number
-document.querySelector('form').addEventListener('submit', function(e) {
-    const priceInput = document.getElementById('price');
-    if (priceInput.dataset.numericValue) {
-        priceInput.value = priceInput.dataset.numericValue;
-    }
-});
 </script>
 @endpush
+@endsection
