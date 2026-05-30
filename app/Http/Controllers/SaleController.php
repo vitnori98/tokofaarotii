@@ -150,4 +150,15 @@ class SaleController extends Controller
         return redirect()->route('sales.index')
             ->with('success', 'Penjualan berhasil dihapus');
     }
+
+    /**
+     * Confirm a pending sale.
+     */
+    public function confirm(Sale $sale)
+    {
+        $sale->update(['status' => 'completed']);
+
+        return redirect()->route('sales.index')
+            ->with('success', 'Penjualan berhasil dikonfirmasi');
+    }
 }

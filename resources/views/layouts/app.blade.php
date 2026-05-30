@@ -120,52 +120,97 @@
                     <span class="sidebar-text">Dashboard</span>
                 </a>
                 
+           
                 <a href="{{ route('products.index') }}" 
                    class="nav-link {{ request()->routeIs('products.*') ? 'active' : '' }}">
                     <i class="fas fa-box w-5 text-center"></i>
                     <span class="sidebar-text">Produk</span>
                 </a>
                 
+          
                 <a href="{{ route('categories.index') }}" 
                    class="nav-link {{ request()->routeIs('categories.*') ? 'active' : '' }}">
                     <i class="fas fa-tags w-5 text-center"></i>
                     <span class="sidebar-text">Kategori</span>
                 </a>
                 
+    
                 <a href="{{ route('stock-entries.index') }}" 
                    class="nav-link {{ request()->routeIs('stock-entries.*') ? 'active' : '' }}">
                     <i class="fas fa-warehouse w-5 text-center"></i>
                     <span class="sidebar-text">Stock</span>
                 </a>
                 
+          
                 <a href="{{ route('sales.index') }}" 
                    class="nav-link {{ request()->routeIs('sales.*') ? 'active' : '' }}">
                     <i class="fas fa-shopping-cart w-5 text-center"></i>
                     <span class="sidebar-text">Penjualan</span>
                 </a>
                 
+          
                 <a href="{{ route('reports.index') }}" 
                    class="nav-link {{ request()->routeIs('reports.*') ? 'active' : '' }}">
                     <i class="fas fa-chart-bar w-5 text-center"></i>
                     <span class="sidebar-text">Laporan</span>
                 </a>
 
+        
                 <a href="{{ route('pegawai.index') }}" 
                    class="nav-link {{ request()->routeIs('pegawai.*') ? 'active' : '' }}">
                     <i class="fas fa-users-cog w-5 text-center"></i>
                     <span class="sidebar-text">Kelola Pegawai</span>
                 </a>
 
-                <a href="#" class="nav-link {{ request()->routeIs('dokumentasi.*') ? 'active' : '' }}">
-                    <i class="fas fa-file-alt w-5 text-center"></i>
+           
+                <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('dokumentasi.*') ? '' : 'collapsed' }}" 
+                href="#" 
+                data-bs-toggle="collapse" 
+                data-bs-target="#collapseDokumentasi" 
+                aria-expanded="{{ request()->routeIs('dokumentasi.*') ? 'true' : 'false' }}" 
+                aria-controls="collapseDokumentasi">
+                    <i class="fas fa-cloud w-5 text-center"></i>
                     <span class="sidebar-text">Dokumentasi</span>
                 </a>
+                
+                <div id="collapseDokumentasi" 
+                    class="collapse {{ request()->routeIs('dokumentasi.*') ? 'show' : '' }}" 
+                    aria-labelledby="headingDokumentasi">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <ul class="list-unstyled ps-4 ms-2">
+                            <li class="py-1">
+                                <a class="nav-link d-inline-block p-0 text-muted {{ request()->routeIs('dokumentasi.album') ? 'active font-weight-bold' : '' }}" 
+                                href="{{ route('dokumentasi.album') }}">
+                                    <span class="me-2" style="font-size: 8px; vertical-align: middle;">●</span> Album Kegiatan
+                                </a>
+                            </li>
+                            
+                            <li class="py-1">
+                                <a class="nav-link d-inline-block p-0 text-muted {{ request()->routeIs('dokumentasi.infografis') ? 'active font-weight-bold' : '' }}" 
+                                href="{{ route('dokumentasi.infografis') }}">
+                                    <span class="me-2" style="font-size: 8px; vertical-align: middle;">●</span> Infografis
+                                </a>
+                            </li>
+                            
+                            <li class="py-1">
+                                <a class="nav-link d-inline-block p-0 text-muted {{ request()->routeIs('dokumentasi.video') ? 'active font-weight-bold' : '' }}" 
+                                href="{{ route('dokumentasi.video') }}">
+                                    <span class="me-2" style="font-size: 8px; vertical-align: middle;">●</span> Video
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
 
+     
                 <a href="{{ route('berita.index') }}" class="nav-link {{ request()->routeIs('berita.*') ? 'active' : '' }}">
                     <i class="fas fa-newspaper w-5 text-center"></i>
                     <span class="sidebar-text">Kelola Berita</span>
                 </a>
 
+     
                 <a href="{{ route('faq.index') }}" class="nav-link {{ request()->routeIs('faq.*') ? 'active' : '' }}">
                     <i class="fas fa-question-circle w-5 text-center"></i>
                     <span class="sidebar-text">FAQ</span>
@@ -173,10 +218,11 @@
                 
                 <div class="pt-4 border-t mt-4">
                     <a href="{{ route('settings.index') }}" 
-                       class="nav-link {{ request()->routeIs('settings.*') ? 'active' : '' }}">
+                    class="nav-link {{ request()->routeIs('settings.*') ? 'active' : '' }}">
                         <i class="fas fa-cog w-5 text-center"></i>
                         <span class="sidebar-text">Setting</span>
                     </a>
+                </div>
                     
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf

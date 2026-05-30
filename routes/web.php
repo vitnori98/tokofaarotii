@@ -1,5 +1,7 @@
 <?php
 
+
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\DashboardController;
@@ -12,6 +14,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\FaqController;
+use App\Http\Controllers\DokumentasiController;
 
 
 // Home - Redirect ke dashboard jika sudah login
@@ -77,6 +80,7 @@ Route::prefix('sales')->name('sales.')->group(function () {
     
     // Route Tambahan untuk Logika Kasir Modern
     Route::post('/pos/store', [SaleController::class, 'storePos'])->name('pos.store');
+    Route::post('/{sale}/confirm', [SaleController::class, 'confirm'])->name('confirm');
 });
 
 // Reports Routes
@@ -96,24 +100,42 @@ Route::resource('berita', BeritaController::class);
 // FAQ Routes
 Route::resource('faq', FaqController::class);
 
+// Dokumentasi Routes
+Route::prefix('dokumentasi')->name('dokumentasi.')->group(function () {
+    Route::get('/album', [DokumentasiController::class, 'album'])->name('album');
+    Route::post('/album', [DokumentasiController::class, 'storeAlbum'])->name('album.store');
+    Route::put('/album/{album}', [DokumentasiController::class, 'updateAlbum'])->name('album.update');
+    Route::delete('/album/{album}', [DokumentasiController::class, 'destroyAlbum'])->name('album.destroy');
+    
+    Route::get('/infografis', [DokumentasiController::class, 'infografis'])->name('infografis');
+    Route::get('/video', [DokumentasiController::class, 'video'])->name('video');
+});
+
 
 // Profile & Settings Routes
 Route::middleware('auth')->group(function () {
+    
+    // Group untuk Settings
     Route::prefix('settings')->name('settings.')->group(function () {
         Route::get('/', function () {
             return view('settings.index');
         })->name('index');
 
-        Route::post('/update', function (\Illuminate\Http\Request $request) {
+        Route::post('/update', function (Request $request) {
+            // Logika simpan setting bisa ditaruh di sini nanti
             return redirect()->back()->with('success', 'Pengaturan berhasil disimpan!');
         })->name('update');
     });
 
+    // Group untuk Profile
     Route::prefix('profile')->name('profile.')->group(function () {
         Route::get('/', [ProfileController::class, 'edit'])->name('edit');
-        Route::put('/', [ProfileController::class, 'update'])->name('update');
+        // Mengubah '/' menjadi '/update' untuk menghindari konflik dengan settings
+        Route::put('/update', [ProfileController::class, 'update'])->name('update');
     });
+    
 });
+
 
 // Authentication Routes
 require __DIR__.'/auth.php';
