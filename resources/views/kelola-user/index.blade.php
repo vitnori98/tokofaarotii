@@ -77,15 +77,22 @@
                         @endswitch
                     </td>
                     <td style="text-align:center;">
-                        <span class="u-date">{{ $user->created_at->format('d/m/Y') }}</span>
+                        <span class="u-date">{{ $user->created_at ? $user->created_at->format('d/m/Y') : '-' }}</span>
                     </td>
                     <td>
                         <div class="action-group">
-                            <button onclick="editUser({{ json_encode($user) }})" class="btn-icon btn-amber" title="Edit User">
+                            {{-- Mengirimkan data via data-attribute agar JavaScript aman dari special character --}}
+                            <button 
+                                type="button"
+                                class="btn-icon btn-amber btn-edit-user" 
+                                title="Edit User"
+                                data-user="{{ json_encode($user) }}">
                                 <i class="fas fa-edit"></i>
                             </button>
+                            
+                            {{-- Admin master TIDAK BOLEH menghapus dirinya sendiri --}}
                             @if($user->id !== auth()->id())
-                            <form action="{{ route('kelola-user.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Hapus user ini?')" style="margin:0;">
+                            <form action="{{ route('kelola-user.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus user ini?')" style="margin:0;">
                                 @csrf @method('DELETE')
                                 <button type="submit" class="btn-icon btn-red" title="Hapus User">
                                     <i class="fas fa-trash-alt"></i>
@@ -161,14 +168,20 @@
                 <label>Email Address</label>
                 <input type="email" name="email" id="edit-email" required>
             </div>
-            <div class="form-group">
+            
+            {{-- Proteksi: Jika mengedit akun sendiri, pilihan role disembunyikan/dikunci agar hak akses admin tidak hilang --}}
+            <div class="form-group" id="edit-role-wrapper">
                 <label>Role / Hak Akses</label>
                 <select name="role" id="edit-role" required class="form-input">
                     <option value="pegawai">Pegawai</option>
                     <option value="pemilik">Pemilik</option>
                     <option value="admin_master">Admin Master</option>
                 </select>
+                <p id="edit-role-warning" class="hidden" style="font-size: 0.75rem; color: #ef4444; margin-top: 4px;">
+                    *Anda tidak bisa mengubah role Anda sendiri untuk mencegah hilangnya akses sistem.
+                </p>
             </div>
+
             <div class="divider"><span>Ganti Password (Opsional)</span></div>
             <div class="form-row">
                 <div class="form-group">
@@ -216,7 +229,7 @@
     .badge-orange { background: #ffedd5; color: #c2410c; }
     .badge-gray { background: #f1f5f9; color: #475569; }
 
-    .action-group { display: flex; align-items: center; justify-content: center; gap: .5rem; }
+    .action-group { display: flex; align-items: center; justify-content: start; gap: .5rem; }
     .btn-icon { width: 34px; height: 34px; border-radius: .625rem; display: flex; align-items: center; justify-content: center; font-size: .8rem; cursor: pointer; border: none; transition: all .2s; }
     .btn-amber { background: #fffbeb; color: #d97706; }
     .btn-amber:hover { background: #d97706; color: #fff; }
@@ -258,17 +271,53 @@
 </style>
 
 <script>
+    // Menyimpan ID user yang sedang login saat ini dari Auth Laravel
+    const currentUserId = {{ auth()->id() }};
+
     function toggleModal(id) {
         document.getElementById(id).classList.toggle('hidden');
     }
 
-    function editUser(user) {
-        document.getElementById('edit-name').value = user.name;
-        document.getElementById('edit-email').value = user.email;
-        document.getElementById('edit-role').value = user.role;
-        document.getElementById('form-edit').action = `{{ url('kelola-user') }}/${user.id}`;
-        toggleModal('modal-edit');
-    }
+    // Menggunakan Event Listener untuk memproses klik edit agar lebih clean & aman
+    document.querySelectorAll('.btn-edit-user').forEach(button => {
+        button.addEventListener('click', function() {
+            const user = JSON.parse(this.getAttribute('data-user'));
+            
+            document.getElementById('edit-name').value = user.name;
+            document.getElementById('edit-email').value = user.email;
+            document.getElementById('form-edit').action = `{{ url('kelola-user') }}/${user.id}`;
+            
+            const roleSelect = document.getElementById('edit-role');
+            const roleWarning = document.getElementById('edit-role-warning');
+
+            // Jika user mengedit akunnya sendiri, kunci pilihan role
+            if (user.id === currentUserId) {
+                roleSelect.value = user.role;
+                roleSelect.disabled = true;
+                roleWarning.classList.remove('hidden');
+                
+                // Tambahkan input hidden agar value role tetap terkirim saat form di-submit
+                if(!document.getElementById('hidden-role-input')) {
+                    let hiddenRole = document.createElement('input');
+                    hiddenRole.setAttribute('type', 'hidden');
+                    hiddenRole.setAttribute('name', 'role');
+                    hiddenRole.setAttribute('id', 'hidden-role-input');
+                    hiddenRole.setAttribute('value', user.role);
+                    document.getElementById('form-edit').appendChild(hiddenRole);
+                }
+            } else {
+                roleSelect.value = user.role;
+                roleSelect.disabled = false;
+                roleWarning.classList.add('hidden');
+                
+                // Hapus input hidden jika ada jika mengedit user lain
+                const hiddenInput = document.getElementById('hidden-role-input');
+                if(hiddenInput) hiddenInput.remove();
+            }
+
+            toggleModal('modal-edit');
+        });
+    });
 
     // Auto-dismiss alerts
     setTimeout(() => {
