@@ -6,20 +6,10 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware(function ($request, $next) {
-            $user = auth()->user();
-            if ($user && in_array($user->role, ['admin_master', 'pemilik'])) {
-                return $next($request);
-            }
-            return redirect()->route('dashboard')->with('error', 'Anda tidak memiliki hak akses ke halaman ini!');
-        });
-    }
-
     public function index()
     {
         $users = User::latest()->get();
@@ -28,47 +18,63 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'role' => ['required', 'string', 'in:admin_master,pemilik,pegawai'],
+            'role' => ['required', 'string', Rule::in(['admin_master', 'pemilik', 'pegawai'])],
+        ], [
+            'email.unique' => 'Email sudah terdaftar dalam sistem.',
+            'role.in' => 'Role yang dipilih tidak valid.',
+            'password.confirmed' => 'Konfirmasi password tidak cocok.',
         ]);
 
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => $request->role,
-        ]);
+        try {
+            User::create([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'password' => Hash::make($validated['password']),
+                'role' => $validated['role'],
+            ]);
 
-        return redirect()->back()->with('success', 'User berhasil ditambahkan!');
+            return redirect()->back()->with('success', 'User berhasil ditambahkan!');
+        } catch (\Exception $e) {
+            \Log::error('Error creating user: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal menambahkan user. Silakan coba lagi.');
+        }
     }
 
     public function update(Request $request, User $user)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email,'.$user->id],
-            'role' => ['required', 'string', 'in:admin_master,pemilik,pegawai'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user->id)],
+            'role' => ['required', 'string', Rule::in(['admin_master', 'pemilik', 'pegawai'])],
+            'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
+        ], [
+            'email.unique' => 'Email sudah terdaftar dalam sistem.',
+            'role.in' => 'Role yang dipilih tidak valid.',
+            'password.confirmed' => 'Konfirmasi password tidak cocok.',
         ]);
 
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'role' => $request->role,
-        ]);
+        try {
+            $updateData = [
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'role' => $validated['role'],
+            ];
 
-        if ($request->filled('password')) {
-            $request->validate([
-                'password' => ['confirmed', Rules\Password::defaults()],
-            ]);
-            $user->update([
-                'password' => Hash::make($request->password),
-            ]);
+            if ($request->filled('password')) {
+                $updateData['password'] = Hash::make($validated['password']);
+            }
+
+            $user->update($updateData);
+
+            return redirect()->back()->with('success', 'User berhasil diperbarui!');
+        } catch (\Exception $e) {
+            \Log::error('Error updating user: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal memperbarui user. Silakan coba lagi.');
         }
-
-        return redirect()->back()->with('success', 'User berhasil diperbarui!');
     }
 
     public function destroy(User $user)
@@ -77,7 +83,12 @@ class UserController extends Controller
             return redirect()->back()->with('error', 'Anda tidak bisa menghapus akun sendiri!');
         }
 
-        $user->delete();
-        return redirect()->back()->with('success', 'User berhasil dihapus!');
+        try {
+            $user->delete();
+            return redirect()->back()->with('success', 'User berhasil dihapus!');
+        } catch (\Exception $e) {
+            \Log::error('Error deleting user: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal menghapus user. Silakan coba lagi.');
+        }
     }
 }

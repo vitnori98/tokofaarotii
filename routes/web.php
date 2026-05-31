@@ -18,15 +18,20 @@ use App\Http\Controllers\DokumentasiController;
 use App\Http\Controllers\UserController;
 
 
-// Home - Redirect ke dashboard jika sudah login
+// Home - Redirect ke dashboard jika sudah login, atau ke login jika belum
 Route::get('/', function () {
-    return redirect()->route('dashboard');
+    if (auth()->check()) {
+        return redirect()->route('dashboard');
+    }
+    return redirect()->route('login');
 });
 
-// Dashboard Routes
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-Route::get('/dashboard/analytics', [DashboardController::class, 'analytics'])->name('dashboard.analytics');
-Route::get('/dashboard/export/monthly-sales', [DashboardController::class, 'exportMonthlySales'])->name('dashboard.export.monthly');
+// Dashboard Routes - Require auth dan role (admin_master atau pemilik)
+Route::middleware(['auth', 'role:admin_master,pemilik'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/analytics', [DashboardController::class, 'analytics'])->name('dashboard.analytics');
+    Route::get('/dashboard/export/monthly-sales', [DashboardController::class, 'exportMonthlySales'])->name('dashboard.export.monthly');
+});
 
 // Products Management Routes
 Route::prefix('products')->name('products.')->group(function () {
@@ -123,8 +128,8 @@ Route::prefix('dokumentasi')->name('dokumentasi.')->group(function () {
 // Profile & Settings Routes
 Route::middleware('auth')->group(function () {
     
-    // Kelola User Routes
-    Route::prefix('kelola-user')->name('kelola-user.')->group(function () {
+    // Kelola User Routes - Require auth dan role (admin_master atau pemilik)
+    Route::middleware(['role:admin_master,pemilik'])->prefix('kelola-user')->name('kelola-user.')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('index');
         Route::post('/', [UserController::class, 'store'])->name('store');
         Route::put('/{user}', [UserController::class, 'update'])->name('update');
