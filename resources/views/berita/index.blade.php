@@ -101,17 +101,17 @@
                     </td>
                     <td class="col-action">
                         <div class="action-btns">
-                            <button onclick='openDetail(@json($b))' class="btn-action" style="background: #2563eb; color: #fff;">
+                            <button onclick='openDetail(@json($b))' class="btn-action btn-view" title="Detail Berita">
                                 <i class="fas fa-eye"></i> Detail
                             </button>
-                            <button onclick='openModal(@json($b))' class="btn-action btn-edit">
+                            <button onclick='openModal(@json($b))' class="btn-action btn-edit" title="Edit Berita">
                                 <i class="fas fa-pencil-alt"></i> Edit
                             </button>
                             <form action="{{ route('berita.destroy', $b->id) }}" method="POST"
                                   onsubmit="return confirm('Yakin ingin menghapus berita ini?')">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn-action btn-delete">
+                                <button type="submit" class="btn-action btn-delete" title="Hapus Berita">
                                     <i class="fas fa-trash"></i> Hapus
                                 </button>
                             </form>
@@ -191,11 +191,7 @@
                 <label class="form-label">
                     <i class="fas fa-file-alt"></i> Isi Berita
                 </label>
-                
-                {{-- HTML BERSIH: Kontainer Editor Kosong --}}
                 <div id="editor"></div>
-                
-                {{-- Hidden Input untuk lempar data HTML asli ke Controller --}}
                 <input type="hidden" name="isi" id="isi_berita">
             </div>
 
@@ -283,26 +279,47 @@
     .faq-table thead tr { background: #f8fafc; border-bottom: 2px solid #f1f5f9; }
     .faq-table thead th { padding: 0.75rem 1rem; text-align: left; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #64748b; white-space: nowrap; }
     .col-no { width: 52px; }
-    .col-action { width: 110px; text-align: center !important; }
+    
+    /* Action buttons */
+    .action-btns {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        align-items: center;
+    }
+    .btn-action {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.3rem;
+        padding: 0.3rem 0.75rem;
+        border: none;
+        border-radius: 0.35rem;
+        font-size: 0.72rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: filter 0.15s, transform 0.1s;
+        white-space: nowrap;
+        width: 80px;
+    }
+    .btn-action:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    
+    .btn-view   { background: #2563eb; color: #fff; }
+    .btn-edit   { background: #f59e0b; color: #fff; }
+    .btn-delete { background: #ef4444; color: #fff; }
+
     .faq-row { border-bottom: 1px solid #f1f5f9; transition: background 0.15s; }
     .faq-row:hover { background: #fffbf7; }
     .faq-row td { padding: 0.875rem 1rem; vertical-align: middle; }
 
     .row-num { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%; background: #fff7ed; color: #f97316; font-size: 0.7rem; font-weight: 700; }
     .question-text { font-weight: 600; color: #1e293b; line-height: 1.45; }
-    .answer-clamp { color: #475569; line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-
-    .action-btns { display: flex; flex-direction: column; gap: 5px; align-items: center; }
-    .btn-action { display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem; padding: 0.3rem 0.75rem; border: none; border-radius: 0.35rem; font-size: 0.72rem; font-weight: 600; cursor: pointer; transition: filter 0.15s, transform 0.1s; white-space: nowrap; width: 85px; }
-    .btn-action:hover { filter: brightness(1.1); transform: translateY(-1px); }
-    .btn-edit { background: #f59e0b; color: #fff; }
-    .btn-delete { background: #ef4444; color: #fff; width: 85px; }
+    .answer-clamp { color: #475569; line-height: 1.6; max-width: 450px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
     .empty-state { text-align: center; padding: 3rem 1rem !important; color: #94a3b8; }
     .empty-state i { font-size: 2.5rem; display: block; margin-bottom: 0.5rem; }
     .faq-pagination { padding: 1rem 1.5rem; border-top: 1px solid #f1f5f9; display: flex; justify-content: flex-end; }
 
-    /* Modal Backdrop & Box */
     .modal-backdrop { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(3px); z-index: 50; display: flex; align-items: center; justify-content: center; padding: 1rem; animation: fadeIn 0.2s ease; }
     .modal-backdrop.hidden { display: none !important; }
     .modal-box { background: #fff; border-radius: 0.875rem; box-shadow: 0 20px 60px rgba(15,23,42,.2); width: 100%; max-height: 90vh; overflow-y: auto; animation: slideUp 0.25s cubic-bezier(.4,0,.2,1); }
@@ -323,19 +340,8 @@
     .form-input { width: 100%; border: 1.5px solid #e2e8f0; border-radius: 0.5rem; padding: 0.625rem 0.875rem; font-size: 0.825rem; color: #1e293b; background: #fafafa; outline: none; transition: border-color 0.18s, box-shadow 0.18s, background 0.18s; font-family: inherit; }
     .form-input:focus { border-color: #f97316; box-shadow: 0 0 0 3px rgba(249,115,22,.12); background: #fff; }
 
-    /* Penyelarasan box ketikan CKEditor agar menyatu dengan style form Anda */
-    .ck-editor__editable_inline {
-        min-height: 250px !important;
-        background-color: #fff !important;
-        border: 1.5px solid #e2e8f0 !important;
-        border-radius: 0 0 0.5rem 0.5rem !important;
-    }
-    .ck-toolbar {
-        border: 1.5px solid #e2e8f0 !important;
-        border-bottom: none !important;
-        border-radius: 0.5rem 0.5rem 0 0 !important;
-        background: #f8fafc !important;
-    }
+    .ck-editor__editable_inline { min-height: 250px !important; background-color: #fff !important; border: 1.5px solid #e2e8f0 !important; border-radius: 0 0 0.5rem 0.5rem !important; }
+    .ck-toolbar { border: 1.5px solid #e2e8f0 !important; border-bottom: none !important; border-radius: 0.5rem 0.5rem 0 0 !important; background: #f8fafc !important; }
 
     .modal-footer { display: flex; justify-content: flex-end; gap: 0.625rem; padding-top: 1rem; border-top: 1px solid #f1f5f9; margin-top: 0.25rem; }
     .btn-cancel { display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.5rem 1.125rem; border: 1.5px solid #e2e8f0; background: #fff; color: #64748b; border-radius: 0.5rem; font-size: 0.825rem; font-weight: 600; cursor: pointer; transition: background 0.15s, border-color 0.15s; }
@@ -357,9 +363,7 @@
 @endsection
 
 @push('scripts')
-{{-- Diperbarui ke bundle CKEditor 5 All-In-One dengan Base64 Adapter bawaan --}}
 <script src="https://cdn.ckeditor.com/ckeditor5/41.0.0/classic/ckeditor.js"></script>
-
 <script>
     let editorInstance;
 
@@ -372,27 +376,14 @@
                 'blockQuote', 'insertTable', 'imageUpload', 'mediaEmbed', '|',
                 'undo', 'redo'
             ],
-            table: {
-                contentToolbar: [
-                    'tableColumn', 'tableRow', 'mergeTableCells'
-                ]
-            },
-            mediaEmbed: {
-                previewsInData: true
-            }
-            // `ckfinder` ditiadakan karena adapter Base64 berjalan otomatis untuk menangani penarikan/unggah gambar lokal langsung di text body.
+            table: { contentToolbar: [ 'tableColumn', 'tableRow', 'mergeTableCells' ] },
+            mediaEmbed: { previewsInData: true }
         })
-        .then(editor => {
-            editorInstance = editor;
-        })
-        .catch(error => {
-            console.error('Gagal memuat CKEditor:', error);
-        });
+        .then(editor => { editorInstance = editor; })
+        .catch(error => { console.error('Gagal memuat CKEditor:', error); });
 
-    // ── SINKRONISASI SEBELUM SUBMIT FORM ──
     document.getElementById('beritaForm').addEventListener('submit', function(e) {
         const editorContent = editorInstance ? editorInstance.getData() : '';
-        
         if (editorContent.trim() === '' || editorContent.trim() === '<p>&nbsp;</p>') {
             document.getElementById('isi_berita').value = '';
         } else {
@@ -400,21 +391,17 @@
         }
     });
 
-    // ── PREVIEW IMAGE UTAMA BERITA ──
     function previewImage(input) {
         const preview = document.getElementById('preview');
         if (input.files && input.files[0]) {
             const reader = new FileReader();
-            reader.onload = function(e) {
-                preview.src = e.target.result;
-            }
+            reader.onload = function(e) { preview.src = e.target.result; }
             reader.readAsDataURL(input.files[0]);
         } else {
             preview.src = "https://via.placeholder.com/150";
         }
     }
 
-    // ── OPEN MODAL (TAMBAH / EDIT) ──
     function openModal(data = null) {
         const modal       = document.getElementById('beritaModal');
         const form        = document.getElementById('beritaForm');
@@ -431,7 +418,6 @@
         fileInput.required = false; 
 
         if (data) {
-            // Edit Mode
             modalTitle.textContent  = 'Edit Data Berita';
             form.action             = `{{ url('berita') }}/${data.id}`;
             methodField.value       = 'PUT';
@@ -439,19 +425,14 @@
             submitLabel.textContent = 'Update';
             submitBtn.classList.add('update-mode');
 
-            if (editorInstance) {
-                editorInstance.setData(data.isi || '');
-            }
-
+            if (editorInstance) { editorInstance.setData(data.isi || ''); }
             if (data.gambar) {
                 preview.src = `{{ asset('storage') }}/${data.gambar}`;
             } else {
                 preview.src = "https://via.placeholder.com/150";
             }
-
             setTimeout(() => judul.focus(), 100);
         } else {
-            // Tambah Mode
             modalTitle.textContent  = 'Tambah Data Berita';
             form.action             = `{{ route('berita.store') }}`;
             methodField.value       = '';
@@ -461,10 +442,7 @@
             submitLabel.textContent = 'Simpan';
             submitBtn.classList.remove('update-mode');
 
-            if (editorInstance) {
-                editorInstance.setData('');
-            }
-
+            if (editorInstance) { editorInstance.setData(''); }
             setTimeout(() => judul.focus(), 100);
         }
     }
@@ -474,7 +452,6 @@
         document.body.style.overflow = '';
     }
 
-    // ── MODAL DETAIL BERITA ──
     function openDetail(data) {
         const detailModal   = document.getElementById('detailModal');
         const detailJudul   = document.getElementById('detailJudul');
@@ -483,7 +460,6 @@
         const detailIsi     = document.getElementById('detailIsi');
 
         detailJudul.textContent = data.judul;
-        
         let tgl = '-';
         if(data.created_at) {
             const d = new Date(data.created_at);
@@ -497,9 +473,7 @@
         } else {
             detailGambar.style.display = 'none';
         }
-
         detailIsi.innerHTML = data.isi;
-
         detailModal.classList.remove('hidden');
         document.body.style.overflow = 'hidden';
     }
@@ -509,11 +483,9 @@
         document.body.style.overflow = '';
     }
 
-    // Backdrop Listeners
     document.getElementById('beritaModal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
     document.getElementById('detailModal').addEventListener('click', function(e) { if (e.target === this) closeDetailModal(); });
 
-    // Close on ESC
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             closeModal();
@@ -521,7 +493,6 @@
         }
     });
 
-    // ── SEARCH / FILTER TABLE ──
     function filterTable() {
         const val  = document.getElementById('searchInput').value.toLowerCase();
         const rows = document.querySelectorAll('#faqTableBody .faq-row');
@@ -531,7 +502,6 @@
         });
     }
 
-    // ── AUTO DISMISS ALERTS ──
     setTimeout(() => {
         document.querySelectorAll('.alert-banner').forEach(el => {
             el.style.transition = 'opacity .4s';

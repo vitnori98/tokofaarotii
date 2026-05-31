@@ -9,7 +9,7 @@ class BeritaController extends Controller
 {
     public function index()
     {
-        $beritas = Berita::latest()->get();
+        $beritas = Berita::latest()->paginate(10);
         return view('berita.index', compact('beritas'));
     }
 
@@ -47,9 +47,11 @@ class BeritaController extends Controller
         return back()->with('success', 'Berita berhasil diupdate');
     }
 
-    public function destroy(Berita $berita)
+    public function destroy($id)
     {
-        $berita->delete();
-        return back()->with('success', 'Berita dihapus');
+        $berita = Berita::findOrFail($id);
+        $berita->delete(); // Ini perintah untuk menghapus dari database
+
+        return redirect()->back()->with('success', 'Berita berhasil dihapus!');
     }
 }

@@ -80,22 +80,22 @@
                         <span class="u-date">{{ $user->created_at ? $user->created_at->format('d/m/Y') : '-' }}</span>
                     </td>
                     <td>
-                        <div class="action-group">
+                        <div class="action-btns">
                             {{-- Mengirimkan data via data-attribute agar JavaScript aman dari special character --}}
                             <button 
                                 type="button"
-                                class="btn-icon btn-amber btn-edit-user" 
+                                class="btn-action btn-edit btn-edit-user" 
                                 title="Edit User"
                                 data-user="{{ json_encode($user) }}">
-                                <i class="fas fa-edit"></i>
+                                <i class="fas fa-edit"></i> Edit
                             </button>
                             
                             {{-- Admin master TIDAK BOLEH menghapus dirinya sendiri --}}
                             @if($user->id !== auth()->id())
                             <form action="{{ route('kelola-user.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus user ini?')" style="margin:0;">
                                 @csrf @method('DELETE')
-                                <button type="submit" class="btn-icon btn-red" title="Hapus User">
-                                    <i class="fas fa-trash-alt"></i>
+                                <button type="submit" class="btn-action btn-delete" title="Hapus User">
+                                    <i class="fas fa-trash-alt"></i> Hapus
                                 </button>
                             </form>
                             @endif
@@ -106,9 +106,12 @@
             </tbody>
         </table>
     </div>
+    @if($users->hasPages())
+    <div class="pagination-wrap" style="padding: 1rem; border-top: 1px solid #f1f5f9; display: flex; justify-content: flex-end;">
+        {{ $users->links() }}
+    </div>
+    @endif
 </div>
-
-{{-- ── MODAL TAMBAH ── --}}
 <div id="modal-tambah" class="modal-overlay hidden">
     <div class="modal-card">
         <div class="modal-header">
@@ -229,12 +232,12 @@
     .badge-orange { background: #ffedd5; color: #c2410c; }
     .badge-gray { background: #f1f5f9; color: #475569; }
 
-    .action-group { display: flex; align-items: center; justify-content: start; gap: .5rem; }
-    .btn-icon { width: 34px; height: 34px; border-radius: .625rem; display: flex; align-items: center; justify-content: center; font-size: .8rem; cursor: pointer; border: none; transition: all .2s; }
-    .btn-amber { background: #fffbeb; color: #d97706; }
-    .btn-amber:hover { background: #d97706; color: #fff; }
-    .btn-red { background: #fef2f2; color: #ef4444; }
-    .btn-red:hover { background: #ef4444; color: #fff; }
+    /* Action buttons standard */
+    .action-btns { display: flex; flex-direction: column; gap: 5px; align-items: center; }
+    .btn-action { display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem; padding: 0.3rem 0.75rem; border: none; border-radius: 0.35rem; font-size: 0.72rem; font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap; width: 80px; }
+    .btn-action:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    .btn-edit { background: #f59e0b; color: #fff; }
+    .btn-delete { background: #ef4444; color: #fff; }
 
     /* ── Modal ── */
     .modal-overlay { position: fixed; inset: 0; background: rgba(15,23,42,.6); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 1rem; }

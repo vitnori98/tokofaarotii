@@ -46,14 +46,14 @@
             <div class="info-body">
                 <h4 class="info-title">{{ $info->judul }}</h4>
                 <p class="info-desc">{{ Str::limit($info->deskripsi, 60) }}</p>
-                <div class="info-actions">
-                    <button onclick="editInfografis({{ json_encode($info) }})" class="btn-icon-sm btn-amber" title="Edit">
-                        <i class="fas fa-edit"></i>
+                <div class="info-actions-standard">
+                    <button onclick="editInfografis({{ json_encode($info) }})" class="btn-action btn-edit" title="Edit">
+                        <i class="fas fa-edit"></i> Edit
                     </button>
                     <form action="{{ route('dokumentasi.infografis.destroy', $info->id) }}" method="POST" onsubmit="return confirm('Hapus infografis ini?')" style="margin:0;">
                         @csrf @method('DELETE')
-                        <button type="submit" class="btn-icon-sm btn-red" title="Hapus">
-                            <i class="fas fa-trash-alt"></i>
+                        <button type="submit" class="btn-action btn-delete" title="Hapus">
+                            <i class="fas fa-trash-alt"></i> Hapus
                         </button>
                     </form>
                 </div>
@@ -61,6 +61,12 @@
         </div>
         @endforeach
     </div>
+
+    @if($infografis->hasPages())
+    <div class="pagination-wrap" style="margin-top: 2rem; display: flex; justify-content: center;">
+        {{ $infografis->links() }}
+    </div>
+    @endif
 @endif
 
 {{-- ── MODAL TAMBAH ── --}}
@@ -145,12 +151,11 @@
     .info-title { font-size: .9rem; font-weight: 800; color: #1e293b; margin: 0 0 .25rem; }
     .info-desc { font-size: .75rem; color: #64748b; line-height: 1.4; margin-bottom: 1rem; }
 
-    .info-actions { display: flex; align-items: center; gap: .5rem; border-top: 1px solid #f8fafc; padding-top: .75rem; }
-    .btn-icon-sm { width: 30px; height: 30px; border-radius: .5rem; display: flex; align-items: center; justify-content: center; font-size: .7rem; border: none; cursor: pointer; transition: all .2s; }
-    .btn-amber { background: #fffbeb; color: #d97706; }
-    .btn-amber:hover { background: #d97706; color: #fff; }
-    .btn-red { background: #fef2f2; color: #ef4444; }
-    .btn-red:hover { background: #ef4444; color: #fff; }
+    .info-actions-standard { display: flex; align-items: center; gap: .5rem; border-top: 1px solid #f8fafc; padding-top: 0.75rem; justify-content: center; }
+    .btn-action { display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem; padding: 0.3rem 0.75rem; border: none; border-radius: 0.35rem; font-size: 0.72rem; font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap; width: 80px; }
+    .btn-action:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    .btn-edit { background: #f59e0b; color: #fff; }
+    .btn-delete { background: #ef4444; color: #fff; }
 
     /* ── Modal (Sama dengan Album) ── */
     .modal-overlay { position: fixed; inset: 0; background: rgba(15,23,42,.6); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 1rem; }

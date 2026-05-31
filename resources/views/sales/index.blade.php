@@ -105,28 +105,24 @@
                         <span class="total-price sale-total">Rp {{ number_format($sale->total_price, 0, ',', '.') }}</span>
                     </td>
                     <td>
-                        <div class="action-group">
+                        <div class="action-btns">
                             @if(($sale->status ?? 'completed') == 'pending')
                                 <form action="{{ route('sales.confirm', $sale->id) }}" method="POST" style="margin:0;">
                                     @csrf
-                                    <button type="submit" class="btn-icon btn-amber" title="Konfirmasi">
-                                        <i class="fas fa-check"></i>
+                                    <button type="submit" class="btn-action btn-confirm" title="Konfirmasi">
+                                        <i class="fas fa-check"></i> Konfirm
                                     </button>
                                 </form>
-                            @else
-                                <div class="btn-icon btn-green-soft" title="Selesai">
-                                    <i class="fas fa-check-circle"></i>
-                                </div>
                             @endif
 
-                            <button onclick="reprintStruk({{ $sale->id }})" class="btn-icon btn-blue" title="Cetak Struk">
-                                <i class="fas fa-print"></i>
+                            <button onclick="reprintStruk({{ $sale->id }})" class="btn-action btn-view" title="Cetak Struk">
+                                <i class="fas fa-print"></i> Struk
                             </button>
 
                             <form action="{{ route('sales.destroy', $sale->id) }}" method="POST" onsubmit="return confirm('Hapus riwayat ini?')" style="margin:0;">
                                 @csrf @method('DELETE')
-                                <button type="submit" class="btn-icon btn-red" title="Hapus">
-                                    <i class="fas fa-trash-alt"></i>
+                                <button type="submit" class="btn-action btn-delete" title="Hapus">
+                                    <i class="fas fa-trash-alt"></i> Hapus
                                 </button>
                             </form>
                         </div>
@@ -193,15 +189,13 @@
     .qty-badge { display: inline-block; padding: .2rem .6rem; background: #f1f5f9; border-radius: .5rem; font-size: .75rem; font-weight: 800; color: #475569; }
     .total-price { font-size: .9rem; font-weight: 800; color: #6366f1; }
 
-    .action-group { display: flex; align-items: center; justify-content: center; gap: .5rem; }
-    .btn-icon { width: 34px; height: 34px; border-radius: .625rem; display: flex; align-items: center; justify-content: center; font-size: .8rem; cursor: pointer; border: none; transition: all .2s; text-decoration: none; }
-    .btn-amber { background: #fffbeb; color: #d97706; }
-    .btn-amber:hover { background: #d97706; color: #fff; }
-    .btn-green-soft { background: #f0fdf4; color: #22c55e; cursor: default; }
-    .btn-blue { background: #eff6ff; color: #3b82f6; border: 1px solid #dbeafe; }
-    .btn-blue:hover { background: #3b82f6; color: #fff; }
-    .btn-red { background: #fef2f2; color: #ef4444; border: 1px solid #fee2e2; }
-    .btn-red:hover { background: #ef4444; color: #fff; }
+    /* Action buttons standard */
+    .action-btns { display: flex; flex-direction: column; gap: 5px; align-items: center; }
+    .btn-action { display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem; padding: 0.3rem 0.75rem; border: none; border-radius: 0.35rem; font-size: 0.72rem; font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap; width: 85px; text-decoration: none; }
+    .btn-action:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    .btn-confirm { background: #f59e0b; color: #fff; }
+    .btn-view { background: #2563eb; color: #fff; }
+    .btn-delete { background: #ef4444; color: #fff; }
 
     .empty-state { text-align: center; padding: 4rem 1rem !important; color: #cbd5e1; }
     .empty-state i { font-size: 2.5rem; margin-bottom: 1rem; display: block; }

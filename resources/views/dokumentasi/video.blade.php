@@ -47,15 +47,15 @@
             <div class="video-body">
                 <h4 class="video-title">{{ $video->judul }}</h4>
                 <p class="video-desc">{{ Str::limit($video->deskripsi, 100) }}</p>
-                <div class="video-footer">
-                    <div class="video-actions">
-                        <button onclick="editVideo({{ json_encode($video) }})" class="btn-icon-sm btn-amber" title="Edit">
-                            <i class="fas fa-edit"></i>
+                <div class="video-footer-standard">
+                    <div class="video-actions-standard">
+                        <button onclick="editVideo({{ json_encode($video) }})" class="btn-action btn-edit" title="Edit">
+                            <i class="fas fa-edit"></i> Edit
                         </button>
                         <form action="{{ route('dokumentasi.video.destroy', $video->id) }}" method="POST" onsubmit="return confirm('Hapus video ini?')" style="margin:0;">
                             @csrf @method('DELETE')
-                            <button type="submit" class="btn-icon-sm btn-red" title="Hapus">
-                                <i class="fas fa-trash-alt"></i>
+                            <button type="submit" class="btn-action btn-delete" title="Hapus">
+                                <i class="fas fa-trash-alt"></i> Hapus
                             </button>
                         </form>
                     </div>
@@ -64,6 +64,12 @@
         </div>
         @endforeach
     </div>
+
+    @if($videos->hasPages())
+    <div class="pagination-wrap" style="margin-top: 2rem; display: flex; justify-content: center;">
+        {{ $videos->links() }}
+    </div>
+    @endif
 @endif
 
 {{-- ── MODAL TAMBAH ── --}}
@@ -143,13 +149,12 @@
     .video-title { font-size: 1.1rem; font-weight: 800; color: #1e293b; margin: 0 0 .75rem; line-height: 1.4; }
     .video-desc { font-size: .85rem; color: #64748b; line-height: 1.6; margin-bottom: 1.5rem; }
 
-    .video-footer { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #f8fafc; padding-top: 1rem; }
-    .video-actions { display: flex; align-items: center; gap: .5rem; }
-    .btn-icon-sm { width: 34px; height: 34px; border-radius: .625rem; display: flex; align-items: center; justify-content: center; font-size: .8rem; border: none; cursor: pointer; transition: all .2s; }
-    .btn-amber { background: #fffbeb; color: #d97706; }
-    .btn-amber:hover { background: #d97706; color: #fff; }
-    .btn-red { background: #fef2f2; color: #ef4444; }
-    .btn-red:hover { background: #ef4444; color: #fff; }
+    .video-footer-standard { border-top: 1px solid #f8fafc; padding-top: 1rem; }
+    .video-actions-standard { display: flex; align-items: center; gap: .5rem; justify-content: center; }
+    .btn-action { display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem; padding: 0.3rem 0.75rem; border: none; border-radius: 0.35rem; font-size: 0.72rem; font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap; width: 80px; }
+    .btn-action:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    .btn-edit { background: #f59e0b; color: #fff; }
+    .btn-delete { background: #ef4444; color: #fff; }
 
     /* ── Modal (Sama dengan sebelumnya) ── */
     .modal-overlay { position: fixed; inset: 0; background: rgba(15,23,42,.6); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 1rem; }

@@ -13,7 +13,7 @@ class DokumentasiController extends Controller
     // --- ALBUM ---
     public function album()
     {
-        $albums = Album::latest()->get();
+        $albums = Album::latest()->paginate(9);
         return view('dokumentasi.album', compact('albums'));
     }
 
@@ -68,7 +68,7 @@ class DokumentasiController extends Controller
     // --- INFOGRAFIS ---
     public function infografis()
     {
-        $infografis = Infografis::latest()->get();
+        $infografis = Infografis::latest()->paginate(8);
         return view('dokumentasi.infografis', compact('infografis'));
     }
 
@@ -121,7 +121,7 @@ class DokumentasiController extends Controller
     // --- VIDEO ---
     public function video()
     {
-        $videos = Video::latest()->get();
+        $videos = Video::latest()->paginate(6);
         return view('dokumentasi.video', compact('videos'));
     }
 

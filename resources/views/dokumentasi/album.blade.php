@@ -51,14 +51,14 @@
             <div class="album-content">
                 <h4 class="album-title">{{ $album->judul }}</h4>
                 <p class="album-desc">{{ Str::limit($album->deskripsi, 80) }}</p>
-                <div class="album-actions">
-                    <button onclick="editAlbum({{ json_encode($album) }})" class="btn-edit-sm" title="Edit">
-                        <i class="fas fa-edit"></i>
+                <div class="album-actions-standard">
+                    <button onclick="editAlbum({{ json_encode($album) }})" class="btn-action btn-edit" title="Edit">
+                        <i class="fas fa-edit"></i> Edit
                     </button>
                     <form action="{{ route('dokumentasi.album.destroy', $album->id) }}" method="POST" onsubmit="return confirm('Hapus album ini?')" style="margin:0;">
                         @csrf @method('DELETE')
-                        <button type="submit" class="btn-delete-sm" title="Hapus">
-                            <i class="fas fa-trash-alt"></i>
+                        <button type="submit" class="btn-action btn-delete" title="Hapus">
+                            <i class="fas fa-trash-alt"></i> Hapus
                         </button>
                     </form>
                 </div>
@@ -66,6 +66,12 @@
         </div>
         @endforeach
     </div>
+
+    @if($albums->hasPages())
+    <div class="pagination-wrap" style="margin-top: 2rem; display: flex; justify-content: center;">
+        {{ $albums->links() }}
+    </div>
+    @endif
 @endif
 
 {{-- ── MODAL TAMBAH ── --}}
@@ -160,11 +166,11 @@
     .album-title { font-size: .95rem; font-weight: 800; color: #1e293b; margin: 0 0 .5rem; line-height: 1.4; }
     .album-desc { font-size: .8rem; color: #64748b; line-height: 1.5; margin-bottom: 1.25rem; }
 
-    .album-actions { display: flex; align-items: center; gap: .5rem; border-top: 1px solid #f8fafc; pt: 1rem; }
-    .btn-edit-sm { background: #fffbeb; color: #d97706; border: 1px solid #fef3c7; width: 32px; height: 32px; border-radius: .5rem; display: flex; align-items: center; justify-content: center; font-size: .75rem; cursor: pointer; transition: all .2s; }
-    .btn-edit-sm:hover { background: #d97706; color: #fff; }
-    .btn-delete-sm { background: #fef2f2; color: #ef4444; border: 1px solid #fee2e2; width: 32px; height: 32px; border-radius: .5rem; display: flex; align-items: center; justify-content: center; font-size: .75rem; cursor: pointer; transition: all .2s; }
-    .btn-delete-sm:hover { background: #ef4444; color: #fff; }
+    .album-actions-standard { display: flex; align-items: center; gap: .5rem; border-top: 1px solid #f8fafc; padding-top: 1rem; justify-content: center; }
+    .btn-action { display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem; padding: 0.3rem 0.75rem; border: none; border-radius: 0.35rem; font-size: 0.72rem; font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap; width: 80px; }
+    .btn-action:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    .btn-edit { background: #f59e0b; color: #fff; }
+    .btn-delete { background: #ef4444; color: #fff; }
 
     /* ── Modal ── */
     .modal-overlay { position: fixed; inset: 0; background: rgba(15,23,42,.6); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 1rem; }
