@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toko FAA - Admin Master</title>
+    <title>Toko FAA - @yield('title', 'Admin Master')</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -11,7 +11,7 @@
 
     <style>
         /* =========================================
-           ROOT VARIABLES
+            ROOT VARIABLES
         ========================================= */
         :root {
             --sidebar-width: 260px;
@@ -36,7 +36,7 @@
         }
 
         /* =========================================
-           OVERLAY (mobile)
+            OVERLAY (mobile)
         ========================================= */
         .overlay {
             display: none;
@@ -49,7 +49,7 @@
         .overlay.active { display: block; }
 
         /* =========================================
-           SIDEBAR
+            SIDEBAR
         ========================================= */
         .sidebar {
             width: var(--sidebar-width);
@@ -240,7 +240,7 @@
         .sidebar-footer-inner i { color: #cbd5e1; }
 
         /* =========================================
-           TOPBAR
+            TOPBAR
         ========================================= */
         .topbar {
             position: sticky;
@@ -441,7 +441,7 @@
         .notif-footer a:hover { text-decoration: underline; }
 
         /* =========================================
-           MAIN CONTENT
+            MAIN CONTENT
         ========================================= */
         .main-content {
             margin-left: var(--sidebar-width);
@@ -456,7 +456,7 @@
         }
 
         /* =========================================
-           RESPONSIVE
+            RESPONSIVE
         ========================================= */
         @media (max-width: 1024px) {
             .sidebar { left: calc(-1 * var(--sidebar-width)); }
@@ -492,7 +492,7 @@
             </div>
             <div>
                 <div class="sidebar-brand-name">Toko FAA</div>
-                <div class="sidebar-brand-role">Admin Master</div>
+                <div class="sidebar-brand-role">Frozen Food & Bakery</div>
             </div>
         </div>
 
@@ -540,15 +540,17 @@
 
                 <p class="nav-section-label">Manajemen</p>
 
-                @if(in_array(auth()->user()->role ?? 'pegawai', ['admin_master', 'pemilik']))
-                <a href="{{ route('kelola-user.index') }}"
-                   class="nav-link {{ request()->routeIs('kelola-user.*') ? 'active' : '' }}">
-                    <i class="fas fa-user-shield"></i>
-                    <span>Kelola User</span>
-                </a>
+                {{-- FIX: Menggunakan strtolower untuk mengatasi ketidakcocokan huruf kapital di database --}}
+                @if(in_array(strtolower(auth()->user()?->role), ['admin_master', 'pemilik']))
+                    <a href="{{ route('kelola-user.index') }}"
+                       class="nav-link {{ request()->routeIs('kelola-user.*') ? 'active' : '' }}">
+                        <i class="fas fa-user-shield"></i>
+                        <span>Kelola User</span>
+                    </a>
                 @endif
 
-                <a href="{{ route('pegawai.index') }}"                   class="nav-link {{ request()->routeIs('pegawai.*') ? 'active' : '' }}">
+                <a href="{{ route('pegawai.index') }}"                   
+                   class="nav-link {{ request()->routeIs('pegawai.*') ? 'active' : '' }}">
                     <i class="fas fa-users-cog"></i>
                     <span>Kelola Pegawai</span>
                 </a>
@@ -698,7 +700,10 @@
                             </div>
                             <div>
                                 <div class="dropdown-panel-name">{{ Auth::user()->name ?? 'Admin' }}</div>
-                                <div class="dropdown-panel-role">Admin Master</div>
+                                {{-- FIX: Menampilkan nama role secara dinamis dan rapi --}}
+                                <div class="dropdown-panel-role">
+                                    {{ ucwords(str_replace('_', ' ', Auth::user()->role ?? 'Pegawai')) }}
+                                </div>
                             </div>
                         </div>
                         <div class="dropdown-panel-body">
