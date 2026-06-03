@@ -16,24 +16,20 @@ use App\Http\Controllers\FaqController;
 use App\Http\Controllers\DokumentasiController;
 use App\Http\Controllers\UserController;
 
-// =========================================================================
-// 1. AUTHENTICATION ROUTES (Wajib di Paling Atas agar Terdaftar Lebih Dulu)
-// =========================================================================
+
+// Authentication Routes
 require __DIR__.'/auth.php';
 
-// =========================================================================
-// 2. GUEST LANDING / REDIRECT
-// =========================================================================
+// PUBLIC ROUTES (Bisa diakses tanpa login)
 Route::get('/', function () {
     if (Auth::check()) {
         return redirect()->route('dashboard');
     }
-    return redirect()->route('login'); 
+    return view('welcome'); 
 });
 
-// =========================================================================
-// 3. PROTECTED ROUTES (Harus Login DAN ber-role 'admin_master' atau 'pemilik')
-// =========================================================================
+
+// PROTECTED ROUTES (Harus Login DAN ber-role 'admin_master' atau 'pemilik')
 Route::middleware(['auth', 'role:admin_master,pemilik'])->group(function () {
 
     // Dashboard Routes
