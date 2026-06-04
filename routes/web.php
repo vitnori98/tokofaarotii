@@ -20,13 +20,20 @@ use App\Http\Controllers\UserController;
 // Authentication Routes
 require __DIR__.'/auth.php';
 
+use App\Models\Product;
+use App\Models\Category;
+
 // PUBLIC ROUTES (Bisa diakses tanpa login)
 Route::get('/', function () {
     if (Auth::check()) {
         return redirect()->route('dashboard');
     }
-    return view('welcome'); 
-});
+    $products = Product::with('category')->latest()->get();
+    return view('welcome', compact('products')); 
+})->name('welcome');
+
+Route::get('/produk-makanan', [ProductController::class, 'produkMakanan'])->name('produk.makanan');
+Route::post('/cart/add/{id}', [App\Http\Controllers\CartController::class, 'addToCart'])->name('cart.add');
 
 
 // PROTECTED ROUTES (Harus Login DAN ber-role 'admin_master' atau 'pemilik')

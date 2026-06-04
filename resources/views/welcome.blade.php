@@ -69,8 +69,152 @@
       background-color: #b80710;
       transform: translateY(-3px); /* Efek tombol sedikit naik saat di-hover */
    }
-    </style>
-    
+
+    /* Accordion FAQ Styling agar selaras dengan tema merah */
+    #faq .accordion-button:not(.collapsed) {
+        background-color: #dc3545;
+        color: white;
+    }
+    #faq .accordion-button:focus {
+        box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+        border-color: #dc3545;
+    }
+    #faq .accordion-button::after {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+    }
+    #faq .accordion-button:not(.collapsed)::after {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+    }
+
+    /* Custom CSS untuk Tampilan Kategori Modern */
+
+   /* Reset gaya kartu default */
+   .catcard {
+      transition: all 0.3s ease;
+      border-radius: 12px !important; /* Sudut lebih melengkung */
+      overflow: hidden; /* Pastikan gambar tidak keluar dari kartu */
+   }
+
+   /* Hover Effect: Skala dan Bayangan Lebih Dalam */
+   .catcard:hover {
+      transform: translateY(-8px); /* Sedikit naik */
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
+   }
+
+   /* Penempatan Gambar dan Konten */
+   .catimg-container {
+      width: 100%;
+      position: relative;
+      padding-top: 60%; /* Aspect Ratio 16:9 yang bersih */
+   }
+
+   .catimg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* Pastikan gambar memenuhi area dengan benar */
+      border-radius: 0 !important; /* Hapus radius gambar asli */
+   }
+
+   .catcard-body {
+      padding: 1.5rem; /* Padding yang lebih baik */
+      border-top: 1px solid #eee; /* Garis pemisah halus */
+   }
+
+   /* Tipografi */
+   .catcard h5 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0; /* Hapus margin default */
+      transition: color 0.3s ease;
+   }
+
+   /* Hover Effect: Warna Teks Berubah (misalnya, warna utama site Anda) */
+   .catcard:hover h5 {
+      color: #cc6c28; /* Ganti dengan warna utama Anda, misal deep burnt orange */
+   }
+
+   /* Custom Slider Section Styles */
+   .slider_section {
+       padding: 0;
+       background-color: #f9f9f9;
+       overflow: hidden;
+   }
+
+   .slider_item-box {
+       width: 100%;
+       min-height: 500px;
+       display: flex;
+       align-items: center;
+       background-size: cover;
+       background-position: center;
+       position: relative;
+   }
+
+   .slider_item-box::before {
+       content: "";
+       position: absolute;
+       top: 0;
+       left: 0;
+       width: 100%;
+       height: 100%;
+       background: rgba(255, 255, 255, 0.6); /* Overlay agar teks mudah dibaca */
+       z-index: 1;
+   }
+
+   .slider_item-container {
+       position: relative;
+       z-index: 2;
+       width: 100%;
+   }
+
+   .slider_item-detail h1 {
+       font-size: 3.5rem;
+       color: #333;
+       margin-bottom: 20px;
+   }
+
+   .slider_item-detail p {
+       font-size: 1.1rem;
+       color: #666;
+       margin-bottom: 30px;
+       max-width: 500px;
+   }
+
+   .slider_img-box img {
+       max-width: 100%;
+       height: auto;
+       border-radius: 20px;
+       box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+   }
+
+   /* Custom Navigation Buttons */
+   .carousel-control-prev, .carousel-control-next {
+       width: 50px;
+       height: 50px;
+       background-color: #dc3545;
+       border-radius: 50%;
+       top: 50%;
+       transform: translateY(-50%);
+       opacity: 0.8;
+       margin: 0 20px;
+   }
+
+   .carousel-control-prev:hover, .carousel-control-next:hover {
+       background-color: #b02a37;
+       opacity: 1;
+   }
+
+   .carousel-indicators [data-bs-target] {
+       width: 12px;
+       height: 12px;
+       border-radius: 50%;
+       background-color: #dc3545;
+       margin: 0 5px;
+   }
+   </style>
       <meta charset="UTF-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -130,7 +274,7 @@
             <a class="navbar-brand d-flex align-items-center fw-bold fs-3 logo-faa-container" href="#">
                 <!-- Logo dengan efek ngambang/glowing -->
                 <div class="logo-floating-wrapper me-2">
-                    <img src="{{ asset('template-sarab/img/logoFAA.png') }}" alt="Logo Toko FAA" style="height: 55px; width: auto;">
+                    <img src="{{ asset('template-sarab/img/logo-toko-faa.png') }}" alt="Logo Toko FAA" style="height: 55px; width: auto;">
                 </div>
                 
                 <!-- Teks FAA Kombinasi Merah & Biru -->
@@ -143,183 +287,287 @@
             </button>
             <div class="collapse navbar-collapse" id="navmenu">
                <ul class="navbar-nav ms-auto align-items-center">
-                  <li class="nav-item"><a class="nav-link active" href="#">Beranda</a></li>
+                  <li class="nav-item"><a class="nav-link active" href="{{ route('welcome') }}">Beranda</a></li>
                   <li class="nav-item"><a class="nav-link" href="#categories">Tentang Kami</a></li>
                   <li class="nav-item"><a class="nav-link" href="#menu">Berita</a></li>
                   <li class="nav-item"><a class="nav-link" href="#promo">Dokumentasi</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#promo">Produk Makanan</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{{ route('produk.makanan') }}">Produk Makanan</a></li>
                   <li class="nav-item"><a class="nav-link" href="#promo">VR 3D Showroom</a></li>
                   <li class="nav-item"><a class="nav-link" href="#promo">FAQ</a></li>
                   <li class="nav-item">
                      <button id="navSearchBtn" class="btn btn-link text-dark nav-link"><i class="fas fa-search"></i></button>
                   </li>
                   <li class="nav-item">
-                     <a href="#" class="nav-link position-relative">
+                     <a href="#" class="nav-link position-relative me-lg-2">
                         <i class="fas fa-shopping-cart"></i>
                         <span id="cartCount" class="badge rounded-pill bg-danger position-absolute top-0 start-100 translate-middle" style="font-size: 0.7rem;">0</span>
                      </a>
+                  </li>
+                  <li class="nav-item ms-lg-2">
+                     @auth
+                        <a href="{{ url('/dashboard') }}" class="btn btn-outline-danger btn-sm rounded-pill px-3 shadow-sm">
+                           <i class="fas fa-th-large me-1"></i> Dashboard
+                        </a>
+                     @else
+                        <a href="{{ route('login') }}" class="btn btn-danger btn-sm rounded-pill px-3 shadow-sm">
+                           <i class="fas fa-sign-in-alt me-1"></i> Masuk
+                        </a>
+                     @endauth
                   </li>
                </ul>
             </div>
          </div>
       </header>
 
-      <!-- Hero / Video Banner Section -->
-      <section id="hero" class="hero-section text-center py-5 bg-light position-relative" style="background: url('{{ asset('template-sarab/img/banner-img.jpg') }}') no-repeat center center/cover;">
-         <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50"></div>
-         <div class="container position-relative text-white py-5" data-aos="fade-up">
-            <h1 class="display-4 fw-bold">Kehangatan Roti Segar Setiap Hari</h1>
-            <p class="lead">Menyediakan berbagai macam pilihan Roti Premium dan Frozen Food berkualitas tinggi.</p>
-            <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="btn btn-danger btn-lg rounded-circle magnific_popup popup-youtube shadow mt-3">
-               <i class="fas fa-play pt-1"></i>
+      <!-- slider section -->
+       <section class="slider_section position-relative">
+         <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+            <!-- Indicators -->
+            <div class="carousel-indicators">
+               <button type="button" data-bs-target="#carouselExampleControls" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+               <button type="button" data-bs-target="#carouselExampleControls" data-bs-slide-to="1" aria-label="Slide 2"></button>
+               <button type="button" data-bs-target="#carouselExampleControls" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+
+            <div class="carousel-inner">
+               
+               <div class="carousel-item active">
+               <div class="slider_item-box" style="background-image: url('{{ asset('template-sarab/img/banner-toko-faa.png') }}');">
+                  <div class="slider_item-container">
+                     <div class="container">
+                     <div class="row align-items-center">
+                        <div class="col-md-6">
+                           <div class="slider_item-detail">
+                           <div>
+                              <h1 class="fw-bold mb-3">
+                                 Welcome to <br />
+                                 FAA Frozen Food & Bakery
+                              </h1>
+                              <p class="text-muted mb-4">
+                                 Nikmati kelezatan roti segar dan berbagai pilihan makanan beku berkualitas tinggi setiap hari. Kami menyajikan produk terbaik untuk keluarga Anda.
+                              </p>
+                              <div class="d-flex">
+                                 <a href="{{ route('produk.makanan') }}" class="btn btn-danger text-uppercase rounded-pill me-3 px-4 py-2">
+                                 Pesan Sekarang
+                                 </a>
+                                 <a href="#contact-section" class="btn btn-outline-dark text-uppercase rounded-pill px-4 py-2">
+                                 Hubungi Kami
+                                 </a>
+                              </div>
+                           </div>
+                           </div>
+                        </div>
+                        <div class="col-md-6 mt-4 mt-md-0">
+                           <div class="slider_img-box text-center">
+                              <a href="{{ route('produk.makanan') }}">
+                                 <img src="{{ asset('template-sarab/img/logo-toko-faa.png') }}" alt="Logo FAA" class="img-fluid" style="max-height: 350px;" />
+                              </a>
+                           </div>
+                        </div>
+                     </div>
+                     </div>
+                  </div>
+               </div>
+               </div>
+
+               <div class="carousel-item">
+               <div class="slider_item-box" style="background-image: url('{{ asset('template-sarab/img/banner-toko-faa.png') }}');">
+                  <div class="slider_item-container">
+                     <div class="container">
+                     <div class="row align-items-center">
+                        <div class="col-md-6">
+                           <div class="slider_item-detail">
+                           <div>
+                              <h1 class="fw-bold mb-3">
+                                 Roti Segar <br />
+                                 Setiap Hari
+                              </h1>
+                              <p class="text-muted mb-4">
+                                 Dipanggang dengan cinta dan bahan-bahan premium untuk memastikan kelembutan dan rasa yang tak terlupakan di setiap gigitan.
+                              </p>
+                              <div class="d-flex">
+                                 <a href="{{ route('produk.makanan') }}" class="btn btn-danger text-uppercase rounded-pill me-3 px-4 py-2">
+                                 Lihat Menu
+                                 </a>
+                                 <a href="#contact-section" class="btn btn-outline-dark text-uppercase rounded-pill px-4 py-2">
+                                 Hubungi Kami
+                                 </a>
+                              </div>
+                           </div>
+                           </div>
+                        </div>
+                        <div class="col-md-6 mt-4 mt-md-0">
+                           <div class="slider_img-box text-center">
+                              <a href="{{ route('produk.makanan') }}">
+                                 <img src="{{ asset('template-sarab/img/roti-banner.jpg') }}" alt="Roti Segar" class="img-fluid" style="max-height: 350px; border-radius: 20px;" />
+                              </a>
+                           </div>
+                        </div>
+                     </div>
+                     </div>
+                  </div>
+               </div>
+               </div>
+
+               <div class="carousel-item">
+               <div class="slider_item-box" style="background-image: url('{{ asset('template-sarab/img/banner-toko-faa.png') }}');">
+                  <div class="slider_item-container">
+                     <div class="container">
+                     <div class="row align-items-center">
+                        <div class="col-md-6">
+                           <div class="slider_item-detail">
+                           <div>
+                              <h1 class="fw-bold mb-3">
+                                 Frozen Food <br />
+                                 Kualitas Premium
+                              </h1>
+                              <p class="text-muted mb-4">
+                                 Solusi praktis dan lezat untuk hidangan keluarga Anda. Tersedia berbagai pilihan mulai dari daging olahan hingga camilan lezat.
+                              </p>
+                              <div class="d-flex">
+                                 <a href="{{ route('produk.makanan') }}" class="btn btn-danger text-uppercase rounded-pill me-3 px-4 py-2">
+                                 Belanja Sekarang
+                                 </a>
+                                 <a href="#contact-section" class="btn btn-outline-dark text-uppercase rounded-pill px-4 py-2">
+                                 Hubungi Kami
+                                 </a>
+                              </div>
+                           </div>
+                           </div>
+                        </div>
+                        <div class="col-md-6 mt-4 mt-md-0">
+                           <div class="slider_img-box text-center">
+                              <a href="{{ route('produk.makanan') }}">
+                                 <img src="{{ asset('template-sarab/img/frozen-banner.jpg') }}" alt="Frozen Food" class="img-fluid" style="max-height: 350px; border-radius: 20px;" />
+                              </a>
+                           </div>
+                        </div>
+                     </div>
+                     </div>
+                  </div>
+               </div>
+               </div>
+
+            </div>
+
+            <!-- Navigation Controls -->
+            <div class="custom_carousel-control">
+            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-bs-slide="prev">
+               <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+               <span class="visually-hidden">Previous</span>
             </a>
-            <div class="mt-2"><small>Tonton Video Kami</small></div>
+            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-bs-slide="next">
+               <span class="carousel-control-next-icon" aria-hidden="true"></span>
+               <span class="visually-hidden">Next</span>
+            </a>
+            </div>
+         </div>
+       </section>
+      <!-- end slider section -->
+
+      <!-- Keunggulan Toko Section -->
+      <section id="keunggulan" class="py-5 bg-white">
+         <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+               <span class="slbl">Mengapa Memilih Kami</span>
+               <h2 class="stitle">Keunggulan <span>Toko FAA</span></h2>
+               <div class="sline"></div>
+            </div>
+            <div class="row g-4 text-center">
+               <!-- Keunggulan 1 -->
+               <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                  <div class="p-4 h-100">
+                     <div class="mb-3 text-danger fs-1">
+                        <i class="fas fa-bread-slice"></i>
+                     </div>
+                     <h4 class="fw-bold h5">Dipanggang Segar Setiap Hari</h4>
+                     <p class="text-muted">Roti kami dipanggang setiap pagi untuk menjamin kelembutan dan kesegaran rasa di setiap gigitan.</p>
+                  </div>
+               </div>
+               <!-- Keunggulan 2 -->
+               <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                  <div class="p-4 h-100">
+                     <div class="mb-3 text-danger fs-1">
+                        <i class="fas fa-certificate"></i>
+                     </div>
+                     <h4 class="fw-bold h5">100% Halal & Higienis</h4>
+                     <p class="text-muted">Proses produksi kami mengikuti standar kebersihan yang ketat dan menggunakan bahan-bahan pilihan yang 100% halal.</p>
+                  </div>
+               </div>
+               <!-- Keunggulan 3 -->
+               <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                  <div class="p-4 h-100">
+                     <div class="mb-3 text-danger fs-1">
+                        <i class="fas fa-boxes"></i>
+                     </div>
+                     <h4 class="fw-bold h5">Produk Premium Lengkap</h4>
+                     <p class="text-muted">Tersedia banyak pilihan Frozen Food & Roti Premium untuk melengkapi kebutuhan kuliner keluarga Anda.</p>
+                  </div>
+               </div>
+            </div>
          </div>
       </section>
 
       <!-- Categories Section -->
-      <section id="categories" class="py-5">
+      <section id="categories" class="py-5 bg-light"> <!-- Tambahkan bg-light opsional untuk kontras -->
          <div class="container">
             <div class="text-center mb-5" data-aos="fade-up">
-               <h2 class="fw-bold">Kategori Pilihan</h2>
-               <p class="text-muted">Pilih kategori produk favorit Anda</p>
+                  <h2 class="fw-bold text-uppercase" style="letter-spacing: 1px;">Kategori Pilihan</h2>
+                  <p class="text-muted fs-5">Pilih kategori produk favorit Anda untuk melihat lebih banyak</p>
             </div>
             <div class="row g-4 justify-content-center">
-               <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="100">
-                  <div class="card text-center h-100 shadow-sm border-0 catcard" data-filter="bread" style="cursor: pointer;">
-                     <div class="card-body">
-                        <img class="catimg img-fluid mb-3 rounded" src="{{ asset('template-sarab/img/category/1.jpg') }}" alt="Roti"/>
-                        <h5>Roti Segar</h5>
-                     </div>
-                  </div>
-               </div>
-               <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="200">
-                  <div class="card text-center h-100 shadow-sm border-0 catcard" data-filter="frozen" style="cursor: pointer;">
-                     <div class="card-body">
-                        <img class="catimg img-fluid mb-3 rounded" src="{{ asset('template-sarab/img/category/2.jpg') }}" alt="Frozen Food"/>
-                        <h5>Frozen Food</h5>
-                     </div>
-                  </div>
-               </div>
-               <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="300">
-                  <div class="card text-center h-100 shadow-sm border-0 catcard" data-filter="pastry" style="cursor: pointer;">
-                     <div class="card-body">
-                        <img class="catimg img-fluid mb-3 rounded" src="{{ asset('template-sarab/img/category/3.jpg') }}" alt="Pastry"/>
-                        <h5>Pastry & Croissant</h5>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </section>
 
-      <!-- Promo Section with Countdown -->
-      <section id="promo" class="py-5 bg-warning text-dark text-center">
-         <div class="container" data-aos="zoom-in">
-            <h2 class="fw-bold mb-3">Flash Sale Spesial Hari Ini!</h2>
-            <p class="lead">Dapatkan diskon hingga 50% untuk produk Frozen Food pilihan sebelum waktu habis.</p>
-            <div class="d-flex justify-content-center gap-3 my-4 fs-3 fw-bold">
-               <div class="bg-white px-3 py-2 rounded shadow-sm"><span id="cdH">08</span><small class="d-block fs-6 fw-normal">Jam</small></div>
-               <div class="bg-white px-3 py-2 rounded shadow-sm"><span id="cdM">45</span><small class="d-block fs-6 fw-normal">Menit</small></div>
-               <div class="bg-white px-3 py-2 rounded shadow-sm"><span id="cdS">30</span><small class="d-block fs-6 fw-normal">Detik</small></div>
-            </div>
-         </div>
-      </section>
-
-      <!-- Menu Section with Filters -->
-      <section id="menu" class="py-5">
-         <div class="container">
-            <div class="text-center mb-5" data-aos="fade-up">
-               <h2 class="fw-bold">Daftar Menu Kami</h2>
-               <div class="d-flex justify-content-center gap-2 mt-3 flex-wrap">
-                  <button class="btn btn-outline-success filtbtn active" data-f="all">Semua</button>
-                  <button class="btn btn-outline-success filtbtn" data-f="bread">Roti</button>
-                  <button class="btn btn-outline-success filtbtn" data-f="frozen">Frozen Food</button>
-                  <button class="btn btn-outline-success filtbtn" data-f="pastry">Pastry</button>
-               </div>
-            </div>
-
-            <div class="row g-4">
-               <!-- Product 1 -->
-               <div class="col-md-4 mwrap" data-c="bread" data-aos="fade-up" data-aos-delay="100">
-                  <div class="card h-100 shadow-sm border-0 mcard" 
-                       data-img="{{ asset('template-sarab/img/menu/1.jpg') }}" 
-                       data-title="Roti Tawar Gandum" 
-                       data-cat="Roti" 
-                       data-price="Rp 18.000" 
-                       data-old="Rp 22.000"
-                       data-rating="4.8" 
-                       data-reviews="120" 
-                       data-cal="250" 
-                       data-time="15" 
-                       data-desc="Roti tawar gandum sehat yang kaya serat, dipanggang segar setiap pagi tanpa bahan pengawet buatan." 
-                       data-tags="Sehat, Serat Tinggi, Fresh">
-                     <img src="{{ asset('template-sarab/img/menu/1.jpg') }}" class="card-img-top" alt="Roti Tawar Gandum">
-                     <div class="card-body">
-                        <span class="badge bg-success mb-2">Roti</span>
-                        <h5 class="card-title fw-bold">Roti Tawar Gandum</h5>
-                        <p class="text-muted text-truncate">Roti tawar gandum sehat kaya serat dipanggang segar.</p>
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                           <span class="fw-bold text-success">Rp 18.000</span>
-                           <button class="btn btn-success btn-sm madd"><i class="fas fa-plus me-1"></i> Detail</button>
+                  <!-- Kategori 1: Roti Segar -->
+                  <div class="col-12 col-sm-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+                     <div class="card text-start shadow-sm border-0 catcard active" data-filter="bread" style="cursor: pointer;">
+                        <div class="catimg-container">
+                              <!-- Pastikan gambar memiliki rasio yang baik, misalnya 16:9 -->
+                              <img class="catimg img-fluid" src="{{ asset('template-sarab/img/category/1.jpg') }}" alt="Roti Segar"/>
+                        </div>
+                        <div class="card-body catcard-body">
+                              <h5>Roti Segar</h5>
                         </div>
                      </div>
                   </div>
-               </div>
 
-               <!-- Product 2 -->
-               <div class="col-md-4 mwrap" data-c="frozen" data-aos="fade-up" data-aos-delay="200">
-                  <div class="card h-100 shadow-sm border-0 mcard" 
-                       data-img="{{ asset('template-sarab/img/menu/2.jpg') }}" 
-                       data-title="Premium Beef Patty" 
-                       data-cat="Frozen Food" 
-                       data-price="Rp 45.000" 
-                       data-old=""
-                       data-rating="4.9" 
-                       data-reviews="85" 
-                       data-cal="320" 
-                       data-time="10" 
-                       data-desc="Daging sapi burger premium isi 5 pcs siap saji. Sangat juicy dan tebal." 
-                       data-tags="Daging Sapi, Praktis, Isi 5">
-                     <img src="{{ asset('template-sarab/img/menu/2.jpg') }}" class="card-img-top" alt="Premium Beef Patty">
-                     <div class="card-body">
-                        <span class="badge bg-danger mb-2">Frozen Food</span>
-                        <h5 class="card-title fw-bold">Premium Beef Patty</h5>
-                        <p class="text-muted text-truncate">Daging burger sapi premium isi 5 pcs siap saji.</p>
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                           <span class="fw-bold text-success">Rp 45.000</span>
-                           <button class="btn btn-success btn-sm madd"><i class="fas fa-plus me-1"></i> Detail</button>
+                  <!-- Kategori 2: Frozen Food -->
+                  <div class="col-12 col-sm-6 col-lg-3" data-aos="fade-up" data-aos-delay="200">
+                     <div class="card text-start shadow-sm border-0 catcard" data-filter="frozen" style="cursor: pointer;">
+                        <div class="catimg-container">
+                              <img class="catimg img-fluid" src="{{ asset('template-sarab/img/category/2.jpg') }}" alt="Frozen Food"/>
+                        </div>
+                        <div class="card-body catcard-body">
+                              <h5>Frozen Food</h5>
                         </div>
                      </div>
                   </div>
-               </div>
 
-               <!-- Product 3 -->
-               <div class="col-md-4 mwrap" data-c="pastry" data-aos="fade-up" data-aos-delay="300">
-                  <div class="card h-100 shadow-sm border-0 mcard" 
-                       data-img="{{ asset('template-sarab/img/menu/3.jpg') }}" 
-                       data-title="Butter Croissant" 
-                       data-cat="Pastry" 
-                       data-price="Rp 15.000" 
-                       data-old="Rp 18.000"
-                       data-rating="4.7" 
-                       data-reviews="95" 
-                       data-cal="280" 
-                       data-time="12" 
-                       data-desc="Croissant mentega ala Prancis yang renyah di luar dan sangat lembut di bagian dalam." 
-                       data-tags="Premium Butter, Renyah, Prancis">
-                     <img src="{{ asset('template-sarab/img/menu/3.jpg') }}" class="card-img-top" alt="Butter Croissant">
-                     <div class="card-body">
-                        <span class="badge bg-warning text-dark mb-2">Pastry</span>
-                        <h5 class="card-title fw-bold">Butter Croissant</h5>
-                        <p class="text-muted text-truncate">Croissant mentega ala Prancis yang renyah dan lembut.</p>
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                           <span class="fw-bold text-success">Rp 15.000</span>
-                           <button class="btn btn-success btn-sm madd"><i class="fas fa-plus me-1"></i> Detail</button>
+                  <!-- Kategori 3: Kue & Pastry (Ditambahkan untuk keseimbangan, seperti pada gambar) -->
+                  <div class="col-12 col-sm-6 col-lg-3" data-aos="fade-up" data-aos-delay="300">
+                     <div class="card text-start shadow-sm border-0 catcard" data-filter="pastry" style="cursor: pointer;">
+                        <div class="catimg-container">
+                              <!-- Ganti asset dengan gambar kue yang sesuai -->
+                              <img class="catimg img-fluid" src="{{ asset('template-sarab/img/category/3.jpg') }}" alt="Kue & Pastry"/>
+                        </div>
+                        <div class="card-body catcard-body">
+                              <h5>Kue & Pastry</h5>
                         </div>
                      </div>
                   </div>
-               </div>
+
+                  <!-- Kategori 4: Produk Olahan Daging (Ditambahkan untuk keseimbangan) -->
+                  <div class="col-12 col-sm-6 col-lg-3" data-aos="fade-up" data-aos-delay="400">
+                     <div class="card text-start shadow-sm border-0 catcard" data-filter="processed_meat" style="cursor: pointer;">
+                        <div class="catimg-container">
+                              <!-- Ganti asset dengan gambar produk olahan daging yang sesuai -->
+                              <img class="catimg img-fluid" src="{{ asset('template-sarab/img/category/4.jpg') }}" alt="Produk Olahan Daging"/>
+                        </div>
+                        <div class="card-body catcard-body">
+                              <h5>Produk Olahan Daging</h5>
+                        </div>
+                     </div>
+                  </div>
+
             </div>
          </div>
       </section>
@@ -402,6 +650,68 @@
                         <div class="blmeta"><span><i class="fas fa-user"></i>Chef Marcus</span><span><i class="fas fa-comment"></i>32 Comments</span></div>
                         <a href="#" class="blmore">Read More <i class="fas fa-arrow-right"></i></a>
                      </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+
+      <!-- FAQ Section -->
+      <section id="faq" class="py-5 bg-light">
+         <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+               <span class="slbl">FAQ</span>
+               <h2 class="stitle">Pertanyaan <span>Sering</span> Diajukan</h2>
+               <div class="sline"></div>
+               <p class="sdesc mx-auto" style="max-width:480px;">Temukan jawaban cepat untuk pertanyaan umum mengenai produk dan layanan kami.</p>
+            </div>
+
+            <div class="row justify-content-center">
+               <div class="col-lg-8" data-aos="fade-up" data-aos-delay="100">
+                  <div class="accordion accordion-flush shadow-sm rounded" id="accordionFaq">
+                     
+                     <!-- Item 1 -->
+                     <div class="accordion-item border-0 mb-3 rounded shadow-sm">
+                        <h2 class="accordion-header" id="headingOne">
+                           <button class="accordion-button collapsed fw-bold rounded" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                              Kapan jam operasional Toko FAA?
+                           </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionFaq">
+                           <div class="accordion-body text-muted">
+                              Toko kami buka setiap hari mulai pukul <strong>06.00 hingga 18.00 WIB</strong>. Kami selalu siap menyajikan roti segar setiap pagi untuk Anda.
+                           </div>
+                        </div>
+                     </div>
+
+                     <!-- Item 2 -->
+                     <div class="accordion-item border-0 mb-3 rounded shadow-sm">
+                        <h2 class="accordion-header" id="headingTwo">
+                           <button class="accordion-button collapsed fw-bold rounded" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                              Di mana lokasi tepatnya Toko FAA di Sungai Liat?
+                           </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionFaq">
+                           <div class="accordion-body text-muted">
+                              Kami berlokasi di <strong>Kuday, Sungai Liat, Kabupaten Bangka</strong>. Lokasi kami sangat strategis dan mudah dijangkau. Untuk detail lebih lanjut, Anda dapat melihat peta Google Maps di bagian bawah halaman ini.
+                           </div>
+                        </div>
+                     </div>
+
+                     <!-- Item 3 -->
+                     <div class="accordion-item border-0 mb-3 rounded shadow-sm">
+                        <h2 class="accordion-header" id="headingThree">
+                           <button class="accordion-button collapsed fw-bold rounded" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                              Apakah ada layanan pengiriman untuk Frozen Food?
+                           </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionFaq">
+                           <div class="accordion-body text-muted">
+                              Tentu! Kami menyediakan layanan <strong>pengiriman (delivery)</strong> untuk area Sungai Liat dan sekitarnya. Produk frozen food akan dikemas dengan aman untuk menjaga suhu dan kualitasnya hingga sampai di tangan Anda.
+                           </div>
+                        </div>
+                     </div>
+
                   </div>
                </div>
             </div>

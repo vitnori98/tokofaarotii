@@ -130,4 +130,29 @@ class ProductController extends Controller
         return redirect()->route('products.index')
             ->with('success', 'Produk berhasil dihapus');
     }
+
+    /**
+     * Menampilkan katalog produk makanan untuk publik (Frozen Food & Bakery).
+     */
+    public function produkMakanan()
+    {
+        // Gunakan Eager Loading 'category' untuk efisiensi query
+        // Filter kategori agar hanya memuat Frozen Food dan Bakery/Roti
+        $products = Product::with('category')
+            ->whereHas('category', function ($query) {
+                $query->where('name', 'like', '%Frozen%')
+                      ->orWhere('name', 'like', '%Bakery%')
+                      ->orWhere('name', 'like', '%Roti%');
+            })
+            ->latest()
+            ->get();
+
+        // Ambil list kategori yang relevan untuk filter di frontend
+        $categories = Category::where('name', 'like', '%Frozen%')
+            ->orWhere('name', 'like', '%Bakery%')
+            ->orWhere('name', 'like', '%Roti%')
+            ->get();
+
+        return view('produk-makanan', compact('products', 'categories'));
+    }
 }
