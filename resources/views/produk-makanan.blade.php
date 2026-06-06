@@ -643,7 +643,7 @@
                     <li class="nav-item"><a class="nav-link" href="{{ url('/#promo') }}">Dokumentasi</a></li>
                     <li class="nav-item"><a class="nav-link active fw-semibold text-danger" href="{{ route('produk.makanan') }}">Produk Makanan</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url('/#promo') }}">VR 3D Showroom</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url('/#faq') }}">FAQ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('faq.public') }}">FAQ</a></li>
 
                     <li class="nav-item">
                         <button id="navSearchBtn" class="btn btn-link text-dark nav-link px-2">

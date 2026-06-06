@@ -8,7 +8,14 @@ use Illuminate\Support\Facades\Response;
 
 class FaqController extends Controller
 {
-    // ── INDEX ──────────────────────────────────────────────
+    // ── PUBLIC VIEW ───────────────────────────────────────
+    public function publicIndex()
+    {
+        $faqs = Faq::latest()->get();
+        return view('faq-pertanyaan', compact('faqs'));
+    }
+
+    // ── INDEX (ADMIN) ──────────────────────────────────────
     public function index()
     {
         $faqs = Faq::latest()->get();
@@ -99,22 +106,30 @@ class FaqController extends Controller
     }
 
     // ── EXPORT PDF ─────────────────────────────────────────
-    // Menggunakan HTML-to-PDF via blade + dompdf (jika tersedia)
-    // Fallback ke HTML print-friendly jika dompdf belum dipasang
     public function exportPdf()
     {
         $faqs = Faq::latest()->get();
+        $filename = 'data-faq-' . now()->format('Ymd-His') . '.pdf';
 
-        // Cek apakah dompdf/laravel-dompdf tersedia
-        if (class_exists(\Barryvdh\DomPDF\Facade\Pdf::class)) {
-            $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('faq.pdf', compact('faqs'))
-                        ->setPaper('a4', 'portrait');
+        // Header agar langsung download (sama persis dengan pola Excel)
+        $headers = [
+            'Content-Type'        => 'application/pdf',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+            'Pragma'              => 'no-cache',
+            'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires'             => '0',
+        ];
 
-            return $pdf->download('data-faq-' . now()->format('Ymd-His') . '.pdf');
+        // Cek library DomPDF
+        if (!class_exists(\Barryvdh\DomPDF\Facade\Pdf::class)) {
+            return redirect()->back()->with('error', 'Library PDF belum terpasang. Jalankan: composer require barryvdh/laravel-dompdf');
         }
 
-        // Fallback: render HTML yang print-friendly
-        return response()->view('faq.pdf', compact('faqs'))
-                         ->header('Content-Type', 'text/html');
+        // Generate PDF
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('faq.pdf', compact('faqs'))
+                    ->setPaper('a4', 'portrait');
+
+        // Mengembalikan response stream/output (mirip pola Excel)
+        return response($pdf->output(), 200, $headers);
     }
 }

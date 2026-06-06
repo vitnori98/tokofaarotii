@@ -23,16 +23,20 @@ require __DIR__.'/auth.php';
 use App\Models\Product;
 use App\Models\Category;
 
+use App\Models\Faq;
+
 // PUBLIC ROUTES (Bisa diakses tanpa login)
 Route::get('/', function () {
     if (Auth::check()) {
         return redirect()->route('dashboard');
     }
     $products = Product::with('category')->latest()->get();
-    return view('welcome', compact('products')); 
+    $faqs = Faq::latest()->get();
+    return view('welcome', compact('products', 'faqs'));
 })->name('welcome');
 
 Route::get('/produk-makanan', [ProductController::class, 'produkMakanan'])->name('produk.makanan');
+Route::get('/faq-pertanyaan', [FaqController::class, 'publicIndex'])->name('faq.public');
 Route::post('/cart/add/{id}', [App\Http\Controllers\CartController::class, 'addToCart'])->name('cart.add');
 
 

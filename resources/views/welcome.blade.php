@@ -191,20 +191,32 @@
    }
 
    /* Custom Navigation Buttons */
-   .carousel-control-prev, .carousel-control-next {
-       width: 50px;
-       height: 50px;
-       background-color: #dc3545;
-       border-radius: 50%;
-       top: 50%;
-       transform: translateY(-50%);
-       opacity: 0.8;
-       margin: 0 20px;
+   .custom-carousel-btn {
+       width: 50px !important;
+       height: 50px !important;
+       background-color: rgba(220, 53, 69, 0.8) !important; /* Branded red with transparency */
+       border-radius: 50% !important;
+       top: 50% !important;
+       bottom: auto !important;
+       transform: translateY(-50%) !important;
+       opacity: 0.7 !important;
+       transition: all 0.3s ease !important;
+       z-index: 5 !important;
+       border: none !important;
    }
 
-   .carousel-control-prev:hover, .carousel-control-next:hover {
-       background-color: #b02a37;
-       opacity: 1;
+   .carousel-control-prev.custom-carousel-btn {
+       left: 20px !important;
+   }
+
+   .carousel-control-next.custom-carousel-btn {
+       right: 20px !important;
+   }
+
+   .custom-carousel-btn:hover {
+       background-color: rgba(176, 42, 55, 1) !important;
+       opacity: 1 !important;
+       transform: translateY(-50%) scale(1.1) !important;
    }
 
    .carousel-indicators [data-bs-target] {
@@ -214,6 +226,10 @@
        background-color: #dc3545;
        margin: 0 5px;
    }
+   /* Memastikan wrapper utama carousel relatif */
+#carouselExampleControls {
+    position: relative;
+}
    </style>
       <meta charset="UTF-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -271,15 +287,15 @@
       <header id="nav" class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm">
          <div class="container">
              <!-- BRAND LOGO DAN NAMA TOKO -->
-            <a class="navbar-brand d-flex align-items-center fw-bold fs-3 logo-faa-container" href="#">
+            <a class="navbar-brand d-flex align-items-center fw-bold fs-3 logo-faa-container" href="{{ route('welcome') }}">
                 <!-- Logo dengan efek ngambang/glowing -->
                 <div class="logo-floating-wrapper me-2">
                     <img src="{{ asset('template-sarab/img/logo-toko-faa.png') }}" alt="Logo Toko FAA" style="height: 55px; width: auto;">
                 </div>
                 
-                <!-- Teks FAA Kombinasi Merah & Biru -->
+                <!-- Teks FAA -->
                 <span class="text-faa">
-                    <span class="text-red">F</span><span class="text-blue">AA</span>
+                    <span class="text-red">FAA</span>
                 </span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
@@ -293,7 +309,7 @@
                   <li class="nav-item"><a class="nav-link" href="#promo">Dokumentasi</a></li>
                   <li class="nav-item"><a class="nav-link" href="{{ route('produk.makanan') }}">Produk Makanan</a></li>
                   <li class="nav-item"><a class="nav-link" href="#promo">VR 3D Showroom</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#promo">FAQ</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{{ route('faq.public') }}">FAQ</a></li>
                   <li class="nav-item">
                      <button id="navSearchBtn" class="btn btn-link text-dark nav-link"><i class="fas fa-search"></i></button>
                   </li>
@@ -451,16 +467,14 @@
             </div>
 
             <!-- Navigation Controls -->
-            <div class="custom_carousel-control">
-            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-bs-slide="prev">
+            <button class="carousel-control-prev custom-carousel-btn" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                <span class="visually-hidden">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-bs-slide="next">
+            </button>
+            <button class="carousel-control-next custom-carousel-btn" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
                <span class="carousel-control-next-icon" aria-hidden="true"></span>
                <span class="visually-hidden">Next</span>
-            </a>
-            </div>
+            </button>
          </div>
        </section>
       <!-- end slider section -->
@@ -650,68 +664,6 @@
                         <div class="blmeta"><span><i class="fas fa-user"></i>Chef Marcus</span><span><i class="fas fa-comment"></i>32 Comments</span></div>
                         <a href="#" class="blmore">Read More <i class="fas fa-arrow-right"></i></a>
                      </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </section>
-
-      <!-- FAQ Section -->
-      <section id="faq" class="py-5 bg-light">
-         <div class="container">
-            <div class="text-center mb-5" data-aos="fade-up">
-               <span class="slbl">FAQ</span>
-               <h2 class="stitle">Pertanyaan <span>Sering</span> Diajukan</h2>
-               <div class="sline"></div>
-               <p class="sdesc mx-auto" style="max-width:480px;">Temukan jawaban cepat untuk pertanyaan umum mengenai produk dan layanan kami.</p>
-            </div>
-
-            <div class="row justify-content-center">
-               <div class="col-lg-8" data-aos="fade-up" data-aos-delay="100">
-                  <div class="accordion accordion-flush shadow-sm rounded" id="accordionFaq">
-                     
-                     <!-- Item 1 -->
-                     <div class="accordion-item border-0 mb-3 rounded shadow-sm">
-                        <h2 class="accordion-header" id="headingOne">
-                           <button class="accordion-button collapsed fw-bold rounded" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                              Kapan jam operasional Toko FAA?
-                           </button>
-                        </h2>
-                        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionFaq">
-                           <div class="accordion-body text-muted">
-                              Toko kami buka setiap hari mulai pukul <strong>06.00 hingga 18.00 WIB</strong>. Kami selalu siap menyajikan roti segar setiap pagi untuk Anda.
-                           </div>
-                        </div>
-                     </div>
-
-                     <!-- Item 2 -->
-                     <div class="accordion-item border-0 mb-3 rounded shadow-sm">
-                        <h2 class="accordion-header" id="headingTwo">
-                           <button class="accordion-button collapsed fw-bold rounded" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                              Di mana lokasi tepatnya Toko FAA di Sungai Liat?
-                           </button>
-                        </h2>
-                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionFaq">
-                           <div class="accordion-body text-muted">
-                              Kami berlokasi di <strong>Kuday, Sungai Liat, Kabupaten Bangka</strong>. Lokasi kami sangat strategis dan mudah dijangkau. Untuk detail lebih lanjut, Anda dapat melihat peta Google Maps di bagian bawah halaman ini.
-                           </div>
-                        </div>
-                     </div>
-
-                     <!-- Item 3 -->
-                     <div class="accordion-item border-0 mb-3 rounded shadow-sm">
-                        <h2 class="accordion-header" id="headingThree">
-                           <button class="accordion-button collapsed fw-bold rounded" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                              Apakah ada layanan pengiriman untuk Frozen Food?
-                           </button>
-                        </h2>
-                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionFaq">
-                           <div class="accordion-body text-muted">
-                              Tentu! Kami menyediakan layanan <strong>pengiriman (delivery)</strong> untuk area Sungai Liat dan sekitarnya. Produk frozen food akan dikemas dengan aman untuk menjaga suhu dan kualitasnya hingga sampai di tangan Anda.
-                           </div>
-                        </div>
-                     </div>
-
                   </div>
                </div>
             </div>
