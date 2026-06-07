@@ -13,6 +13,11 @@ class BeritaController extends Controller
         return view('berita.index', compact('beritas'));
     }
 
+    public function show(Berita $berita)
+    {
+        return view('berita.show', compact('berita'));
+    }
+
     public function store(Request $request)
     {
         $data = $request->validate([

@@ -36,6 +36,7 @@
             --radius-sm:  10px;
             --radius-md:  18px;
             --radius-lg:  28px;
+            --border: #e5e7eb;
         }
 
         *, *::before, *::after { box-sizing: border-box; }
@@ -70,6 +71,193 @@
         }
         .text-faa .text-red  { color: var(--red); }
         .text-faa .text-blue { color: #0056b3; }
+
+        .navbar {
+            background: var(--white);
+            border-bottom: 2px solid var(--red);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(229,9,20,0.08);
+        }
+
+        .navbar-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .brand-logo-img {
+            height: 50px;
+            width: auto;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 4px 12px rgba(229,9,20,0.35));
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+
+        .brand-text {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 900;
+            font-size: 22px;
+            color: var(--red);
+            letter-spacing: -0.5px;
+            line-height: 1;
+        }
+
+        .brand-sub {
+            display: block;
+            font-size: 9px;
+            font-weight: 600;
+            color: var(--gray);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--dark);
+            padding: 8px 13px;
+            border-radius: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover { background: var(--light); color: var(--red); }
+        .nav-links a.active { color: var(--red); background: rgba(229,9,20,0.06); }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-nav-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            border: 1.5px solid var(--border);
+            background: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark);
+            transition: all 0.2s;
+            position: relative;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .btn-nav-icon:hover { border-color: var(--red); color: var(--red); }
+
+        .cart-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 17px;
+            height: 17px;
+            background: var(--red);
+            border-radius: 50%;
+            font-size: 8px;
+            font-weight: 800;
+            color: white;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+        }
+
+        .btn-login {
+            background: var(--red);
+            color: white !important;
+            padding: 9px 18px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 700;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-login:hover { background: var(--red-dark); transform: translateY(-1px); }
+
+        .btn-dashboard {
+            background: transparent;
+            color: var(--red) !important;
+            border: 1.5px solid var(--red);
+            padding: 8px 18px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 700;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-dashboard:hover { background: var(--red); color: white !important; }
+
+        .navbar-toggler {
+            display: none;
+            background: none;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 5px;
+            padding: 8px;
+        }
+
+        .navbar-toggler span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: var(--dark);
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+
+        @media (max-width: 900px) {
+            .nav-links { display: none; }
+            .navbar-toggler { display: flex; }
+        }
 
         /* =============================================
            HERO / PRODUCT HEADER
@@ -246,16 +434,17 @@
         .mcard {
             border-radius: var(--radius-md) !important;
             overflow: hidden;
-            box-shadow: var(--shadow-sm) !important;
-            border: 1px solid rgba(0,0,0,0.055) !important;
-            transition: transform .32s ease, box-shadow .32s ease;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.09) !important;
+            border: 1px solid rgba(0,0,0,0.04) !important;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             background: var(--white);
             position: relative;
         }
 
         .mcard:hover {
-            transform: translateY(-7px);
-            box-shadow: var(--shadow-lg) !important;
+            transform: translateY(-12px);
+            box-shadow: 0 20px 60px rgba(229,9,20,0.16) !important;
+            border-color: transparent !important;
         }
 
         .card-img-wrapper {
@@ -327,12 +516,17 @@
             font-size: 1rem;
             font-weight: 700;
             color: var(--dark);
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             line-height: 1.35;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
+            transition: color 0.3s;
+        }
+
+        .mcard:hover .card-title {
+            color: var(--red);
         }
 
         .product-short-desc {
@@ -617,66 +811,52 @@
         </div>
     </div>
 
-    <!-- =============================================
+    <!-- ===========================
          NAVBAR
-    ============================================= -->
-    <header id="nav" class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm">
-        <div class="container">
-            <a class="navbar-brand d-flex align-items-center fw-bold fs-3 logo-faa-container" href="{{ route('welcome') }}">
-                <div class="logo-floating-wrapper me-2">
-                    <img src="{{ asset('template-sarab/img/logo-toko-faa.png') }}" alt="Logo Toko FAA" style="height:55px;width:auto;">
+    ============================ -->
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <a class="navbar-brand" href="{{ route('welcome') }}">
+                <img src="{{ asset('template-sarab/img/logo-toko-faa.png') }}" alt="Logo FAA" class="brand-logo-img">
+                <div>
+                    <div class="brand-text">FAA</div>
+                    <span class="brand-sub">Frozen Food & Bakery</span>
                 </div>
-                <span class="text-faa">
-                    <span class="text-red">F</span><span class="text-red">AA</span>
-                </span>
             </a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            <ul class="nav-links">
+                <li><a href="{{ route('welcome') }}">Beranda</a></li>
+                <li><a href="{{ url('/#categories') }}">Tentang Kami</a></li>
+                <li><a href="{{ route('berita.public') }}">Berita</a></li>
+                <li><a href="{{ url('/#promo') }}">Dokumentasi</a></li>
+                <li><a href="{{ route('produk.makanan') }}" class="active">Produk Makanan</a></li>
+                <li><a href="#promo">VR 3D Showroom</a></li>
+                <li><a href="{{ route('faq.public') }}">FAQ</a></li>
+            </ul>
 
-            <div class="collapse navbar-collapse" id="navmenu">
-                <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item"><a class="nav-link" href="{{ route('welcome') }}">Beranda</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url('/#categories') }}">Tentang Kami</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url('/#menu') }}">Berita</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url('/#promo') }}">Dokumentasi</a></li>
-                    <li class="nav-item"><a class="nav-link active fw-semibold text-danger" href="{{ route('produk.makanan') }}">Produk Makanan</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url('/#promo') }}">VR 3D Showroom</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('faq.public') }}">FAQ</a></li>
-
-                    <li class="nav-item">
-                        <button id="navSearchBtn" class="btn btn-link text-dark nav-link px-2">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </li>
-
-                    <!-- Cart icon -->
-                    <li class="nav-item me-2 position-relative" style="list-style:none;display:inline-block;">
-                        <a href="#" class="nav-link text-dark fs-5 px-2">
-                            <i class="fas fa-shopping-cart"></i>
-                            <span class="position-absolute start-100 translate-middle badge rounded-pill bg-danger cart-badge" style="font-size:.62rem;top:10px;">
-                                {{ session('cart') ? count(session('cart')) : 0 }}
-                            </span>
-                        </a>
-                    </li>
-
-                    <!-- Auth button -->
-                    <li class="nav-item ms-lg-2">
-                        @auth
-                            <a href="{{ url('/dashboard') }}" class="btn btn-outline-danger btn-sm rounded-pill px-3 shadow-sm">
-                                <i class="fas fa-th-large me-1"></i> Dashboard
-                            </a>
-                        @else
-                            <a href="{{ route('login') }}" class="btn btn-danger btn-sm rounded-pill px-3 shadow-sm">
-                                <i class="fas fa-sign-in-alt me-1"></i> Masuk
-                            </a>
-                        @endauth
-                    </li>
-                </ul>
+            <div class="nav-actions">
+                <button class="btn-nav-icon" id="navSearchBtn" title="Cari">
+                    <i class="fas fa-search"></i>
+                </button>
+                <a href="#" class="btn-nav-icon" title="Keranjang">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-badge">{{ session('cart') ? count(session('cart')) : 0 }}</span>
+                </a>
+                @auth
+                    <a href="{{ url('/dashboard') }}" class="btn-dashboard">
+                        <i class="fas fa-th-large"></i> Dashboard
+                    </a>
+                @else
+                    <a href="{{ route('login') }}" class="btn-login">
+                        <i class="fas fa-sign-in-alt"></i> Masuk
+                    </a>
+                @endauth
+                <button class="navbar-toggler" id="navToggle">
+                    <span></span><span></span><span></span>
+                </button>
             </div>
         </div>
-    </header>
+    </nav>
 
     <!-- =============================================
          HERO
@@ -850,7 +1030,7 @@
                     <ul class="flinks ps-0">
                         <li><a href="#hero"><i class="fas fa-chevron-right"></i>Beranda</a></li>
                         <li><a href="#categories"><i class="fas fa-chevron-right"></i>Tentang Kami</a></li>
-                        <li><a href="#menu"><i class="fas fa-chevron-right"></i>Berita</a></li>
+                        <li><a href="{{ route('berita.public') }}"><i class="fas fa-chevron-right"></i>Berita</a></li>
                         <li><a href="#promo"><i class="fas fa-chevron-right"></i>Flash Sale</a></li>
                         <li><a href="#blog"><i class="fas fa-chevron-right"></i>Blog</a></li>
                         <li><a href="#contact-section"><i class="fas fa-chevron-right"></i>Kontak</a></li>
