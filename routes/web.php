@@ -108,8 +108,8 @@ Route::middleware(['auth', 'role:admin_master,pemilik'])->group(function () {
     // Reports Routes
     Route::prefix('reports')->name('reports.')->group(function () {
         Route::get('/', [ReportController::class, 'index'])->name('index');
-        Route::get('/sales', [ReportController::class, 'sales'])->name('sales');
-        Route::get('/stock', [ReportController::class, 'stock'])->name('stock');
+        Route::get('/sales', function() { return redirect()->route('reports.index'); })->name('sales');
+        Route::get('/stock', function() { return redirect()->route('reports.index'); })->name('stock');
         Route::get('/export', [ReportController::class, 'export'])->name('export');
     });
 

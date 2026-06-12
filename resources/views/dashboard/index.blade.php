@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard')
+@section('title', 'Panel Kendali')
 @section('subtitle', 'Pusat kendali Toko Faa Frozen & Bakery')
 
 @section('content')
@@ -66,6 +66,18 @@
             </div>
         </div>
 
+        {{-- Categories Performance --}}
+        <div class="dashboard-card">
+            <div class="card-header">
+                <h3 class="card-title"><i class="fas fa-chart-pie text-blue-500"></i> Performa Kategori</h3>
+            </div>
+            <div class="card-body">
+                <div class="chart-mini">
+                    <canvas id="categoryChart"></canvas>
+                </div>
+            </div>
+        </div>
+
         {{-- Top Products --}}
         <div class="dashboard-card">
             <div class="card-header">
@@ -110,6 +122,22 @@
     {{-- ── RIGHT COLUMN: ALERTS & CATEGORIES ── --}}
     <div class="dashboard-col">
         
+        {{-- Quick Shortcuts --}}
+        <div class="shortcut-grid">
+            <a href="{{ route('products.index') }}" class="shortcut-item">
+                <i class="fas fa-box"></i>
+                <span>Produk</span>
+            </a>
+            <a href="{{ route('stock-entries.index') }}" class="shortcut-item">
+                <i class="fas fa-warehouse"></i>
+                <span>Stok</span>
+            </a>
+            <a href="{{ route('reports.index') }}" class="shortcut-item">
+                <i class="fas fa-file-invoice-dollar"></i>
+                <span>Laporan</span>
+            </a>
+        </div>
+
         {{-- Stok Alerts --}}
         <div class="dashboard-card">
             <div class="card-header">
@@ -150,33 +178,6 @@
             </div>
         </div>
 
-        {{-- Categories Performance --}}
-        <div class="dashboard-card">
-            <div class="card-header">
-                <h3 class="card-title"><i class="fas fa-chart-pie text-blue-500"></i> Performa Kategori</h3>
-            </div>
-            <div class="card-body">
-                <div class="chart-mini">
-                    <canvas id="categoryChart"></canvas>
-                </div>
-            </div>
-        </div>
-
-        {{-- Quick Shortcuts --}}
-        <div class="shortcut-grid">
-            <a href="{{ route('products.index') }}" class="shortcut-item">
-                <i class="fas fa-box"></i>
-                <span>Produk</span>
-            </a>
-            <a href="{{ route('stock-entries.index') }}" class="shortcut-item">
-                <i class="fas fa-warehouse"></i>
-                <span>Stok</span>
-            </a>
-            <a href="{{ route('reports.index') }}" class="shortcut-item">
-                <i class="fas fa-file-invoice-dollar"></i>
-                <span>Laporan</span>
-            </a>
-        </div>
     </div>
 
 </div>
@@ -269,29 +270,39 @@ document.addEventListener('DOMContentLoaded', function() {
     const monthlyCtx = document.getElementById('monthlySalesChart');
     if (monthlyCtx) {
         new Chart(monthlyCtx.getContext('2d'), {
-            type: 'line',
+            type: 'bar',
             data: {
                 labels: @json($chartLabels ?? []),
                 datasets: [{
                     label: 'Penjualan',
                     data: @json($chartData ?? []),
-                    borderColor: '#6366f1',
-                    backgroundColor: 'rgba(99, 102, 241, 0.1)',
-                    borderWidth: 4,
-                    fill: true,
-                    tension: 0.4,
-                    pointBackgroundColor: '#6366f1',
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 2,
-                    pointRadius: 6,
-                    pointHoverRadius: 8
+                    backgroundColor: '#6366f1',
+                    borderRadius: 8,
+                    barThickness: 25,
+                    hoverBackgroundColor: '#4f46e5',
                 }]
             },
             options: {
                 responsive: true, maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
+                plugins: { 
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return 'Penjualan: Rp ' + context.raw.toLocaleString('id-ID');
+                            }
+                        }
+                    }
+                },
                 scales: {
-                    y: { beginAtZero: true, grid: { borderDash: [5, 5], color: '#f1f5f9' }, ticks: { font: { size: 10 }, callback: v => 'Rp' + v.toLocaleString('id-ID') } },
+                    y: { 
+                        beginAtZero: true, 
+                        grid: { borderDash: [5, 5], color: '#f1f5f9' }, 
+                        ticks: { 
+                            font: { size: 10 }, 
+                            callback: v => 'Rp' + v.toLocaleString('id-ID') 
+                        } 
+                    },
                     x: { grid: { display: false }, ticks: { font: { size: 10 } } }
                 }
             }
@@ -301,19 +312,36 @@ document.addEventListener('DOMContentLoaded', function() {
     // Category Chart
     const categoryCtx = document.getElementById('categoryChart');
     if (categoryCtx) {
+        const labels = @json($categoryLabels ?? []);
+        const colors = labels.map(label => {
+            const l = label.toLowerCase();
+            if (l.includes('frozen')) return '#ef4444'; // Red
+            if (l.includes('bakery')) return '#f59e0b'; // Amber/Orange
+            return '#6366f1'; // Default Indigo
+        });
+
         new Chart(categoryCtx.getContext('2d'), {
             type: 'doughnut',
             data: {
-                labels: @json($categoryLabels ?? []),
+                labels: labels,
                 datasets: [{
                     data: @json($categoryData ?? []),
-                    backgroundColor: ['#6366f1', '#3b82f6', '#10b981', '#f59e0b', '#ef4444'],
+                    backgroundColor: colors,
                     borderWidth: 4, borderColor: '#fff'
                 }]
             },
             options: {
                 responsive: true, maintainAspectRatio: false,
-                plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, padding: 15, font: { size: 10, weight: 'bold' } } } },
+                plugins: { 
+                    legend: { position: 'bottom', labels: { boxWidth: 10, padding: 15, font: { size: 10, weight: 'bold' } } },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': Rp ' + context.raw.toLocaleString('id-ID');
+                            }
+                        }
+                    }
+                },
                 cutout: '70%'
             }
         });

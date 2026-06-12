@@ -831,7 +831,7 @@
                         @php
                            $date = \Carbon\Carbon::parse($berita->created_at);
                         @endphp
-                        <div class="bldatebdg"><span class="bd">{{ $date->format('d') }}</span><span class="bm">{{ $date->format('M') }}</span></div>
+                        <div class="bldatebdg"><span class="bd">{{ $date->translatedFormat('d') }}</span><span class="bm">{{ $date->translatedFormat('M') }}</span></div>
                      </div>
                      <div class="blbody">
                         <div class="bltag">{{ $berita->kategori ?? 'Berita' }}</div>

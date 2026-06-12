@@ -1188,8 +1188,8 @@
                     @endif
                     <div class="img-badge-top">#Terupdate 1</div>
                     <div class="img-date-badge">
-                        <span class="day">{{ \Carbon\Carbon::parse($featured->created_at)->format('d') }}</span>
-                        <span class="mon">{{ \Carbon\Carbon::parse($featured->created_at)->format('M Y') }}</span>
+                        <span class="day">{{ \Carbon\Carbon::parse($featured->created_at)->translatedFormat('d') }}</span>
+                        <span class="mon">{{ \Carbon\Carbon::parse($featured->created_at)->translatedFormat('M Y') }}</span>
                     </div>
                 </div>
                 <div class="card-featured-body">

@@ -27,7 +27,7 @@
             <div class="header-right">
                 <div class="date-tag">
                     <i class="far fa-calendar-alt"></i>
-                    {{ \Carbon\Carbon::parse($stockEntry->entry_date)->format('d M Y') }}
+                    {{ \Carbon\Carbon::parse($stockEntry->entry_date)->translatedFormat('d M Y') }}
                 </div>
             </div>
         </div>
@@ -64,7 +64,7 @@
 
         <div class="card-footer">
             <div class="metadata">
-                <span><i class="far fa-clock"></i> Dicatat pada {{ $stockEntry->created_at->format('d/m/Y H:i') }}</span>
+                <span><i class="far fa-clock"></i> Dicatat pada {{ $stockEntry->created_at->translatedFormat('d/m/Y H:i') }}</span>
             </div>
             <div class="actions">
                 <a href="{{ route('stock-entries.edit', $stockEntry) }}" class="btn-edit">

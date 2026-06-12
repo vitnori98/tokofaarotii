@@ -10,7 +10,13 @@ class Sale extends Model
         'product_id', 
         'quantity_sold', 
         'total_price', 
-        'sale_date' // Wajib ada
+        'sale_date',
+        'customer_name',
+        'source',
+        'status',
+        'notes',
+        'transaction_group',
+        'payment_method'
     ];
 
     protected static function booted()

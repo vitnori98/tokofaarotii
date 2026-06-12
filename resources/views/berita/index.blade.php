@@ -85,7 +85,7 @@
                     </td>
                     <td>
                         <span style="color: #64748b; font-weight: 500;">
-                            {{ $b->created_at ? $b->created_at->format('d-m-Y') : '-' }}
+                            {{ $b->created_at ? $b->created_at->translatedFormat('d F Y') : '-' }}
                         </span>
                     </td>
                     <td>
@@ -463,7 +463,8 @@
         let tgl = '-';
         if(data.created_at) {
             const d = new Date(data.created_at);
-            tgl = `${String(d.getDate()).padStart(2, '0')}-${String(d.getMonth()+1).padStart(2, '0')}-${d.getFullYear()}`;
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            tgl = `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
         }
         detailTanggal.innerHTML = `<i class="far fa-calendar-alt"></i> Diposting pada: ${tgl}`;
         

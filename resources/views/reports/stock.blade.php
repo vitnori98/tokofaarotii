@@ -30,6 +30,19 @@
     </div>
 </div>
 
+{{-- ── STOCK CHART ── --}}
+<div class="dashboard-card mb-6">
+    <div class="card-header">
+        <h3 class="card-title"><i class="fas fa-chart-bar text-blue-500"></i> Visualisasi Stok Produk</h3>
+        <span class="card-subtitle">Level stok per produk</span>
+    </div>
+    <div class="card-body">
+        <div class="chart-container" style="height: 350px;">
+            <canvas id="stockBarChart"></canvas>
+        </div>
+    </div>
+</div>
+
 {{-- ── TABLE ── --}}
 <div class="table-container">
     <div class="table-header">
@@ -138,15 +151,58 @@
     .pill-amber { background: #fffbeb; color: #d97706; }
     .pill-red { background: #fef2f2; color: #dc2626; }
 
+    .mb-6 { margin-bottom: 1.5rem; }
+    .dashboard-card { background: #fff; border-radius: 1.5rem; border: 1px solid #f1f5f9; box-shadow: 0 1px 3px rgba(15,23,42,.05); overflow: hidden; }
+    .card-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid #f8fafc; display: flex; align-items: center; justify-content: space-between; }
+    .card-title { font-size: .95rem; font-weight: 800; color: #1e293b; margin: 0; display: flex; align-items: center; gap: .6rem; }
+    .card-subtitle { font-size: .75rem; color: #94a3b8; font-weight: 600; }
+    .card-body { padding: 1.5rem; }
+    .chart-container { position: relative; width: 100%; }
+
     .empty-state { text-align: center; padding: 4rem 1rem !important; color: #cbd5e1; }
     .empty-state i { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
     .empty-state p { font-size: .85rem; font-weight: 600; color: #94a3b8; }
 
     @media print {
-        .btn-print-outline { display: none; }
+        .btn-print-outline, .dashboard-card { display: none; }
         .table-container { border: none; box-shadow: none; }
         body { background: #fff; }
     }
 </style>
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('stockBarChart');
+    if (ctx) {
+        new Chart(ctx.getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: @json($products->pluck('name')),
+                datasets: [{
+                    label: 'Sisa Stok',
+                    data: @json($products->map(fn($p) => $p->total_stok)),
+                    backgroundColor: @json($products->map(fn($p) => $p->total_stok <= 0 ? '#ef4444' : ($p->total_stok < 10 ? '#f59e0b' : '#3b82f6'))),
+                    borderRadius: 6,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                scales: {
+                    x: { beginAtZero: true, grid: { color: '#f1f5f9' } },
+                    y: { grid: { display: false }, ticks: { font: { size: 10, weight: 'bold' } } }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+    }
+});
+</script>
+@endpush
 
 @endsection

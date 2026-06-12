@@ -8,13 +8,26 @@ use Illuminate\Http\Request;
 
 class SaleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $sales = Sale::with('product')
-            ->latest()
+        // Mengelompokkan berdasarkan transaction_group
+        // Menggunakan COALESCE untuk menangani data lama yang transaction_group-nya NULL
+        $sales = Sale::join('products', 'sales.product_id', '=', 'products.id')
+            ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->select(
+                \DB::raw("COALESCE(sales.transaction_group, CONCAT('LEGACY-', sales.id)) as transaction_group"), 
+                'sales.customer_name', 
+                'sales.payment_method', 
+                'sales.sale_date', 
+                'sales.source',
+                \DB::raw('SUM(sales.total_price) as total_revenue'), 
+                \DB::raw('SUM(sales.quantity_sold) as total_items'), 
+                \DB::raw('GROUP_CONCAT(products.name SEPARATOR ", ") as product_names'),
+                \DB::raw('GROUP_CONCAT(DISTINCT categories.name SEPARATOR ", ") as category_names'),
+                \DB::raw('MAX(sales.created_at) as latest_created')
+            )
+            ->groupBy(\DB::raw("COALESCE(sales.transaction_group, CONCAT('LEGACY-', sales.id))"), 'sales.customer_name', 'sales.payment_method', 'sales.sale_date', 'sales.source')
+            ->latest('latest_created')
             ->paginate(10);
             
         $totalSales = Sale::sum('total_price');
@@ -28,7 +41,7 @@ class SaleController extends Controller
      */
     public function create()
     {
-        $products = Product::all();
+        $products = Product::with('category')->get();
         return view('sales.create', compact('products'));
     }
 
@@ -42,18 +55,14 @@ class SaleController extends Controller
             'quantity_sold' => 'required|integer|min:1',
             'total_price' => 'required|numeric|min:0',
             'customer_name' => 'nullable|string|max:255',
-            'source' => 'required|in:online,offline', // Tambahkan validasi source
+            'source' => 'required|in:online,offline',
+            'payment_method' => 'required|string',
         ]);
 
         $product = Product::findOrFail($request->product_id);
         
-        // Logika Hitung Stok tetap sama
-        $totalStock = $product->stockEntries->sum('quantity');
-        $totalSold = $product->sales->where('status', 'completed')->sum('quantity_sold'); // Hanya hitung yang sudah lunas/selesai
-        $currentStock = $totalStock - $totalSold;
-        
-        if ($currentStock < $request->quantity_sold) {
-            return back()->withErrors(['quantity_sold' => 'Stok tidak mencukupi. Tersedia: ' . $currentStock]);
+        if ($product->total_stok < $request->quantity_sold) {
+            return back()->withErrors(['quantity_sold' => 'Stok tidak mencukupi. Tersedia: ' . $product->total_stok]);
         }
 
         Sale::create([
@@ -62,16 +71,15 @@ class SaleController extends Controller
             'total_price' => $request->total_price,
             'customer_name' => $request->customer_name ?? 'Umum',
             'source' => $request->source,
-            'status' => ($request->source == 'offline') ? 'completed' : 'pending', // Logika pembeda status
+            'status' => 'completed',
             'notes' => $request->notes,
+            'payment_method' => $request->payment_method,
+            'transaction_group' => 'TRX-S-' . time() . '-' . rand(100, 999),
         ]);
 
         return redirect()->route('sales.index')->with('success', 'Penjualan berhasil dicatat');
     }
 
-        /**
-        * Logika khusus untuk menyimpan penjualan dari POS (Kasir Modern)
-        */  
     public function storePos(Request $request)
     {
         if (!$request->items || count($request->items) == 0) {
@@ -79,7 +87,7 @@ class SaleController extends Controller
         }
 
         try {
-            $transactionId = 'TRX-' . time(); // Buat ID unik sementara untuk struk
+            $transactionId = 'TRX-' . time();
 
             foreach ($request->items as $item) {
                 \App\Models\Sale::create([
@@ -89,7 +97,8 @@ class SaleController extends Controller
                     'customer_name' => $request->customer_name ?? 'Umum',
                     'source'        => 'offline',
                     'status'        => 'completed',
-                    'transaction_group' => $transactionId // Tambahkan kolom ini jika ada untuk mengelompokkan struk
+                    'transaction_group' => $transactionId,
+                    'payment_method' => $request->payment_method ?? 'tunai'
                 ]);
             }
 
@@ -97,6 +106,7 @@ class SaleController extends Controller
                 'success' => true, 
                 'transaction_id' => $transactionId,
                 'customer' => $request->customer_name ?? 'Umum',
+                'payment_method' => $request->payment_method ?? 'tunai',
                 'time' => date('d M Y H:i')
             ]);
         } catch (\Exception $e) {
@@ -143,12 +153,18 @@ class SaleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Sale $sale)
+    public function destroy($id)
     {
-        $sale->delete();
+        // $id di sini adalah transaction_group atau virtual legacy ID
+        if (str_starts_with($id, 'LEGACY-')) {
+            $realId = str_replace('LEGACY-', '', $id);
+            Sale::where('id', $realId)->delete();
+        } else {
+            Sale::where('transaction_group', $id)->delete();
+        }
 
         return redirect()->route('sales.index')
-            ->with('success', 'Penjualan berhasil dihapus');
+            ->with('success', 'Transaksi berhasil dihapus');
     }
 
     /**

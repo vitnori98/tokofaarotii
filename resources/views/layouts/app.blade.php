@@ -505,7 +505,7 @@
                 <a href="{{ route('dashboard') }}"
                    class="nav-link {{ request()->routeIs('dashboard*') ? 'active' : '' }}">
                     <i class="fas fa-home"></i>
-                    <span>Dashboard</span>
+                    <span>Beranda</span>
                 </a>
 
                 <a href="{{ route('products.index') }}"
@@ -523,7 +523,7 @@
                 <a href="{{ route('stock-entries.index') }}"
                    class="nav-link {{ request()->routeIs('stock-entries.*') ? 'active' : '' }}">
                     <i class="fas fa-warehouse"></i>
-                    <span>Stock</span>
+                    <span>Stok</span>
                 </a>
 
                 <a href="{{ route('sales.index') }}"
@@ -641,7 +641,7 @@
                 </button>
 
                 <div>
-                    <div class="topbar-title">@yield('title', 'Dashboard')</div>
+                    <div class="topbar-title">@yield('title', 'Panel Kendali')</div>
                 </div>
             </div>
 
@@ -702,7 +702,15 @@
                                 <div class="dropdown-panel-name">{{ Auth::user()->name ?? 'Admin' }}</div>
                                 {{-- FIX: Menampilkan nama role secara dinamis dan rapi --}}
                                 <div class="dropdown-panel-role">
-                                    {{ ucwords(str_replace('_', ' ', Auth::user()->role ?? 'Pegawai')) }}
+                                    @php
+                                        $roles = [
+                                            'admin_master' => 'Admin Utama',
+                                            'admin_toko' => 'Admin Toko',
+                                            'pegawai' => 'Pegawai'
+                                        ];
+                                        $userRole = Auth::user()->role ?? 'pegawai';
+                                    @endphp
+                                    {{ $roles[$userRole] ?? ucwords(str_replace('_', ' ', $userRole)) }}
                                 </div>
                             </div>
                         </div>

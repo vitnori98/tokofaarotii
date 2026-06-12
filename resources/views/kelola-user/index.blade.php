@@ -77,7 +77,7 @@
                         @endswitch
                     </td>
                     <td style="text-align:center;">
-                        <span class="u-date">{{ $user->created_at ? $user->created_at->format('d/m/Y') : '-' }}</span>
+                        <span class="u-date">{{ $user->created_at ? $user->created_at->translatedFormat('d F Y') : '-' }}</span>
                     </td>
                     <td>
                         <div class="action-btns">
@@ -125,7 +125,7 @@
                 <input type="text" name="name" required placeholder="Contoh: Budi Santoso">
             </div>
             <div class="form-group">
-                <label>Email Address</label>
+                <label>Alamat Email</label>
                 <input type="email" name="email" required placeholder="budi@tokofaa.com">
             </div>
             <div class="form-group">
@@ -138,11 +138,11 @@
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label>Password</label>
+                    <label>Kata Sandi</label>
                     <input type="password" name="password" required placeholder="••••••••">
                 </div>
                 <div class="form-group">
-                    <label>Konfirmasi Password</label>
+                    <label>Konfirmasi Kata Sandi</label>
                     <input type="password" name="password_confirmation" required placeholder="••••••••">
                 </div>
             </div>
@@ -168,7 +168,7 @@
                 <input type="text" name="name" id="edit-name" required>
             </div>
             <div class="form-group">
-                <label>Email Address</label>
+                <label>Alamat Email</label>
                 <input type="email" name="email" id="edit-email" required>
             </div>
             
@@ -185,14 +185,14 @@
                 </p>
             </div>
 
-            <div class="divider"><span>Ganti Password (Opsional)</span></div>
+            <div class="divider"><span>Ganti Kata Sandi (Opsional)</span></div>
             <div class="form-row">
                 <div class="form-group">
-                    <label>Password Baru</label>
+                    <label>Kata Sandi Baru</label>
                     <input type="password" name="password" placeholder="Kosongkan jika tidak diubah">
                 </div>
                 <div class="form-group">
-                    <label>Konfirmasi Password Baru</label>
+                    <label>Konfirmasi Kata Sandi Baru</label>
                     <input type="password" name="password_confirmation" placeholder="Kosongkan jika tidak diubah">
                 </div>
             </div>

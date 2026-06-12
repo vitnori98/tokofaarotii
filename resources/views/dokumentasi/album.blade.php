@@ -45,7 +45,7 @@
                 @endif
                 <div class="album-date">
                     <i class="far fa-calendar-alt"></i> 
-                    {{ $album->tanggal ? \Carbon\Carbon::parse($album->tanggal)->format('d M Y') : 'N/A' }}
+                    {{ $album->tanggal ? \Carbon\Carbon::parse($album->tanggal)->translatedFormat('d F Y') : 'N/A' }}
                 </div>
             </div>
             <div class="album-content">

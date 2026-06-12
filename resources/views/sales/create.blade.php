@@ -54,6 +54,26 @@
                     </div>
                 </div>
 
+                <div class="payment-method-selector">
+                    <p class="selector-label">METODE PEMBAYARAN</p>
+                    <div class="method-options">
+                        <label class="method-option">
+                            <input type="radio" name="payment_method" value="tunai" checked>
+                            <div class="option-content">
+                                <i class="fas fa-money-bill-wave"></i>
+                                <span>Tunai</span>
+                            </div>
+                        </label>
+                        <label class="method-option">
+                            <input type="radio" name="payment_method" value="midtrans">
+                            <div class="option-content">
+                                <i class="fas fa-credit-card"></i>
+                                <span>Midtrans</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
                 <div id="cartItems" class="cart-items custom-scrollbar">
                     <div class="cart-empty">
                         <i class="fas fa-shopping-basket"></i>
@@ -119,6 +139,17 @@
     .customer-input-wrap { display: flex; align-items: center; gap: .75rem; background: #f8fafc; padding: .5rem 1rem; border-radius: 1rem; }
     .user-icon { width: 32px; height: 32px; background: #fff; border-radius: .5rem; display: flex; align-items: center; justify-content: center; color: #6366f1; font-size: .75rem; }
     .customer-input-wrap input { flex: 1; border: none; background: transparent; font-size: .85rem; font-weight: 700; outline: none; color: #475569; }
+
+    /* ── Payment Selector ── */
+    .payment-method-selector { padding: 0 1.25rem 1.25rem; border-bottom: 1px solid #f8fafc; }
+    .selector-label { font-size: .65rem; font-weight: 800; color: #94a3b8; margin-bottom: .75rem; letter-spacing: .05em; }
+    .method-options { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+    .method-option { cursor: pointer; position: relative; }
+    .method-option input { position: absolute; opacity: 0; }
+    .option-content { background: #f8fafc; border: 1.5px solid #f1f5f9; padding: .6rem; border-radius: .875rem; display: flex; align-items: center; justify-content: center; gap: .5rem; transition: all .2s; }
+    .method-option input:checked + .option-content { background: #eff6ff; border-color: #6366f1; color: #6366f1; }
+    .option-content i { font-size: .85rem; }
+    .option-content span { font-size: .75rem; font-weight: 700; }
 
     .cart-items { flex: 1; overflow-y: auto; padding: 1.25rem; display: flex; flex-direction: column; gap: .75rem; }
     .cart-item { display: flex; align-items: center; justify-content: space-between; background: #fff; padding: .875rem; border-radius: 1.125rem; border: 1.5px solid #f8fafc; transition: all .2s; }
@@ -232,7 +263,7 @@
     function printStruk(data, items) {
         let strukWindow = window.open('', '', 'width=400,height=600');
         let itemHtml = items.map(item => `
-            <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 5px;">
+            <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 5px;">
                 <span>${item.qty}x ${item.name}</span>
                 <span>Rp ${(item.price * item.qty).toLocaleString('id-ID')}</span>
             </div>
@@ -242,24 +273,27 @@
 
         strukWindow.document.write(`
             <html>
-            <body style="font-family: 'Courier New', Courier, monospace; width: 300px; padding: 10px;">
+            <body style="font-family: 'Courier New', Courier, monospace; width: 300px; padding: 10px; color: #333;">
                 <div style="text-align: center; border-bottom: 1px dashed #000; padding-bottom: 10px; margin-bottom: 10px;">
-                    <h2 style="margin: 0; font-size: 18px;">TOKO FAA</h2>
-                    <p style="margin: 0; font-size: 10px;">Frozen Food & Bakery</p>
+                    <h2 style="margin: 0; font-size: 18px;">TOKO FAA FROZEN</h2>
+                    <p style="margin: 2px 0; font-size: 10px;">Kuday, Sungai Liat, Kabupaten Bangka</p>
+                    <p style="margin: 2px 0; font-size: 10px;">HP: 085368787893</p>
                 </div>
-                <div style="font-size: 11px; margin-bottom: 10px;">
-                    <div>Tgl: ${data.time}</div>
-                    <div>Pelanggan: ${data.customer}</div>
+                <div style="font-size: 10px; margin-bottom: 10px; line-height: 1.4;">
+                    <div style="display: flex; justify-content: space-between;"><span>No:</span> <span>${data.transaction_id}</span></div>
+                    <div style="display: flex; justify-content: space-between;"><span>Tgl:</span> <span>${data.time}</span></div>
+                    <div style="display: flex; justify-content: space-between;"><span>Plg:</span> <span>${data.customer}</span></div>
+                    <div style="display: flex; justify-content: space-between;"><span>Byr:</span> <span>${data.payment_method.toUpperCase()}</span></div>
                 </div>
                 <div style="border-bottom: 1px dashed #000; padding-bottom: 5px; margin-bottom: 5px;">
                     ${itemHtml}
                 </div>
-                <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 14px; margin-bottom: 10px;">
+                <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 13px; margin-bottom: 10px;">
                     <span>TOTAL</span>
                     <span>Rp ${total.toLocaleString('id-ID')}</span>
                 </div>
                 <div style="text-align: center; font-size: 10px; margin-top: 20px;">
-                    *** Terima Kasih ***<br>Selamat Menikmati!
+                    *** TERIMA KASIH ***<br>Selamat Menikmati!
                 </div>
             </body>
             </html>
@@ -276,6 +310,7 @@
         if (cart.length === 0) return alert('Pilih produk dulu!');
 
         const customerName = document.getElementById('customer_name').value || 'Umum';
+        const paymentMethod = document.querySelector('input[name="payment_method"]:checked').value;
 
         fetch("{{ route('sales.pos.store') }}", {
             method: "POST",
@@ -285,7 +320,8 @@
             },
             body: JSON.stringify({
                 items: cart,
-                customer_name: customerName
+                customer_name: customerName,
+                payment_method: paymentMethod
             })
         })
         .then(res => res.json())

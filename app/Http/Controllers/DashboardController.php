@@ -55,15 +55,28 @@ class DashboardController extends Controller
             // Hitung rata-rata penjualan per bulan
             $averageMonthlySales = $this->calculateAverageMonthlySales($dateColumn);
             
-            // ==================== PRODUK TERLARIS ====================
-            $topProducts = Sale::select('product_id', DB::raw('SUM(quantity_sold) as total_sold'))
+            // ==================== PRODUK TERLARIS (TOP 3 FROZEN & TOP 3 BAKERY) ====================
+            $topFrozen = Sale::select('product_id', DB::raw('SUM(quantity_sold) as total_sold'))
+                ->join('products', 'sales.product_id', '=', 'products.id')
+                ->join('categories', 'products.category_id', '=', 'categories.id')
+                ->where('categories.name', 'LIKE', '%frozen%')
                 ->groupBy('product_id')
                 ->orderBy('total_sold', 'DESC')
-                ->limit(5)
-                ->with(['product' => function($query) {
-                    $query->with('category');
-                }])
+                ->limit(3)
+                ->with(['product' => function($query) { $query->with('category'); }])
                 ->get();
+
+            $topBakery = Sale::select('product_id', DB::raw('SUM(quantity_sold) as total_sold'))
+                ->join('products', 'sales.product_id', '=', 'products.id')
+                ->join('categories', 'products.category_id', '=', 'categories.id')
+                ->where('categories.name', 'LIKE', '%bakery%')
+                ->groupBy('product_id')
+                ->orderBy('total_sold', 'DESC')
+                ->limit(3)
+                ->with(['product' => function($query) { $query->with('category'); }])
+                ->get();
+            
+            $topProducts = $topFrozen->concat($topBakery);
             
             // ==================== ANALISIS STOK ====================
             $stockAnalysis = $this->analyzeStock();

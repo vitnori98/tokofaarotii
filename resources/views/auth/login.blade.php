@@ -15,7 +15,7 @@
 
         {{-- Email --}}
         <div class="auth-input-group">
-            <label class="auth-label">Email Address</label>
+            <label class="auth-label">Alamat Email</label>
             <div class="auth-input-wrap">
                 <i class="fas fa-envelope auth-input-icon"></i>
                 <input type="email" name="email" value="{{ old('email') }}" required autofocus class="auth-input" placeholder="admin@tokofaa.com">
@@ -27,7 +27,7 @@
 
         {{-- Password --}}
         <div class="auth-input-group">
-            <label class="auth-label">Password</label>
+            <label class="auth-label">Kata Sandi</label>
             <div class="auth-input-wrap">
                 <i class="fas fa-lock auth-input-icon"></i>
                 <input type="password" name="password" required class="auth-input" placeholder="••••••••">
@@ -45,7 +45,7 @@
             
             @if (Route::has('password.request'))
                 <a class="auth-link" href="{{ route('password.request') }}">
-                    Lupa Password?
+                    Lupa Kata Sandi?
                 </a>
             @endif
         </div>

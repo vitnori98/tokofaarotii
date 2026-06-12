@@ -107,7 +107,7 @@
                             <span><i class="fas fa-barcode"></i> SKU: <strong>{{ $product->sku }}</strong></span>
                             <span class="meta-sep">·</span>
                         @endif
-                        <span><i class="far fa-calendar-alt"></i> {{ $product->created_at->format('d M Y') }}</span>
+                        <span><i class="far fa-calendar-alt"></i> {{ $product->created_at->translatedFormat('d M Y') }}</span>
                     </div>
                 </div>
             </div>
@@ -201,7 +201,7 @@
                                     </div>
                                     <div>
                                         <p class="log-type">{{ $entry->type == 'in' ? 'Barang Masuk' : 'Barang Keluar' }}</p>
-                                        <p class="log-date">{{ $entry->created_at->format('d M Y, H:i') }} WIB</p>
+                                        <p class="log-date">{{ $entry->created_at->translatedFormat('d M Y, H:i') }} WIB</p>
                                     </div>
                                 </div>
                             </td>

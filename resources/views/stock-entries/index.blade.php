@@ -143,7 +143,7 @@
 
                     {{-- TANGGAL --}}
                     <td>
-                        <div class="date-main">{{ $entry->created_at->format('d-m-Y') }}</div>
+                        <div class="date-main">{{ $entry->created_at->translatedFormat('d F Y') }}</div>
                         <div class="date-sub">{{ $entry->created_at->format('H:i') }} WIB</div>
                     </td>
 

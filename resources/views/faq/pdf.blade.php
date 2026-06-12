@@ -113,7 +113,7 @@
             <div class="doc-title">Data FAQ</div>
         </div>
         <div class="doc-meta">
-            Dicetak: {{ now()->format('d F Y, H:i') }}<br>
+            Dicetak: {{ now()->translatedFormat('d F Y, H:i') }}<br>
             Total: {{ $faqs->count() }} FAQ
         </div>
     </div>

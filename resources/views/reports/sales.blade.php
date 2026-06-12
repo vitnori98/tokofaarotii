@@ -9,21 +9,45 @@
 <div class="filter-card">
     <form method="GET" action="{{ route('reports.sales') }}" class="filter-form">
         <div class="filter-group">
-            <label>Mulai Tanggal</label>
+            <label>Mulai</label>
             <div class="input-with-icon">
                 <i class="far fa-calendar-alt"></i>
                 <input type="date" name="start_date" value="{{ $startDate->format('Y-m-d') }}">
             </div>
         </div>
         <div class="filter-group">
-            <label>Sampai Tanggal</label>
+            <label>Sampai</label>
             <div class="input-with-icon">
                 <i class="far fa-calendar-alt"></i>
                 <input type="date" name="end_date" value="{{ $endDate->format('Y-m-d') }}">
             </div>
         </div>
+        <div class="filter-group">
+            <label>Kategori</label>
+            <div class="input-with-icon">
+                <i class="fas fa-tags"></i>
+                <select name="category_id">
+                    <option value="">Semua Kategori</option>
+                    @foreach($categories as $cat)
+                        <option value="{{ $cat->id }}" {{ $categoryId == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div class="filter-group">
+            <label>Grup Data</label>
+            <div class="input-with-icon">
+                <i class="fas fa-layer-group"></i>
+                <select name="group_by">
+                    <option value="day" {{ $groupBy == 'day' ? 'selected' : '' }}>Harian</option>
+                    <option value="week" {{ $groupBy == 'week' ? 'selected' : '' }}>Mingguan</option>
+                    <option value="month" {{ $groupBy == 'month' ? 'selected' : '' }}>Bulanan</option>
+                    <option value="year" {{ $groupBy == 'year' ? 'selected' : '' }}>Tahunan</option>
+                </select>
+            </div>
+        </div>
         <button type="submit" class="btn-filter">
-            <i class="fas fa-filter"></i> Terapkan Filter
+            <i class="fas fa-filter"></i> Filter
         </button>
     </form>
 </div>
@@ -42,6 +66,19 @@
         <div class="stat-info">
             <span class="stat-label">Total Terjual</span>
             <span class="stat-value">{{ number_format($totalItems) }} <small>Unit</small></span>
+        </div>
+    </div>
+</div>
+
+{{-- ── CHART SECTION ── --}}
+<div class="dashboard-card mb-6">
+    <div class="card-header">
+        <h3 class="card-title"><i class="fas fa-chart-bar text-indigo-500"></i> Grafik Tren Penjualan</h3>
+        <span class="card-subtitle">Dikelompokkan per {{ ucfirst($groupBy) }}</span>
+    </div>
+    <div class="card-body">
+        <div class="chart-container" style="height: 300px;">
+            <canvas id="reportSalesChart"></canvas>
         </div>
     </div>
 </div>
@@ -69,7 +106,7 @@
                 @forelse($sales as $index => $sale)
                 <tr>
                     <td class="td-no">{{ $index + 1 }}</td>
-                    <td class="td-date">{{ \Carbon\Carbon::parse($sale->created_at)->format('d M Y') }}</td>
+                    <td class="td-date">{{ \Carbon\Carbon::parse($sale->created_at)->translatedFormat('d M Y') }}</td>
                     <td>
                         <span class="p-name">{{ $sale->product->name ?? '-' }}</span>
                     </td>
@@ -101,8 +138,9 @@
     .filter-group label { display: block; font-size: .75rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: .5rem; }
     .input-with-icon { position: relative; }
     .input-with-icon i { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: .85rem; }
-    .input-with-icon input { width: 100%; padding: .625rem 1rem .625rem 2.5rem; border: 1.5px solid #e2e8f0; border-radius: .75rem; font-size: .85rem; outline: none; transition: all .2s; box-sizing: border-box; }
-    .input-with-icon input:focus { border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99, 102, 241, .1); }
+    .input-with-icon input, .input-with-icon select { width: 100%; padding: .625rem 1rem .625rem 2.5rem; border: 1.5px solid #e2e8f0; border-radius: .75rem; font-size: .85rem; outline: none; transition: all .2s; box-sizing: border-box; background: #fff; appearance: none; }
+    .input-with-icon select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2394a3b8' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C2.185 5.355 2.403 5 2.801 5h10.398c.398 0 .616.355.35.658l-4.796 5.482a.503.503 0 0 1-.754 0z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; }
+    .input-with-icon input:focus, .input-with-icon select:focus { border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99, 102, 241, .1); }
     .btn-filter { background: #6366f1; color: #fff; border: none; padding: .625rem 1.5rem; border-radius: .75rem; font-size: .85rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: .5rem; transition: all .2s; }
     .btn-filter:hover { background: #4f46e5; transform: translateY(-1px); }
 
@@ -116,6 +154,15 @@
     .stat-label { font-size: .7rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: .05em; }
     .stat-value { font-size: 1.25rem; font-weight: 800; color: #1e293b; line-height: 1.2; }
     .stat-value small { font-size: .8rem; color: #94a3b8; font-weight: 600; }
+
+    /* ── Chart ── */
+    .mb-6 { margin-bottom: 1.5rem; }
+    .dashboard-card { background: #fff; border-radius: 1.5rem; border: 1px solid #f1f5f9; box-shadow: 0 1px 3px rgba(15,23,42,.05); overflow: hidden; }
+    .card-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid #f8fafc; display: flex; align-items: center; justify-content: space-between; }
+    .card-title { font-size: .95rem; font-weight: 800; color: #1e293b; margin: 0; display: flex; align-items: center; gap: .6rem; }
+    .card-subtitle { font-size: .75rem; color: #94a3b8; font-weight: 600; }
+    .card-body { padding: 1.5rem; }
+    .chart-container { position: relative; width: 100%; }
 
     /* ── Table ── */
     .table-container { background: #fff; border-radius: 1.5rem; border: 1px solid #f1f5f9; box-shadow: 0 1px 3px rgba(15,23,42,.05); overflow: hidden; }
@@ -151,5 +198,74 @@
         body { background: #fff; }
     }
 </style>
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('reportSalesChart');
+    if (ctx) {
+        new Chart(ctx.getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: @json($chartData['labels'] ?? []),
+                datasets: [
+                    {
+                        label: 'Pendapatan (Rp)',
+                        data: @json($chartData['revenue'] ?? []),
+                        backgroundColor: '#6366f1',
+                        borderRadius: 6,
+                        yAxisID: 'y',
+                    },
+                    {
+                        label: 'Qty Terjual',
+                        data: @json($chartData['qty'] ?? []),
+                        backgroundColor: '#10b981',
+                        borderRadius: 6,
+                        yAxisID: 'y1',
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        beginAtZero: true,
+                        grid: { borderDash: [5, 5], color: '#f1f5f9' },
+                        ticks: {
+                            callback: v => 'Rp' + v.toLocaleString('id-ID')
+                        }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        beginAtZero: true,
+                        grid: { drawOnChartArea: false },
+                    },
+                    x: {
+                        grid: { display: false }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: { boxWidth: 12, font: { weight: 'bold' } }
+                    }
+                }
+            }
+        });
+    }
+});
+</script>
+@endpush
 
 @endsection

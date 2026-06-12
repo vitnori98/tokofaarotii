@@ -68,58 +68,54 @@
         <table>
             <thead>
                 <tr>
+                    <th style="width: 50px;">NO</th>
                     <th>TANGGAL & PELANGGAN</th>
-                    <th>PRODUK</th>
-                    <th>SUMBER</th>
-                    <th style="text-align:center;">QTY</th>
+                    <th>PRODUK & KATEGORI</th>
+                    <th>METODE BAYAR</th>
+                    <th style="text-align:center;">TOTAL QTY</th>
                     <th style="text-align:right;">TOTAL HARGA</th>
                     <th style="text-align:center;">AKSI</th>
                 </tr>
             </thead>
             <tbody>
+                @php $no = ($sales->currentPage() - 1) * $sales->perPage() + 1; @endphp
                 @forelse($sales as $sale)
                 <tr>
+                    <td class="td-no">{{ $no++ }}</td>
                     <td>
                         <div class="td-flex">
-                            <div class="td-date">{{ $sale->created_at->format('d M Y') }}</div>
+                            <div class="td-date">{{ \Carbon\Carbon::parse($sale->sale_date)->translatedFormat('d M Y') }}</div>
                             <div class="td-sub-info text-indigo customer-name">{{ $sale->customer_name ?? 'Umum' }}</div>
                         </div>
                     </td>
                     <td>
-                        <div class="td-product">
-                            <div class="p-icon"><i class="fas fa-tag"></i></div>
-                            <span class="p-name product-name">{{ $sale->product->name }}</span>
+                        <div class="td-product-group">
+                            <div class="p-name-group">{{ $sale->product_names }}</div>
+                            <div class="p-cat-group"><i class="fas fa-tags"></i> {{ $sale->category_names }}</div>
                         </div>
                     </td>
                     <td>
-                        @if(($sale->source ?? 'offline') == 'online')
-                            <span class="badge badge-online"><i class="fas fa-globe"></i> ONLINE</span>
-                        @else
-                            <span class="badge badge-offline"><i class="fas fa-store"></i> TOKO</span>
-                        @endif
+                        <div class="td-payment">
+                            @if(strtolower($sale->payment_method) == 'tunai')
+                                <span class="badge-tunai"><i class="fas fa-money-bill-wave"></i> Tunai</span>
+                            @else
+                                <span class="badge-qris"><i class="fas fa-qrcode"></i> QRIS</span>
+                            @endif
+                        </div>
                     </td>
                     <td style="text-align:center;">
-                        <span class="qty-badge sale-qty">{{ $sale->quantity_sold }}</span>
+                        <span class="qty-badge sale-qty">{{ $sale->total_items }}</span>
                     </td>
                     <td style="text-align:right;">
-                        <span class="total-price sale-total">Rp {{ number_format($sale->total_price, 0, ',', '.') }}</span>
+                        <span class="total-price sale-total">Rp {{ number_format($sale->total_revenue, 0, ',', '.') }}</span>
                     </td>
                     <td>
                         <div class="action-btns">
-                            @if(($sale->status ?? 'completed') == 'pending')
-                                <form action="{{ route('sales.confirm', $sale->id) }}" method="POST" style="margin:0;">
-                                    @csrf
-                                    <button type="submit" class="btn-action btn-confirm" title="Konfirmasi">
-                                        <i class="fas fa-check"></i> Konfirm
-                                    </button>
-                                </form>
-                            @endif
-
-                            <button onclick="reprintStruk({{ $sale->id }})" class="btn-action btn-view" title="Cetak Struk">
+                            <button onclick="reprintStruk('{{ $sale->transaction_group }}', '{{ addslashes($sale->customer_name) }}', '{{ \Carbon\Carbon::parse($sale->sale_date)->translatedFormat('d M Y') }}', '{{ addslashes($sale->product_names) }}', '{{ $sale->total_items }}', '{{ number_format($sale->total_revenue, 0, ',', '.') }}', '{{ $sale->payment_method }}')" class="btn-action btn-view" title="Cetak Struk">
                                 <i class="fas fa-print"></i> Struk
                             </button>
 
-                            <form action="{{ route('sales.destroy', $sale->id) }}" method="POST" onsubmit="return confirm('Hapus riwayat ini?')" style="margin:0;">
+                            <form action="{{ route('sales.destroy', $sale->transaction_group) }}" method="POST" onsubmit="return confirm('Hapus transaksi ini?')" style="margin:0;">
                                 @csrf @method('DELETE')
                                 <button type="submit" class="btn-action btn-delete" title="Hapus">
                                     <i class="fas fa-trash-alt"></i> Hapus
@@ -175,16 +171,17 @@
     
     .td-flex { display: flex; flex-direction: column; gap: 2px; }
     .td-date { font-size: .85rem; font-weight: 700; color: #1e293b; }
+    .td-no { font-size: .75rem; font-weight: 800; color: #94a3b8; text-align: center; }
     .td-sub-info { font-size: .65rem; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; }
     .text-indigo { color: #6366f1; }
 
-    .td-product { display: flex; align-items: center; gap: .75rem; }
-    .p-icon { width: 32px; height: 32px; background: #f8fafc; border-radius: .5rem; display: flex; align-items: center; justify-content: center; color: #cbd5e1; font-size: .75rem; }
-    .p-name { font-size: .85rem; font-weight: 600; color: #475569; }
+    .td-product-group { display: flex; flex-direction: column; gap: 4px; }
+    .p-name-group { font-size: .8rem; font-weight: 700; color: #1e293b; line-height: 1.4; }
+    .p-cat-group { font-size: .65rem; font-weight: 600; color: #94a3b8; }
 
-    .badge { display: inline-flex; align-items: center; gap: .3rem; padding: .25rem .625rem; border-radius: 9999px; font-size: .65rem; font-weight: 800; letter-spacing: .04em; }
-    .badge-online { background: #eff6ff; color: #1e40af; }
-    .badge-offline { background: #f8fafc; color: #475569; border: 1px solid #e2e8f0; }
+    .badge-tunai { background: #f0fdf4; color: #166534; padding: .25rem .6rem; border-radius: .5rem; font-size: .65rem; font-weight: 800; display: inline-flex; align-items: center; gap: .3rem; }
+    .badge-qris { background: #f5f3ff; color: #6d28d9; padding: .25rem .6rem; border-radius: .5rem; font-size: .65rem; font-weight: 800; display: inline-flex; align-items: center; gap: .3rem; border: 1px solid #ddd6fe; }
+    .td-payment { display: flex; flex-direction: column; gap: 4px; }
 
     .qty-badge { display: inline-block; padding: .2rem .6rem; background: #f1f5f9; border-radius: .5rem; font-size: .75rem; font-weight: 800; color: #475569; }
     .total-price { font-size: .9rem; font-weight: 800; color: #6366f1; }
@@ -218,41 +215,38 @@
 </style>
 
 <script>
-function reprintStruk(id) {
-    const btn = event.currentTarget;
-    const row = btn.closest('tr');
-    const tanggal = row.querySelector('.td-date').innerText;
-    const pelanggan = row.querySelector('.customer-name').innerText;
-    const produk = row.querySelector('.product-name').innerText;
-    const qty = row.querySelector('.sale-qty').innerText;
-    const total = row.querySelector('.sale-total').innerText;
-
+function reprintStruk(trxId, customer, date, products, qty, total, payment) {
     let strukWindow = window.open('', '', 'width=400,height=600');
     
+    // Pecah nama produk jika banyak
+    let productList = products.split(', ').map(p => `<div>- ${p}</div>`).join('');
+
     strukWindow.document.write(`
         <html>
-        <body style="font-family: 'Courier New', Courier, monospace; width: 300px; padding: 10px;">
+        <body style="font-family: 'Courier New', Courier, monospace; width: 300px; padding: 10px; color: #333;">
             <div style="text-align: center; border-bottom: 1px dashed #000; padding-bottom: 10px; margin-bottom: 10px;">
-                <h2 style="margin: 0; font-size: 18px;">TOKO FAA</h2>
-                <p style="margin: 0; font-size: 10px;">Frozen Food & Bakery</p>
-                <p style="margin: 0; font-size: 10px;">(COPY STRUK)</p>
+                <h2 style="margin: 0; font-size: 18px;">TOKO FAA FROZEN</h2>
+                <p style="margin: 2px 0; font-size: 10px;">Kuday, Sungai Liat, Kabupaten Bangka</p>
+                <p style="margin: 2px 0; font-size: 10px;">HP: 085368787893</p>
+                <p style="margin: 5px 0 0; font-size: 9px; font-weight: bold;">(COPY STRUK)</p>
             </div>
-            <div style="font-size: 11px; margin-bottom: 10px;">
-                <div>Tgl: ${tanggal}</div>
-                <div>Pelanggan: ${pelanggan}</div>
+            <div style="font-size: 10px; margin-bottom: 10px; line-height: 1.4;">
+                <div style="display: flex; justify-content: space-between;"><span>No:</span> <span>${trxId}</span></div>
+                <div style="display: flex; justify-content: space-between;"><span>Tgl:</span> <span>${date}</span></div>
+                <div style="display: flex; justify-content: space-between;"><span>Plg:</span> <span>${customer}</span></div>
+                <div style="display: flex; justify-content: space-between;"><span>Byr:</span> <span>${payment.toUpperCase()}</span></div>
             </div>
-            <div style="border-bottom: 1px dashed #000; padding-bottom: 5px; margin-bottom: 5px;">
-                <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 5px;">
-                    <span>${qty}x ${produk}</span>
-                    <span>${total}</span>
-                </div>
+            <div style="border-bottom: 1px dashed #000; padding-bottom: 5px; margin-bottom: 5px; font-size: 11px;">
+                <div style="font-weight: bold; margin-bottom: 3px;">Item:</div>
+                ${productList}
             </div>
-            <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 14px; margin-bottom: 10px;">
-                <span>TOTAL</span>
-                <span>${total}</span>
+            <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 13px; margin-bottom: 10px; border-bottom: 1px dashed #000; padding-bottom: 5px;">
+                <span>TOTAL (${qty} item)</span>
+                <span>Rp ${total}</span>
             </div>
             <div style="text-align: center; font-size: 10px; margin-top: 20px;">
-                *** Terima Kasih ***<br>Cetakan Ulang
+                *** TERIMA KASIH ***<br>
+                Barang yang sudah dibeli<br>tidak dapat ditukar/dikembalikan
             </div>
         </body>
         </html>
