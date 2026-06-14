@@ -811,50 +811,121 @@
         </div>
     </div>
 
-    <!-- ===========================
-         NAVBAR
-    ============================ -->
-    <nav class="navbar">
-        <div class="navbar-inner">
-            <a class="navbar-brand" href="{{ route('welcome') }}">
-                <img src="{{ asset('template-sarab/img/logo-toko-faa.png') }}" alt="Logo FAA" class="brand-logo-img">
-                <div>
-                    <div class="brand-text">FAA</div>
-                    <span class="brand-sub">Frozen Food & Bakery</span>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom py-3 fixed-top">
+        <div class="container-fluid px-lg-4">
+            
+            <a class="navbar-brand d-flex align-items-center gap-2 text-decoration-none me-4" href="{{ route('welcome') }}">
+                <img src="{{ asset('template-sarab/img/logo-toko-faa.png') }}" alt="Logo FAA" class="brand-logo-img" style="height: 40px; object-fit: contain;">
+                <div class="d-flex flex-column lh-sm">
+                    <span class="brand-text fw-bold text-dark m-0" style="font-size: 1.25rem; letter-spacing: 0.5px;">FAA</span>
                 </div>
             </a>
 
-            <ul class="nav-links">
-                <li><a href="{{ route('welcome') }}">Beranda</a></li>
-                <li><a href="{{ url('/#categories') }}">Tentang Kami</a></li>
-                <li><a href="{{ route('berita.public') }}">Berita</a></li>
-                <li><a href="{{ url('/#promo') }}">Dokumentasi</a></li>
-                <li><a href="{{ route('produk.makanan') }}" class="active">Produk Makanan</a></li>
-                <li><a href="#promo">VR 3D Showroom</a></li>
-                <li><a href="{{ route('faq.public') }}">FAQ</a></li>
-            </ul>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-            <div class="nav-actions">
-                <button class="btn-nav-icon" id="navSearchBtn" title="Cari">
-                    <i class="fas fa-search"></i>
-                </button>
-                <a href="#" class="btn-nav-icon" title="Keranjang">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-badge">{{ session('cart') ? count(session('cart')) : 0 }}</span>
-                </a>
-                @auth
-                    <a href="{{ url('/dashboard') }}" class="btn-dashboard">
-                        <i class="fas fa-th-large"></i> Dashboard
-                    </a>
-                @else
-                    <a href="{{ route('login') }}" class="btn-login">
-                        <i class="fas fa-sign-in-alt"></i> Masuk
-                    </a>
-                @endauth
-                <button class="navbar-toggler" id="navToggle">
-                    <span></span><span></span><span></span>
-                </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between w-100 gap-3 mt-3 mt-lg-0">
+                    
+                    <ul class="nav-links d-flex flex-column flex-lg-row align-items-lg-center list-unstyled gap-3 gap-lg-4 m-0 flex-shrink-0">
+                        <li><a href="{{ route('welcome') }}">Beranda</a></li>
+                        <li><a href="{{ url('/#categories') }}">Tentang Kami</a></li>
+                        
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" 
+                                href="#" 
+                                id="navbarDropdown" 
+                                role="button" 
+                                data-bs-toggle="dropdown" 
+                                aria-expanded="false"
+                                style="background-color: #f1f5f9; color: #1e293b; border-radius: 8px; padding: 6px 15px; font-size: 13px; font-weight: 500;">
+                                Dokumentasi
+                            </a>
+                            <ul class="dropdown-menu border-0 shadow-lg p-3 rounded-4 mt-2" aria-labelledby="navbarDropdown" style="min-width: 260px;">
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center gap-3 py-2 rounded-3" href="{{ route('berita.public') }}">
+                                        <div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3" style="width: 40px; height: 40px; background-color: #f0f5ff; color: #8a1e1e;">
+                                            <i class="bi bi-newspaper fs-5"></i>
+                                        </div>
+                                        <span class="fw-semibold text-dark" style="font-size: 0.95rem;">Berita FAA</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center gap-3 py-2 rounded-3" href="#">
+                                        <div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3" style="width: 40px; height: 40px; background-color: #f0f5ff; color: #8a1e1e;">
+                                            <i class="bi bi-images fs-5"></i>
+                                        </div>
+                                        <span class="fw-semibold text-dark" style="font-size: 0.95rem;">Album Kegiatan</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center gap-3 py-2 rounded-3" href="#">
+                                        <div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3" style="width: 40px; height: 40px; background-color: #f0f5ff; color: #8a1e1e;">
+                                            <i class="bi bi-bar-chart-line fs-5"></i>
+                                        </div>
+                                        <span class="fw-semibold text-dark" style="font-size: 0.95rem;">Infografis</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center gap-3 py-2 rounded-3" href="#">
+                                        <div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3" style="width: 40px; height: 40px; background-color: #f0f5ff; color: #8a1e1e;">
+                                            <i class="bi bi-camera-video fs-5"></i>
+                                        </div>
+                                        <span class="fw-semibold text-dark" style="font-size: 0.95rem;">Video</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li><a href="{{ route('produk.makanan') }}" class="active">Produk Makanan</a></li>
+                        <li><a href="{{ route('faq.public') }}">FAQ</a></li>
+                    </ul>
+
+                    <div class="nav-actions d-flex align-items-center gap-2 gap-lg-3 flex-grow-1 justify-content-lg-end w-100 w-lg-auto">
+                        
+                        <div class="position-relative flex-grow-1" style="max-width: 380px;">
+                            <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                            <input type="text" class="form-control rounded-pill border-0 ps-5 py-2 shadow-sm" placeholder="Cari produk..." style="background-color: #f1f5f9; font-size: 0.9rem;">
+                        </div>
+
+                        <a href="#promo" class="text-secondary p-2 d-flex align-items-center justify-content-center rounded-circle hover-bg-light" title="VR 3D Showroom">
+                            <i class="bi bi-box-seam fs-5" style="color: #64748b;"></i>
+                        </a>
+
+                        <a href="#promo" class="text-secondary p-2 d-flex align-items-center justify-content-center rounded-circle hover-bg-light" title="AI Chatbot">
+                            <i class="bi bi-robot fs-5" style="color: #64748b;"></i>
+                        </a>
+
+                        <a href="#" class="text-secondary p-2 d-flex align-items-center justify-content-center rounded-circle position-relative hover-bg-light me-1" title="Keranjang">
+                            <i class="bi bi-cart3 fs-5" style="color: #334155;"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-danger d-flex align-items-center justify-content-center p-0 shadow" 
+                                    id="cartCount" 
+                                    style="width: 18px; height: 18px; font-size: 0.65rem; font-family: sans-serif; margin-top: 6px; margin-left: -6px;">
+                                3
+                            </span>
+                        </a>
+
+                        <div class="d-flex align-items-center gap-2 ms-lg-2 flex-shrink-0">
+                            @auth
+                                <a href="{{ url('/dashboard') }}" class="btn btn-outline-dark fw-semibold px-3 py-2 rounded-3 btn-sm">
+                                    Dashboard
+                                </a>
+                            @else
+                                <a href="{{ route('login') }}" class="text-decoration-none fw-semibold px-2 text-secondary hover-dark" style="font-size: 0.95rem;">
+                                    Masuk
+                                </a>
+                                <a href="{{ route('register') }}" class="btn text-white fw-semibold px-3 py-2 btn-sm shadow-sm" style="background-color: #ff2a00; font-size: 0.95rem; border-radius: 10px !important;">
+                                    Daftar
+                                </a>
+                            @endauth
+                        </div>
+
+                    </div>
+                </div>
             </div>
+
         </div>
     </nav>
 
