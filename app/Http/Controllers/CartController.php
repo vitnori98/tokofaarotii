@@ -32,4 +32,45 @@ class CartController extends Controller
             'cart_count' => count($cart)
         ]);
     }
+
+    public function removeFromCart($id)
+    {
+        $cart = Session::get('cart', []);
+
+        if (isset($cart[$id])) {
+            unset($cart[$id]);
+            Session::put('cart', $cart);
+        }
+
+        return response()->json([
+            'message' => 'Produk berhasil dihapus!',
+            'cart_count' => count($cart)
+        ]);
+    }
+
+    public function updateCart(Request $request)
+    {
+        $cart = Session::get('cart', []);
+        $id = $request->id;
+        $quantity = $request->quantity;
+
+        if (isset($cart[$id])) {
+            $cart[$id]['quantity'] = $quantity;
+            Session::put('cart', $cart);
+        }
+
+        return response()->json([
+            'message' => 'Keranjang diperbarui!',
+            'cart_total' => number_format($this->getCartTotal($cart), 0, ',', '.')
+        ]);
+    }
+
+    private function getCartTotal($cart)
+    {
+        $total = 0;
+        foreach ($cart as $item) {
+            $total += $item['price'] * $item['quantity'];
+        }
+        return $total;
+    }
 }

@@ -93,4 +93,10 @@ class PegawaiController extends Controller
 
         return redirect()->route('pegawai.index')->with('success', 'Pegawai berhasil dihapus.');
     }
+
+    public function publicIndex()
+    {
+        $pegawais = Pegawai::latest()->get();
+        return view('tentang-kami', compact('pegawais'));
+    }
 }

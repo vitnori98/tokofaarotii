@@ -156,4 +156,22 @@ class DokumentasiController extends Controller
         $video->delete();
         return back()->with('success', 'Video berhasil dihapus!');
     }
+
+    public function publicVideo()
+    {
+        $videos = Video::latest()->get();
+        return view('video', compact('videos'));
+    }
+
+    public function publicAlbum()
+    {
+        $albums = Album::latest()->get();
+        return view('album', compact('albums'));
+    }
+
+    public function publicInfografis()
+    {
+        $infografis = Infografis::latest()->get();
+        return view('infografis', compact('infografis'));
+    }
 }

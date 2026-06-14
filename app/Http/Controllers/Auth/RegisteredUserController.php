@@ -36,6 +36,7 @@ class RegisteredUserController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'role' => 'user', // Set default role as user for public registration
             'password' => Hash::make($request->password),
         ]);
 
@@ -44,7 +45,7 @@ class RegisteredUserController extends Controller
         // Login otomatis setelah register
         Auth::login($user);
 
-        // Redirect ke dashboard
-        return redirect()->route('dashboard')->with('success', 'Registrasi berhasil! Selamat datang.');
+        // Redirect ke home page
+        return redirect()->route('welcome')->with('success', 'Registrasi berhasil! Selamat datang.');
     }
 }

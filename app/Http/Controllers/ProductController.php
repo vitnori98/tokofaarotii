@@ -136,23 +136,20 @@ class ProductController extends Controller
      */
     public function produkMakanan()
     {
-        // Gunakan Eager Loading 'category' untuk efisiensi query
-        // Filter kategori agar hanya memuat Frozen Food dan Bakery/Roti
-        $products = Product::with('category')
-            ->whereHas('category', function ($query) {
-                $query->where('name', 'like', '%Frozen%')
-                      ->orWhere('name', 'like', '%Bakery%')
-                      ->orWhere('name', 'like', '%Roti%');
-            })
-            ->latest()
-            ->get();
-
-        // Ambil list kategori yang relevan untuk filter di frontend
+        // Ambil kategori yang relevan beserta produknya
         $categories = Category::where('name', 'like', '%Frozen%')
             ->orWhere('name', 'like', '%Bakery%')
             ->orWhere('name', 'like', '%Roti%')
+            ->with(['products' => function($query) {
+                $query->latest();
+            }])
             ->get();
 
-        return view('produk-makanan', compact('products', 'categories'));
+        // Sortir agar Frozen Food muncul pertama jika ada
+        $categories = $categories->sortBy(function($cat) {
+            return str_contains(strtolower($cat->name), 'frozen') ? 0 : 1;
+        });
+
+        return view('produk-makanan', compact('categories'));
     }
 }

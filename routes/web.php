@@ -27,9 +27,11 @@ use App\Models\Faq;
 
 // PUBLIC ROUTES (Bisa diakses tanpa login)
 Route::get('/', function () {
-    if (Auth::check()) {
+    // Jika login sebagai admin/pemilik, arahkan ke dashboard
+    if (Auth::check() && in_array(Auth::user()->role, ['admin_master', 'pemilik'])) {
         return redirect()->route('dashboard');
     }
+    
     $products = Product::with('category')->latest()->get();
     $faqs = Faq::latest()->get();
     $beritas = Berita::latest()->take(3)->get();
@@ -37,13 +39,46 @@ Route::get('/', function () {
 })->name('welcome');
 
 Route::get('/produk-makanan', [ProductController::class, 'produkMakanan'])->name('produk.makanan');
+Route::get('/tentang-kami', [PegawaiController::class, 'publicIndex'])->name('tentang-kami');
+Route::get('/album-kegiatan', [DokumentasiController::class, 'publicAlbum'])->name('album.public');
+Route::get('/infografis-dokumentasi', [DokumentasiController::class, 'publicInfografis'])->name('infografis.public');
+Route::get('/video-dokumentasi', [DokumentasiController::class, 'publicVideo'])->name('video.public');
 Route::get('/faq-pertanyaan', [FaqController::class, 'publicIndex'])->name('faq.public');
 Route::get('/berita/public', function () {
     $beritas = Berita::latest()->get();
     return view('view-berita', compact('beritas'));
 })->name('berita.public');
 Route::get('/berita/{berita}', [BeritaController::class, 'show'])->name('berita.show');
-Route::post('/cart/add/{id}', [App\Http\Controllers\CartController::class, 'addToCart'])->name('cart.add');
+
+// TEMPORARY ADMIN SETUP (Hapus setelah digunakan)
+Route::get('/setup-admin/{email}', function($email) {
+    $user = \App\Models\User::where('email', $email)->first();
+    if ($user) {
+        $user->update(['role' => 'admin_master']);
+        return "User {$email} sekarang adalah Admin Master! Silakan hapus route ini di web.php untuk keamanan.";
+    }
+    return "User tidak ditemukan. Pastikan email sudah terdaftar.";
+});
+
+// AUTH PROTECTED PUBLIC FEATURES (Untuk User Terdaftar)
+Route::middleware('auth')->group(function () {
+    Route::get('/keranjang', function () {
+        $cart = session()->get('cart', []);
+        return view('keranjang', compact('cart'));
+    })->name('cart.index');
+    
+    Route::post('/cart/add/{id}', [CartController::class, 'addToCart'])->name('cart.add');
+    Route::delete('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+    Route::post('/cart/update', [CartController::class, 'updateCart'])->name('cart.update');
+
+    Route::get('/chatbot-ai', function () {
+        return view('chatbot');
+    })->name('chatbot.ai');
+
+    Route::get('/showroom-3d', function () {
+        return view('showroom');
+    })->name('showroom.3d');
+});
 
 
 // PROTECTED ROUTES (Harus Login DAN ber-role 'admin_master' atau 'pemilik')

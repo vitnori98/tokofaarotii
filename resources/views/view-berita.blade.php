@@ -6,216 +6,26 @@
     <meta name="author" content="Juliarti Safitri">
     <meta name="description" content="Portal Berita - Toko FAA Frozen Food & Bakery">
     <title>Portal Berita - FAA Frozen Food & Bakery</title>
+    
+    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Poppins:wght@300;400;500;600;700;800;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-    <link href="{{ asset('template-sarab/css/all.min.css') }}" rel="stylesheet">
+    
+    <!-- CSS Assets -->
+    <link href="{{ asset('template-sarab/css/bootstrap.min.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('template-sarab/css/aos.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('template-sarab/css/swiper-bundle.min.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('template-sarab/css/all.min.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('template-sarab/css/magnific-popup.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('template-sarab/css/style.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <style>
-        :root {
-            --red: #e50914;
-            --red-dark: #b80710;
-            --teal: #0d9488;
-            --teal-light: #14b8a6;
-            --gold: #f59e0b;
-            --dark: #0f0f0f;
-            --gray: #6b7280;
-            --light: #f8f8f6;
-            --white: #ffffff;
-            --border: #e5e7eb;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             font-family: 'DM Sans', sans-serif;
             background: var(--light);
             color: var(--dark);
             overflow-x: hidden;
-        }
-
-        /* ==============================
-           NAVBAR
-        ============================== */
-        .navbar {
-            background: var(--white);
-            border-bottom: 2px solid var(--red);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 20px rgba(229,9,20,0.08);
-        }
-
-        .navbar-inner {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 70px;
-        }
-
-        .navbar-brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-        }
-
-        .brand-logo-img {
-            height: 50px;
-            width: auto;
-            animation: float 3s ease-in-out infinite;
-            filter: drop-shadow(0 4px 12px rgba(229,9,20,0.35));
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-4px); }
-        }
-
-        .brand-text {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 900;
-            font-size: 22px;
-            color: var(--red);
-            letter-spacing: -0.5px;
-            line-height: 1;
-        }
-
-        .brand-sub {
-            display: block;
-            font-size: 9px;
-            font-weight: 600;
-            color: var(--gray);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-top: 2px;
-        }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 2px;
-            list-style: none;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            font-size: 11.5px;
-            font-weight: 600;
-            color: var(--dark);
-            padding: 8px 13px;
-            border-radius: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.7px;
-            transition: all 0.2s;
-            white-space: nowrap;
-        }
-
-        .nav-links a:hover { background: var(--light); color: var(--red); }
-        .nav-links a.active { color: var(--red); background: rgba(229,9,20,0.06); }
-
-        .nav-actions {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-nav-icon {
-            width: 38px;
-            height: 38px;
-            border-radius: 10px;
-            border: 1.5px solid var(--border);
-            background: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--dark);
-            transition: all 0.2s;
-            position: relative;
-            text-decoration: none;
-            font-size: 13px;
-        }
-
-        .btn-nav-icon:hover { border-color: var(--red); color: var(--red); }
-
-        .cart-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            width: 17px;
-            height: 17px;
-            background: var(--red);
-            border-radius: 50%;
-            font-size: 8px;
-            font-weight: 800;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .btn-login {
-            background: var(--red);
-            color: white !important;
-            padding: 9px 18px;
-            border-radius: 10px;
-            font-size: 11px;
-            font-weight: 700;
-            text-decoration: none;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .btn-login:hover { background: var(--red-dark); transform: translateY(-1px); }
-
-        .btn-dashboard {
-            background: transparent;
-            color: var(--red) !important;
-            border: 1.5px solid var(--red);
-            padding: 8px 18px;
-            border-radius: 10px;
-            font-size: 11px;
-            font-weight: 700;
-            text-decoration: none;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .btn-dashboard:hover { background: var(--red); color: white !important; }
-
-        /* Mobile Toggle */
-        .navbar-toggler {
-            display: none;
-            background: none;
-            border: 1.5px solid var(--border);
-            border-radius: 8px;
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            gap: 5px;
-            padding: 8px;
-        }
-
-        .navbar-toggler span {
-            display: block;
-            width: 20px;
-            height: 2px;
-            background: var(--dark);
-            border-radius: 2px;
-            transition: all 0.3s;
+            padding-top: 85px;
         }
 
         /* ==============================
@@ -317,11 +127,11 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 2px;
-            color: rgba(255,255,255,0.6);
+            color: #ffffff;
         }
 
-        .hero-breadcrumb a { color: rgba(255,255,255,0.6); text-decoration: none; transition: color 0.2s; }
-        .hero-breadcrumb a:hover { color: white; }
+        .hero-breadcrumb a { color: #ffffff; text-decoration: none; transition: color 0.2s; opacity: 0.8; }
+        .hero-breadcrumb a:hover { opacity: 1; }
         .hero-breadcrumb .crumb-active { color: var(--gold); }
         .hero-breadcrumb .sep { color: rgba(255,255,255,0.25); }
 
@@ -874,633 +684,231 @@
         .fade-in.visible { opacity: 1; transform: translateY(0); }
 
         /* ==============================
-           FOOTER
-        ============================== */
-        footer { background: var(--dark); color: rgba(255,255,255,0.65); margin-top: 80px; }
-
-        .footer-top {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 64px 24px;
-            display: grid;
-            grid-template-columns: 1.8fr 1fr 1.5fr 1.4fr;
-            gap: 48px;
-        }
-
-        .footer-brand-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 14px;
-        }
-
-        .footer-logo-img { height: 40px; width: auto; }
-
-        .footer-brand-name {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 800;
-            font-size: 17px;
-            color: white;
-            line-height: 1.1;
-        }
-
-        .footer-brand-name span {
-            display: block;
-            font-size: 9px;
-            font-weight: 500;
-            color: rgba(255,255,255,0.4);
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-        }
-
-        .footer-desc { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.48); margin-bottom: 18px; }
-
-        .footer-socials { display: flex; gap: 8px; }
-
-        .footer-social-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 9px;
-            border: 1px solid rgba(255,255,255,0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: rgba(255,255,255,0.45);
-            text-decoration: none;
-            font-size: 13px;
-            transition: all 0.2s;
-        }
-
-        .footer-social-btn:hover {
-            background: var(--red);
-            border-color: var(--red);
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        .footer-heading {
-            font-family: 'Poppins', sans-serif;
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: white;
-            margin-bottom: 18px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(255,255,255,0.07);
-        }
-
-        .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-
-        .footer-links a {
-            color: rgba(255,255,255,0.48);
-            text-decoration: none;
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.2s;
-        }
-
-        .footer-links a i { font-size: 8px; color: var(--red); }
-        .footer-links a:hover { color: white; padding-left: 4px; }
-
-        .footer-contact-item { display: flex; gap: 12px; margin-bottom: 13px; }
-
-        .contact-icon {
-            width: 34px;
-            height: 34px;
-            background: rgba(229,9,20,0.14);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--red);
-            font-size: 12px;
-            flex-shrink: 0;
-        }
-
-        .contact-info strong {
-            display: block;
-            font-size: 9px;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.3);
-            margin-bottom: 2px;
-        }
-
-        .contact-info span { font-size: 12px; color: rgba(255,255,255,0.6); }
-
-        .footer-map iframe {
-            width: 100%;
-            height: 155px;
-            border: none;
-            border-radius: 12px;
-            display: block;
-        }
-
-        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.06); padding: 20px 24px; }
-
-        .footer-bottom-inner {
-            max-width: 1280px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .footer-bottom p { font-size: 12px; color: rgba(255,255,255,0.28); }
-        .footer-bottom a { color: var(--teal-light); text-decoration: none; font-weight: 600; }
-
-        /* Back to Top */
-        #btt {
-            position: fixed;
-            bottom: 28px;
-            right: 28px;
-            z-index: 9999;
-            width: 44px;
-            height: 44px;
-            background: var(--red);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            box-shadow: 0 6px 20px rgba(229,9,20,0.38);
-            transition: all 0.3s;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(16px);
-        }
-
-        #btt.show { opacity: 1; visibility: visible; transform: translateY(0); }
-        #btt:hover { background: var(--red-dark); transform: translateY(-3px); }
-
-        /* ==============================
            RESPONSIVE
         ============================== */
         @media (max-width: 1100px) {
             .featured-grid { grid-template-columns: 1fr; }
             .side-stack { flex-direction: row; }
             .news-grid { grid-template-columns: repeat(2, 1fr); }
-            .footer-top { grid-template-columns: 1fr 1fr; gap: 36px; }
-        }
-
-        @media (max-width: 900px) {
-            .nav-links { display: none; }
-            .navbar-toggler { display: flex; }
         }
 
         @media (max-width: 768px) {
             .hero { height: 300px; }
             .news-grid { grid-template-columns: 1fr; }
             .side-stack { flex-direction: column; }
-            .footer-top { grid-template-columns: 1fr; gap: 30px; }
             .all-news-header { flex-direction: column; align-items: flex-start; }
             .featured-grid { grid-template-columns: 1fr; }
         }
     </style>
-    <meta charset="UTF-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <meta name="author" content="Sarab">
-      <meta name="description" content="Sarab - Fast Food & Restaurant HTML Template">
-      <title>TOKOFAAROTII - Bakery & Frozen Food</title>
-      
-      <!-- Fonts -->
-      <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet"/>
-      
-      <!-- CSS Assets -->
-      <link href="{{ asset('template-sarab/css/bootstrap.min.css') }}" rel="stylesheet"/>
-      <link href="{{ asset('template-sarab/css/aos.css') }}" rel="stylesheet"/>
-      <link href="{{ asset('template-sarab/css/swiper-bundle.min.css') }}" rel="stylesheet"/>
-      <link href="{{ asset('template-sarab/css/all.min.css') }}" rel="stylesheet"/>
-      <link href="{{ asset('template-sarab/css/magnific-popup.css') }}" rel="stylesheet"/>
-      <link href="{{ asset('template-sarab/css/style.css') }}" rel="stylesheet" />
 </head>
 <body>
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom py-3 fixed-top">
-   <div class="container-fluid px-lg-4">
-      
-      <a class="navbar-brand d-flex align-items-center gap-2 text-decoration-none me-4" href="{{ route('welcome') }}">
-         <img src="{{ asset('template-sarab/img/logo-toko-faa.png') }}" alt="Logo FAA" class="brand-logo-img" style="height: 40px; object-fit: contain;">
-         <div class="d-flex flex-column lh-sm">
-            <span class="brand-text fw-bold text-dark m-0" style="font-size: 1.25rem; letter-spacing: 0.5px;">FAA</span>
-         </div>
-      </a>
+    @include('layouts.partials.navbar')
 
-      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-         <span class="navbar-toggler-icon"></span>
-      </button>
+    <!-- ===========================
+         HERO SECTION
+    ============================ -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-grid"></div>
 
-      <div class="collapse navbar-collapse" id="navbarNav">
-         <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between w-100 gap-3 mt-3 mt-lg-0">
-            
-            <ul class="nav-links d-flex flex-column flex-lg-row align-items-lg-center list-unstyled gap-3 gap-lg-4 m-0 flex-shrink-0">
-               <li><a href="{{ route('welcome') }}">Beranda</a></li>
-               <li><a href="{{ url('/#categories') }}">Tentang Kami</a></li>
-               
-               <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" 
-                     href="#" 
-                     id="navbarDropdown" 
-                     role="button" 
-                     data-bs-toggle="dropdown" 
-                     aria-expanded="false"
-                     style="background-color: #f1f5f9; color: #1e293b; border-radius: 8px; padding: 6px 15px; font-size: 13px; font-weight: 500;">
-                      Dokumentasi
-                  </a>
-                  <ul class="dropdown-menu border-0 shadow-lg p-3 rounded-4 mt-2" aria-labelledby="navbarDropdown" style="min-width: 260px;">
-                     <li>
-                        <a class="dropdown-item d-flex align-items-center gap-3 py-2 rounded-3 active" href="{{ route('berita.public') }}">
-                           <div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3" style="width: 40px; height: 40px; background-color: #f0f5ff; color: #8a1e1e;">
-                              <i class="bi bi-newspaper fs-5"></i>
-                           </div>
-                           <span class="fw-semibold text-dark" style="font-size: 0.95rem;">Berita FAA</span>
-                        </a>
-                     </li>
-                     <li>
-                        <a class="dropdown-item d-flex align-items-center gap-3 py-2 rounded-3" href="#">
-                           <div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3" style="width: 40px; height: 40px; background-color: #f0f5ff; color: #8a1e1e;">
-                              <i class="bi bi-images fs-5"></i>
-                           </div>
-                           <span class="fw-semibold text-dark" style="font-size: 0.95rem;">Album Kegiatan</span>
-                        </a>
-                     </li>
-                     <li>
-                        <a class="dropdown-item d-flex align-items-center gap-3 py-2 rounded-3" href="#">
-                           <div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3" style="width: 40px; height: 40px; background-color: #f0f5ff; color: #8a1e1e;">
-                              <i class="bi bi-bar-chart-line fs-5"></i>
-                           </div>
-                           <span class="fw-semibold text-dark" style="font-size: 0.95rem;">Infografis</span>
-                        </a>
-                     </li>
-                     <li>
-                        <a class="dropdown-item d-flex align-items-center gap-3 py-2 rounded-3" href="#">
-                           <div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3" style="width: 40px; height: 40px; background-color: #f0f5ff; color: #8a1e1e;">
-                              <i class="bi bi-camera-video fs-5"></i>
-                           </div>
-                           <span class="fw-semibold text-dark" style="font-size: 0.95rem;">Video</span>
-                        </a>
-                     </li>
-                  </ul>
-               </li>
-
-               <li><a href="{{ route('produk.makanan') }}">Produk Makanan</a></li>
-               <li><a href="{{ route('faq.public') }}">FAQ</a></li>
-            </ul>
-
-            <div class="nav-actions d-flex align-items-center gap-2 gap-lg-3 flex-grow-1 justify-content-lg-end w-100 w-lg-auto">
-               
-               <div class="position-relative flex-grow-1" style="max-width: 380px;">
-                  <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
-                  <input type="text" class="form-control rounded-pill border-0 ps-5 py-2 shadow-sm" placeholder="Cari produk..." style="background-color: #f1f5f9; font-size: 0.9rem;">
-               </div>
-
-               <a href="#promo" class="text-secondary p-2 d-flex align-items-center justify-content-center rounded-circle hover-bg-light" title="VR 3D Showroom">
-                  <i class="bi bi-box-seam fs-5" style="color: #64748b;"></i>
-               </a>
-
-               <a href="#promo" class="text-secondary p-2 d-flex align-items-center justify-content-center rounded-circle hover-bg-light" title="AI Chatbot">
-                  <i class="bi bi-robot fs-5" style="color: #64748b;"></i>
-               </a>
-
-               <a href="#" class="text-secondary p-2 d-flex align-items-center justify-content-center rounded-circle position-relative hover-bg-light me-1" title="Keranjang">
-                  <i class="bi bi-cart3 fs-5" style="color: #334155;"></i>
-                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-danger d-flex align-items-center justify-content-center p-0 shadow" 
-                        id="cartCount" 
-                        style="width: 18px; height: 18px; font-size: 0.65rem; font-family: sans-serif; margin-top: 6px; margin-left: -6px;">
-                     3
-                  </span>
-               </a>
-
-               <div class="d-flex align-items-center gap-2 ms-lg-2 flex-shrink-0">
-                  @auth
-                     <a href="{{ url('/dashboard') }}" class="btn btn-outline-dark fw-semibold px-3 py-2 rounded-3 btn-sm">
-                        Dashboard
-                     </a>
-                  @else
-                     <a href="{{ route('login') }}" class="text-decoration-none fw-semibold px-2 text-secondary hover-dark" style="font-size: 0.95rem;">
-                        Masuk
-                     </a>
-                     <a href="{{ route('register') }}" class="btn text-white fw-semibold px-3 py-2 btn-sm shadow-sm" style="background-color: #ff2a00; font-size: 0.95rem; border-radius: 10px !important;">
-                        Daftar
-                     </a>
-                  @endauth
-               </div>
-
-            </div>
-         </div>
-      </div>
-
-   </div>
-</nav>
-
-<!-- ===========================
-     HERO SECTION
-============================ -->
-<section class="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-overlay"></div>
-    <div class="hero-grid"></div>
-
-    <div class="hero-content fade-in">
-        <div class="hero-tag">Portal Berita &amp; Kegiatan FAA</div>
-        <h1>Berita <em>Kegiatan</em></h1>
-        <nav class="hero-breadcrumb">
-            <a href="{{ route('welcome') }}">Beranda</a>
-            <span class="sep">/</span>
-            <a href="{{ route('faq.public') }}">FAQ</a>
-            <span class="sep">/</span>
-            <span class="crumb-active">Berita</span>
-        </nav>
-    </div>
-
-    <svg class="hero-wave" viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-        <path d="M0 60 L0 30 Q360 0 720 30 Q1080 60 1440 30 L1440 60 Z" fill="#f8f8f6"/>
-    </svg>
-</section>
-
-<!-- ===========================
-     MAIN CONTENT
-============================ -->
-<main class="main-content">
-
-    <!-- SECTION: BERITA TERBARU -->
-    <section style="margin-bottom: 80px;" class="fade-in">
-        <div class="section-header">
-            <div class="section-tag">Berita Terbaru</div>
-            <h2 class="section-title">Update Terkini dari <span>Toko FAA</span></h2>
-            <p class="section-desc">Ikuti terus perkembangan kegiatan, promo, dan informasi terbaru kami.</p>
+        <div class="hero-content fade-in">
+            <div class="hero-tag">Portal Berita &amp; Kegiatan FAA</div>
+            <h1>Berita <em>Kegiatan</em></h1>
+            <nav class="hero-breadcrumb">
+                <a href="{{ route('welcome') }}">Beranda</a>
+                <span class="sep">/</span>
+                <a href="{{ route('faq.public') }}">FAQ</a>
+                <span class="sep">/</span>
+                <span class="crumb-active">Berita</span>
+            </nav>
         </div>
 
-        @php
-            $featured = $beritas->first();
-            $sideItems = $beritas->skip(1)->take(2);
-        @endphp
-
-        @if($featured)
-        <div class="featured-grid">
-            <!-- FEATURED BIG CARD -->
-            <div class="card-featured">
-                <div class="card-featured-img">
-                    @if($featured->gambar)
-                        <img src="{{ asset('storage/' . $featured->gambar) }}" alt="{{ $featured->judul }}">
-                    @else
-                        <img src="{{ asset('template-sarab/img/blog/1.jpg') }}" alt="Default">
-                    @endif
-                    <div class="img-badge-top">#Terupdate 1</div>
-                    <div class="img-date-badge">
-                        <span class="day">{{ \Carbon\Carbon::parse($featured->created_at)->translatedFormat('d') }}</span>
-                        <span class="mon">{{ \Carbon\Carbon::parse($featured->created_at)->translatedFormat('M Y') }}</span>
-                    </div>
-                </div>
-                <div class="card-featured-body">
-                    <div class="card-meta">
-                        <span class="meta-tag">Update Terkini</span>
-                        <span class="meta-loc"><i class="fas fa-map-marker-alt"></i> Desa Karyamakmur</span>
-                    </div>
-                    <h3>{{ $featured->judul }}</h3>
-                    <p>{{ strip_tags($featured->isi) }}</p>
-                    <a href="{{ route('berita.show', $featured->id) }}" class="btn-read">
-                        Baca Selengkapnya <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-            </div>
-
-            <!-- SIDE STACK -->
-            <div class="side-stack">
-                @foreach($sideItems as $side)
-                <div class="card-side">
-                    <div class="side-top">
-                        <span class="side-badge">Update</span>
-                        <span class="side-date">{{ \Carbon\Carbon::parse($side->created_at)->translatedFormat('d M Y') }}</span>
-                    </div>
-                    <h4>{{ $side->judul }}</h4>
-                    <p>{{ Str::limit(strip_tags($side->isi), 100) }}</p>
-                    <a href="{{ route('berita.show', $side->id) }}" class="side-link">
-                        Detail Berita <i class="fas fa-chevron-right"></i>
-                    </a>
-                </div>
-                @endforeach
-
-                @if($sideItems->count() < 2)
-                <div class="card-side-promo">
-                    <i class="fas fa-bell"></i>
-                    <h4>Nantikan Info Lainnya</h4>
-                    <p>Pantau terus portal ini untuk update terbaru dari FAA</p>
-                </div>
-                @endif
-            </div>
-        </div>
-        @endif
+        <svg class="hero-wave" viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <path d="M0 60 L0 30 Q360 0 720 30 Q1080 60 1440 30 L1440 60 Z" fill="#f8f8f6"/>
+        </svg>
     </section>
 
-    <!-- SECTION: SEMUA BERITA -->
-    <section id="semua-berita">
-        <div class="all-news-header fade-in">
-            <div>
-                <div class="section-tag">Arsip Lengkap</div>
-                <h2 class="section-title">Semua <span>Berita</span></h2>
-            </div>
-            <div class="filter-tabs">
-                <button class="filter-tab active" data-cat="all">Semua</button>
-                <button class="filter-tab" data-cat="bakery">Bakery</button>
-                <button class="filter-tab" data-cat="frozen">Frozen Food</button>
-                <button class="filter-tab" data-cat="promo">Promo</button>
-            </div>
-        </div>
+    <!-- ===========================
+         MAIN CONTENT
+    ============================ -->
+    <main class="main-content">
 
-        <div class="news-grid" id="newsGrid">
-            @forelse($beritas as $index => $item)
-            <div class="card-news news-item fade-in" data-cat="{{ $item->kategori ?? 'all' }}">
-                <div class="card-news-img">
-                    @if($item->gambar)
-                        <img src="{{ asset('storage/' . $item->gambar) }}" alt="{{ $item->judul }}">
-                    @else
-                        <img src="{{ asset('template-sarab/img/blog/2.jpg') }}" alt="Default">
-                    @endif
-                    <div class="news-date-pill">{{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d M Y') }}</div>
-                    <div class="news-number">{{ $loop->iteration }}</div>
-                </div>
-                <div class="card-news-body">
-                    <div class="news-source">Kegiatan Toko</div>
-                    <h5>{{ $item->judul }}</h5>
-                    <p>
-                        <em>Desa Karyamakmur, {{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d F Y') }}</em> — 
-                        {{ Str::limit(strip_tags($item->isi), 120) }}
-                    </p>
-                    <div class="card-news-footer">
-                        <a href="{{ route('berita.show', $item->id) }}" class="btn-detail">
-                            Selengkapnya <i class="fas fa-arrow-right"></i>
+        <!-- SECTION: BERITA TERBARU -->
+        <section style="margin-bottom: 80px;" class="fade-in">
+            <div class="section-header">
+                <div class="section-tag">Berita Terbaru</div>
+                <h2 class="section-title">Update Terkini dari <span>Toko FAA</span></h2>
+                <p class="section-desc">Ikuti terus perkembangan kegiatan, promo, dan informasi terbaru kami.</p>
+            </div>
+
+            @php
+                $featured = $beritas->first();
+                $sideItems = $beritas->skip(1)->take(2);
+            @endphp
+
+            @if($featured)
+            <div class="featured-grid">
+                <!-- FEATURED BIG CARD -->
+                <div class="card-featured">
+                    <div class="card-featured-img">
+                        @if($featured->gambar)
+                            <img src="{{ asset('storage/' . $featured->gambar) }}" alt="{{ $featured->judul }}">
+                        @else
+                            <img src="{{ asset('template-sarab/img/blog/1.jpg') }}" alt="Default">
+                        @endif
+                        <div class="img-badge-top">#Terupdate 1</div>
+                        <div class="img-date-badge">
+                            <span class="day">{{ \Carbon\Carbon::parse($featured->created_at)->translatedFormat('d') }}</span>
+                            <span class="mon">{{ \Carbon\Carbon::parse($featured->created_at)->translatedFormat('M Y') }}</span>
+                        </div>
+                    </div>
+                    <div class="card-featured-body">
+                        <div class="card-meta">
+                            <span class="meta-tag">Update Terkini</span>
+                            <span class="meta-loc"><i class="fas fa-map-marker-alt"></i> Desa Karyamakmur</span>
+                        </div>
+                        <h3>{{ $featured->judul }}</h3>
+                        <p>{{ strip_tags($featured->isi) }}</p>
+                        <a href="{{ route('berita.show', $featured->id) }}" class="btn-read">
+                            Baca Selengkapnya <i class="fas fa-arrow-right"></i>
                         </a>
-                        <span class="news-read-time">3 menit baca</span>
                     </div>
                 </div>
+
+                <!-- SIDE STACK -->
+                <div class="side-stack">
+                    @foreach($sideItems as $side)
+                    <div class="card-side">
+                        <div class="side-top">
+                            <span class="side-badge">Update</span>
+                            <span class="side-date">{{ \Carbon\Carbon::parse($side->created_at)->translatedFormat('d M Y') }}</span>
+                        </div>
+                        <h4>{{ $side->judul }}</h4>
+                        <p>{{ Str::limit(strip_tags($side->isi), 100) }}</p>
+                        <a href="{{ route('berita.show', $side->id) }}" class="side-link">
+                            Detail Berita <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </div>
+                    @endforeach
+
+                    @if($sideItems->count() < 2)
+                    <div class="card-side-promo">
+                        <i class="fas fa-bell"></i>
+                        <h4>Nantikan Info Lainnya</h4>
+                        <p>Pantau terus portal ini untuk update terbaru dari FAA</p>
+                    </div>
+                    @endif
+                </div>
             </div>
-            @empty
-            <div class="empty-state">
-                <i class="fas fa-newspaper"></i>
-                <p>Belum ada arsip berita saat ini.</p>
+            @endif
+        </section>
+
+        <!-- SECTION: SEMUA BERITA -->
+        <section id="semua-berita">
+            <div class="all-news-header fade-in">
+                <div>
+                    <div class="section-tag">Arsip Lengkap</div>
+                    <h2 class="section-title">Semua <span>Berita</span></h2>
+                </div>
+                <div class="filter-tabs">
+                    <button class="filter-tab active" data-cat="all">Semua</button>
+                    <button class="filter-tab" data-cat="bakery">Bakery</button>
+                    <button class="filter-tab" data-cat="frozen">Frozen Food</button>
+                    <button class="filter-tab" data-cat="promo">Promo</button>
+                </div>
             </div>
-            @endforelse
-        </div>
-    </section>
 
-</main>
-
-<!-- ===========================
-     FOOTER
-============================ -->
-<!-- Footer -->
-      <footer>
-         <div class="container">
-            <div class="row g-5">
-               <!-- Kolom 1: Logo & Deskripsi -->
-               <div class="col-sm-6 col-lg-3">
-                  <div class="fnm">FAA <span>Frozen Food & Bakery</span></div>
-                  <p class="fdesc">FAA Frozen Food & Bakery menyediakan berbagai produk makanan beku dan Roti berkualitas tinggi dengan rasa yang lezat dan konsisten.</p>
-                  <div class="fsoc">
-                     <a href="#"><i class="fab fa-facebook-f"></i></a>
-                     <a href="#"><i class="fab fa-instagram"></i></a>
-                     <a href="#"><i class="fab fa-twitter"></i></a>
-                     <a href="#"><i class="fab fa-youtube"></i></a>
-                     <a href="#"><i class="fab fa-tiktok"></i></a>
-                  </div>
-               </div>
-               
-               <!-- Kolom 2: Link Cepat-->
-               <div class="col-sm-6 col-lg-2">
-                  <div class="ftit">Link Cepat</div>
-                  <ul class="flinks ps-0">
-                     <li><a href="{{ route('welcome') }}"><i class="fas fa-chevron-right"></i>Beranda</a></li>
-                     <li><a href="{{ url('/#categories') }}"><i class="fas fa-chevron-right"></i>Tentang Kami</a></li>
-                     <li><a href="{{ route('berita.public') }}"><i class="fas fa-chevron-right"></i>Berita</a></li>
-                     <li><a href="{{ route('produk.makanan') }}"><i class="fas fa-chevron-right"></i>Produk</a></li>
-                     <li><a href="{{ route('faq.public') }}"><i class="fas fa-chevron-right"></i>FAQ</a></li>
-                  </ul>
-               </div>
-               
-               <!-- Kolom 3: Hubungi Kami-->
-               <div class="col-sm-6 col-lg-4">
-                  <div class="ftit">Hubungi Kami</div>
-                  <div class="fci">
-                     <div class="fciico"><i class="fas fa-map-marker-alt"></i></div>
-                     <div class="fciinfo"><strong>Alamat</strong>Kuday, Sungai Liat, Kabupaten Bangka, Kepulauan Bangka Belitung 33211</div>
-                  </div>
-                  <div class="fci">
-                     <div class="fciico"><i class="fas fa-phone-alt"></i></div>
-                     <div class="fciinfo"><strong>Telepon</strong>+62 0853-6878-7893</div>
-                  </div>
-                  <div class="fci">
-                     <div class="fciico"><i class="fas fa-envelope"></i></div>
-                     <div class="fciinfo"><strong>Email</strong>hello@sarabfood.com</div>
-                  </div>
-                  <div class="fci">
-                     <div class="fciico"><i class="fas fa-clock"></i></div>
-                     <div class="fciinfo"><strong>Jam Operasional</strong>Setiap Hari: 06.00 - 18.00</div>
-                  </div>
-               </div>
-
-               <!-- Kolom 4: Lokasi / Google Maps Toko FAA Frozen Food & Bakery -->
-               <div class="col-sm-6 col-lg-3">
-                  <div class="ftit">Lokasi</div>
-                  <div class="fmap" style="border-radius: 10px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
-                     <iframe 
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3985.449717171717!2d106.1104212!3d-1.8504601!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e22f3e7784d51ad%3A0xf0b32b5d14082039!2sFAA+FROZEN+FOOD!5e0!3m2!1sid!2sid!4v1717424400000!5m2!1sid!2sid" 
-                        width="100%" 
-                        height="200" 
-                        style="border:0; display:block;" 
-                        allowfullscreen="" 
-                        loading="lazy" 
-                        referrerpolicy="no-referrer-when-downgrade">
-                     </iframe>
-                  </div>
-               </div>
+            <div class="news-grid" id="newsGrid">
+                @forelse($beritas as $index => $item)
+                <div class="card-news news-item fade-in" data-cat="{{ $item->kategori ?? 'all' }}">
+                    <div class="card-news-img">
+                        @if($item->gambar)
+                            <img src="{{ asset('storage/' . $item->gambar) }}" alt="{{ $item->judul }}">
+                        @else
+                            <img src="{{ asset('template-sarab/img/blog/2.jpg') }}" alt="Default">
+                        @endif
+                        <div class="news-date-pill">{{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d M Y') }}</div>
+                        <div class="news-number">{{ $loop->iteration }}</div>
+                    </div>
+                    <div class="card-news-body">
+                        <div class="news-source">Kegiatan Toko</div>
+                        <h5>{{ $item->judul }}</h5>
+                        <p>
+                            <em>Desa Karyamakmur, {{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d F Y') }}</em> — 
+                            {{ Str::limit(strip_tags($item->isi), 120) }}
+                        </p>
+                        <div class="card-news-footer">
+                            <a href="{{ route('berita.show', $item->id) }}" class="btn-detail">
+                                Selengkapnya <i class="fas fa-arrow-right"></i>
+                            </a>
+                            <span class="news-read-time">3 menit baca</span>
+                        </div>
+                    </div>
+                </div>
+                @empty
+                <div class="empty-state">
+                    <i class="fas fa-newspaper"></i>
+                    <p>Belum ada arsip berita saat ini.</p>
+                </div>
+                @endforelse
             </div>
-         </div>
-         
-         <div class="fbot">
-            <div class="container">
-               <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-                  <p>&copy 2026 <span>FAA Frozen Food & Bakery</span>. <br>Dibuat oleh <a target="_blank" class="mx-0 fw-bold text-success" href="https://www.instagram.com/juliy_safteri?igsh=eTQwZXE3Y2QxdXFj">Juliarti Safitri</a></p>
-               </div>
-            </div>
-         </div>
-      </footer>
+        </section>
 
-<!-- Back to Top Button -->
-<button id="btt" onclick="window.scrollTo({top:0, behavior:'smooth'})">
-    <i class="fas fa-chevron-up"></i>
-</button>
+    </main>
 
-<!-- JS -->
-<script src="{{ asset('template-sarab/js/jquery-3.7.1.min.js') }}"></script>
-<script src="{{ asset('template-sarab/js/bootstrap.bundle.min.js') }}"></script>
+    @include('layouts.partials.footer')
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
 
-    // ── Fade In on Scroll ──────────────────────────
-    const fadeEls = document.querySelectorAll('.fade-in');
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry, i) => {
-            if (entry.isIntersecting) {
-                setTimeout(() => entry.target.classList.add('visible'), i * 80);
-                observer.unobserve(entry.target);
-            }
+        // ── Fade In on Scroll ──────────────────────────
+        const fadeEls = document.querySelectorAll('.fade-in');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, i) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => entry.target.classList.add('visible'), i * 80);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.08 });
+        fadeEls.forEach(el => observer.observe(el));
+
+        // ── Hero Parallax ──────────────────────────────
+        const heroBg = document.querySelector('.hero-bg');
+        window.addEventListener('scroll', () => {
+            if (heroBg) heroBg.style.transform = `translateY(${window.scrollY * 0.28}px)`;
         });
-    }, { threshold: 0.08 });
-    fadeEls.forEach(el => observer.observe(el));
 
-    // ── Back to Top ────────────────────────────────
-    const btt = document.getElementById('btt');
-    window.addEventListener('scroll', () => {
-        btt.classList.toggle('show', window.scrollY > 300);
-    });
-
-    // ── Hero Parallax ──────────────────────────────
-    const heroBg = document.querySelector('.hero-bg');
-    window.addEventListener('scroll', () => {
-        if (heroBg) heroBg.style.transform = `translateY(${window.scrollY * 0.28}px)`;
-    });
-
-    // ── Filter Tabs ────────────────────────────────
-    document.querySelectorAll('.filter-tab').forEach(btn => {
-        btn.addEventListener('click', function () {
-            document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            const cat = this.dataset.cat;
-            document.querySelectorAll('.news-item').forEach(card => {
-                const cardCat = card.dataset.cat || 'all';
-                card.style.display = (cat === 'all' || cardCat === cat) ? 'flex' : 'none';
+        // ── Filter Tabs ────────────────────────────────
+        document.querySelectorAll('.filter-tab').forEach(btn => {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                const cat = this.dataset.cat;
+                document.querySelectorAll('.news-item').forEach(card => {
+                    const cardCat = card.dataset.cat || 'all';
+                    card.style.display = (cat === 'all' || cardCat === cat) ? 'flex' : 'none';
+                });
             });
         });
-    });
 
-    // ── Inline Search Filter ───────────────────────
-    const searchInput = document.getElementById('searchInput');
-    if (searchInput) {
-        searchInput.addEventListener('input', function () {
-            const q = this.value.toLowerCase().trim();
-            document.querySelectorAll('.news-item').forEach(card => {
-                const title = card.querySelector('h5')?.textContent.toLowerCase() || '';
-                const body  = card.querySelector('p')?.textContent.toLowerCase() || '';
-                card.style.display = (title.includes(q) || body.includes(q)) ? 'flex' : 'none';
+        // ── Inline Search Filter ───────────────────────
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', function () {
+                const q = this.value.toLowerCase().trim();
+                document.querySelectorAll('.news-item').forEach(card => {
+                    const title = card.querySelector('h5')?.textContent.toLowerCase() || '';
+                    const body  = card.querySelector('p')?.textContent.toLowerCase() || '';
+                    card.style.display = (title.includes(q) || body.includes(q)) ? 'flex' : 'none';
+                });
             });
-        });
-    }
+        }
 
-});
-</script>
+    });
+    </script>
 
 </body>
 </html>
