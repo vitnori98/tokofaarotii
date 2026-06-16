@@ -44,19 +44,9 @@
                 @error('product_id') <p class="error-text">{{ $message }}</p> @enderror
             </div>
 
-            <div class="form-row">
-                <div class="form-group">
-                    <label class="input-label">Tipe Transaksi</label>
-                    <div class="select-wrapper">
-                        <select name="type" class="form-input" required>
-                            <option value="in" {{ (old('type', $stockEntry->type) == 'in') ? 'selected' : '' }}>Stok Masuk (+)</option>
-                            <option value="out" {{ (old('type', $stockEntry->type) == 'out') ? 'selected' : '' }}>Stok Keluar (-)</option>
-                        </select>
-                        <i class="fas fa-chevron-down select-arrow"></i>
-                    </div>
-                    @error('type') <p class="error-text">{{ $message }}</p> @enderror
-                </div>
+            <input type="hidden" name="type" value="in">
 
+            <div class="form-row">
                 <div class="form-group">
                     <label class="input-label">Jumlah (Qty)</label>
                     <input type="number" name="quantity" min="1" step="1" 
@@ -64,17 +54,17 @@
                            class="form-input" placeholder="0" required>
                     @error('quantity') <p class="error-text">{{ $message }}</p> @enderror
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label class="input-label">Tanggal Transaksi</label>
-                <div class="input-with-icon">
-                    <i class="far fa-calendar-alt input-icon-inner"></i>
-                    <input type="date" name="entry_date" 
-                           value="{{ old('entry_date', \Carbon\Carbon::parse($stockEntry->entry_date)->format('Y-m-d')) }}" 
-                           class="form-input icon-padded" required>
+                <div class="form-group">
+                    <label class="input-label">Tanggal Transaksi</label>
+                    <div class="input-with-icon">
+                        <i class="far fa-calendar-alt input-icon-inner"></i>
+                        <input type="date" name="entry_date" 
+                               value="{{ old('entry_date', \Carbon\Carbon::parse($stockEntry->entry_date)->format('Y-m-d')) }}" 
+                               class="form-input icon-padded" required>
+                    </div>
+                    @error('entry_date') <p class="error-text">{{ $message }}</p> @enderror
                 </div>
-                @error('entry_date') <p class="error-text">{{ $message }}</p> @enderror
             </div>
 
             <div class="form-group">

@@ -5,41 +5,83 @@
         /* Hero Section Styling */
         .album-hero {
             position: relative;
-            background: url('{{ asset('template-sarab/img/banner-img.jpg') }}') no-repeat center center / cover;
-            padding: 150px 0 100px;
-            color: #ffffff;
-            text-align: center;
+            height: 420px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
         }
 
-        .album-hero::before {
-            content: "";
+        .hero-bg {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            z-index: 1;
+            inset: 0;
+            background: url('{{ asset('template-sarab/img/banner-img.jpg') }}') no-repeat center center / cover;
+            will-change: transform;
         }
 
-        .album-hero .container {
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(229,9,20,0.85) 0%, rgba(15,15,15,0.75) 60%, rgba(185,28,28,0.6) 100%);
+        }
+
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+
+        .hero-content {
             position: relative;
-            z-index: 2;
+            z-index: 10;
+            text-align: center;
+            padding: 0 24px;
         }
 
         .album-hero h1 {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-size: clamp(40px, 7vw, 78px);
             font-weight: 900;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
-            margin-bottom: 15px;
+            color: #ffffff;
+            line-height: 1;
+            letter-spacing: -2px;
+            margin-bottom: 22px;
         }
 
         .album-hero p {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             max-width: 700px;
             margin: 0 auto;
+            color: #ffffff !important;
             opacity: 0.9;
+        }
+
+        .hero-breadcrumb {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #ffffff;
+            margin-top: 20px;
+        }
+
+        .hero-breadcrumb a { color: #ffffff; text-decoration: none; transition: color 0.2s; opacity: 0.8; }
+        .hero-breadcrumb a:hover { opacity: 1; }
+        .hero-breadcrumb .crumb-active { color: #f59e0b; }
+        .hero-breadcrumb .sep { color: rgba(255,255,255,0.25); }
+
+        .hero-wave {
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
         }
 
         /* Section Styling */
@@ -154,12 +196,25 @@
     @include('layouts.partials.navbar')
 
     <!-- Hero Section -->
-    <div class="album-hero">
-        <div class="container" data-aos="fade-up">
+    <section class="album-hero">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-grid"></div>
+
+        <div class="hero-content" data-aos="fade-up">
             <h1>Album Kegiatan</h1>
             <p>Kumpulan momen berharga dan dokumentasi berbagai kegiatan FAA Frozen Food & Bakery.</p>
+            <nav class="hero-breadcrumb">
+                <a href="{{ route('welcome') }}">Beranda</a>
+                <span class="sep">/</span>
+                <span class="crumb-active">Album</span>
+            </nav>
         </div>
-    </div>
+
+        <svg class="hero-wave" viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <path d="M0 60 L0 30 Q360 0 720 30 Q1080 60 1440 30 L1440 60 Z" fill="#ffffff"/>
+        </svg>
+    </section>
 
     <!-- Album Grid Section -->
     <section class="album-section">

@@ -21,41 +21,83 @@
         /* Hero Section Styling */
         .about-hero {
             position: relative;
-            background: url('{{ asset('template-sarab/img/banner-toko-faa.png') }}') no-repeat center center / cover;
-            padding: 150px 0 100px;
-            color: #ffffff;
-            text-align: center;
+            height: 420px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
         }
 
-        .about-hero::before {
-            content: "";
+        .hero-bg {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            z-index: 1;
+            inset: 0;
+            background: url('{{ asset('template-sarab/img/banner-toko-faa.png') }}') no-repeat center center / cover;
+            will-change: transform;
         }
 
-        .about-hero .container {
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(229,9,20,0.85) 0%, rgba(15,15,15,0.75) 60%, rgba(185,28,28,0.6) 100%);
+        }
+
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+
+        .hero-content {
             position: relative;
-            z-index: 2;
+            z-index: 10;
+            text-align: center;
+            padding: 0 24px;
         }
 
         .about-hero h1 {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-size: clamp(40px, 7vw, 78px);
             font-weight: 900;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
-            margin-bottom: 15px;
+            color: #ffffff;
+            line-height: 1;
+            letter-spacing: -2px;
+            margin-bottom: 22px;
         }
 
         .about-hero p {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             max-width: 700px;
             margin: 0 auto;
+            color: #ffffff !important;
             opacity: 0.9;
+        }
+
+        .hero-breadcrumb {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #ffffff;
+            margin-top: 20px;
+        }
+
+        .hero-breadcrumb a { color: #ffffff; text-decoration: none; transition: color 0.2s; opacity: 0.8; }
+        .hero-breadcrumb a:hover { opacity: 1; }
+        .hero-breadcrumb .crumb-active { color: #f59e0b; }
+        .hero-breadcrumb .sep { color: rgba(255,255,255,0.25); }
+
+        .hero-wave {
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
         }
 
         /* Section Styling */
@@ -126,55 +168,125 @@
             margin-bottom: 25px;
         }
 
-        /* Employee/Team Cards */
+        /* BSKM Style Structure Header */
+        .structure-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 5px;
+        }
+
+        .structure-header .line {
+            height: 1px;
+            width: 40px;
+            background-color: #e50914; /* Merah sesuai tema */
+        }
+
+        .structure-header .accent-text {
+            color: #e50914; /* Merah sesuai tema */
+            font-weight: 700;
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .section-title.bskm-title {
+            color: #e50914; /* Merah sesuai tema */
+            font-weight: 800;
+            font-size: 2.25rem;
+            margin-bottom: 10px;
+        }
+
+        .section-title.bskm-title::after {
+            display: none;
+        }
+
+        /* Swiper Team Slider */
+        .team-swiper {
+            padding: 20px 0 50px;
+        }
+
+        /* Employee/Team Cards (BSKM Style) */
         .team-card {
-            background: #fff;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-            transition: all 0.3s;
-            margin-bottom: 30px;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            margin-bottom: 20px;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
         }
 
         .team-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            transform: translateY(-5px);
+            box-shadow: none;
         }
 
         .team-img-wrapper {
-            height: 300px;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
             overflow: hidden;
+            border: 2px solid #e50914; /* Merah sesuai tema */
+            padding: 5px;
+            background: #fff;
+            margin-bottom: 15px;
+            flex-shrink: 0;
+            transition: all 0.3s;
         }
 
         .team-img {
             width: 100%;
             height: 100%;
+            border-radius: 50%;
             object-fit: cover;
-            transition: transform 0.5s;
-        }
-
-        .team-card:hover .team-img {
-            transform: scale(1.1);
         }
 
         .team-info {
-            padding: 25px;
+            padding: 0;
             text-align: center;
         }
 
         .team-info h5 {
             font-weight: 700;
-            color: #333;
-            margin-bottom: 5px;
+            color: #1a1a1a;
+            margin-bottom: 4px;
+            font-size: 1.1rem;
         }
 
         .team-info p {
-            color: #e50914;
-            font-size: 0.9rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            color: #717171;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-transform: capitalize;
+            letter-spacing: 0;
             margin-bottom: 0;
+        }
+
+        /* Carousel Dots Indicators */
+        .swiper-pagination-team {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .swiper-pagination-team .swiper-pagination-bullet {
+            width: 10px;
+            height: 10px;
+            background-color: #cbd5e1;
+            border-radius: 2px;
+            opacity: 1;
+            transition: all 0.3s;
+            margin: 0 !important;
+        }
+
+        .swiper-pagination-team .swiper-pagination-bullet-active {
+            background-color: #e50914; /* Merah aktif */
+            width: 25px;
         }
     </style>
     <meta charset="UTF-8">
@@ -189,6 +301,8 @@
     <link href="{{ asset('template-sarab/css/aos.css') }}" rel="stylesheet"/>
     <link href="{{ asset('template-sarab/css/all.min.css') }}" rel="stylesheet"/>
     <link href="{{ asset('template-sarab/css/style.css') }}" rel="stylesheet" />
+    <!-- Swiper CSS -->
+    <link href="{{ asset('template-sarab/css/swiper-bundle.min.css') }}" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
@@ -196,12 +310,25 @@
     @include('layouts.partials.navbar')
 
     <!-- Hero Section -->
-    <div class="about-hero">
-        <div class="container" data-aos="fade-up">
+    <section class="about-hero">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-grid"></div>
+
+        <div class="hero-content" data-aos="fade-up">
             <h1>Tentang Kami</h1>
             <p>Mengenal lebih dekat FAA Frozen Food & Bakery, penyedia hidangan lezat dan berkualitas untuk keluarga Anda.</p>
+            <nav class="hero-breadcrumb">
+                <a href="{{ route('welcome') }}">Beranda</a>
+                <span class="sep">/</span>
+                <span class="crumb-active">Tentang Kami</span>
+            </nav>
         </div>
-    </div>
+
+        <svg class="hero-wave" viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <path d="M0 60 L0 30 Q360 0 720 30 Q1080 60 1440 30 L1440 60 Z" fill="#ffffff"/>
+        </svg>
+    </section>
 
     <!-- Sejarah Section -->
     <section class="history-section">
@@ -259,36 +386,71 @@
     <section class="team-section">
         <div class="container">
             <div class="text-center mb-5" data-aos="fade-up">
-                <h2 class="section-title">Tim Kami</h2>
+                <div class="structure-header">
+                    <span class="line"></span>
+                    <span class="accent-text">STRUKTUR</span>
+                    <span class="line"></span>
+                </div>
+                <h2 class="section-title bskm-title">Tim Kami</h2>
                 <p class="text-muted">Orang-orang di balik kelezatan FAA Frozen Food & Bakery.</p>
             </div>
-            <div class="row">
-                @forelse($pegawais as $pegawai)
-                <div class="col-sm-6 col-lg-3" data-aos="fade-up" data-aos-delay="{{ $loop->iteration * 100 }}">
-                    <div class="team-card">
-                        <div class="team-img-wrapper">
-                            @if($pegawai->foto)
-                                <img src="{{ asset('storage/' . $pegawai->foto) }}" alt="{{ $pegawai->nama }}" class="team-img">
-                            @else
-                                <img src="{{ asset('template-sarab/img/chefs/1.jpg') }}" alt="Default" class="team-img">
-                            @endif
-                        </div>
-                        <div class="team-info">
-                            <h5>{{ $pegawai->nama }}</h5>
-                            <p>{{ $pegawai->posisi }}</p>
+            
+            <!-- Swiper Slider -->
+            <div class="swiper team-swiper" data-aos="fade-up">
+                <div class="swiper-wrapper">
+                    @forelse($pegawais as $pegawai)
+                    <div class="swiper-slide">
+                        <div class="team-card">
+                            <div class="team-img-wrapper">
+                                @if($pegawai->foto)
+                                    <img src="{{ asset('storage/' . $pegawai->foto) }}" alt="{{ $pegawai->nama }}" class="team-img">
+                                @else
+                                    <img src="{{ asset('template-sarab/img/chefs/1.jpg') }}" alt="Default" class="team-img">
+                                @endif
+                            </div>
+                            <div class="team-info">
+                                <h5>{{ $pegawai->nama }}</h5>
+                                <p>{{ $pegawai->posisi }}</p>
+                            </div>
                         </div>
                     </div>
+                    @empty
+                    <div class="swiper-slide text-center">
+                        <p class="text-muted">Data pegawai belum tersedia.</p>
+                    </div>
+                    @endforelse
                 </div>
-                @empty
-                <div class="col-12 text-center">
-                    <p class="text-muted">Data pegawai belum tersedia.</p>
-                </div>
-                @endforelse
+                <!-- Pagination Dots -->
+                <div class="swiper-pagination-team"></div>
             </div>
         </div>
     </section>
 
     @include('layouts.partials.footer')
+
+    <!-- Swiper JS -->
+    <script src="{{ asset('template-sarab/js/swiper-bundle.min.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            new Swiper(".team-swiper", {
+                slidesPerView: 1,
+                spaceBetween: 30,
+                loop: true,
+                autoplay: {
+                    delay: 3000,
+                    disableOnInteraction: false,
+                },
+                pagination: {
+                    el: ".swiper-pagination-team",
+                    clickable: true,
+                },
+                breakpoints: {
+                    576: { slidesPerView: 2 },
+                    992: { slidesPerView: 4 },
+                },
+            });
+        });
+    </script>
 
 </body>
 </html>

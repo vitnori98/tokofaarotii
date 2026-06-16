@@ -52,7 +52,7 @@
         .hero-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(229,9,20,0.82) 0%, rgba(15,15,15,0.72) 55%, rgba(13,148,136,0.58) 100%);
+            background: linear-gradient(135deg, rgba(229,9,20,0.85) 0%, rgba(15,15,15,0.75) 60%, rgba(185,28,28,0.6) 100%);
         }
 
         .hero-grid {
@@ -181,7 +181,7 @@
             letter-spacing: -1px;
         }
 
-        .section-title span { color: var(--teal); }
+        .section-title span { color: var(--red); }
         .section-desc { font-size: 13px; color: var(--gray); margin-top: 8px; }
 
         /* ==============================
@@ -293,8 +293,8 @@
             font-weight: 800;
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: var(--teal);
-            background: rgba(13,148,136,0.08);
+            color: var(--red);
+            background: rgba(229,9,20,0.06);
             padding: 5px 12px;
             border-radius: 6px;
         }
@@ -396,7 +396,7 @@
             font-weight: 800;
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: var(--teal);
+            color: var(--red);
         }
 
         .side-date { font-size: 9px; color: var(--gray); font-weight: 600; }
@@ -415,7 +415,7 @@
             transition: color 0.2s;
         }
 
-        .card-side:hover h4 { color: var(--teal); }
+        .card-side:hover h4 { color: var(--red); }
 
         .card-side p {
             font-size: 11px;
@@ -436,7 +436,7 @@
             font-weight: 800;
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: var(--teal);
+            color: var(--red);
             text-decoration: none;
             margin-top: 12px;
             transition: gap 0.2s;
@@ -638,7 +638,7 @@
         .card-news p em {
             font-style: normal;
             font-weight: 700;
-            color: var(--teal);
+            color: var(--red);
         }
 
         .card-news-footer {
@@ -655,7 +655,7 @@
             font-weight: 800;
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: var(--teal);
+            color: var(--red);
             text-decoration: none;
             display: flex;
             align-items: center;

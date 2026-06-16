@@ -98,7 +98,7 @@
 
     .fbot { border-top: 1px solid rgba(255,255,255,0.06); padding: 25px 0; }
     .fbot p { font-size: 13px; color: rgba(255,255,255,0.3); margin: 0; }
-    .fbot a { color: var(--teal-light); text-decoration: none; font-weight: 600; }
+    .fbot a { color: var(--red); text-decoration: none; font-weight: 600; }
 
     #btt {
         position: fixed;
@@ -197,7 +197,7 @@
     <div class="fbot">
     <div class="container">
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-            <p>&copy 2026 <span>FAA Frozen Food & Bakery</span>. <br>Dibuat oleh <a target="_blank" class="mx-0 fw-bold text-success" href="https://www.instagram.com/juliy_safteri?igsh=eTQwZXE3Y2QxdXFj">Juliarti Safitri</a></p>
+            <p>&copy 2026 <span>FAA Frozen Food & Bakery</span>. <br>Dibuat oleh <a target="_blank" class="mx-0 fw-bold" href="https://www.instagram.com/juliy_safteri?igsh=eTQwZXE3Y2QxdXFj">Juliarti Safitri</a></p>
         </div>
     </div>
     </div>

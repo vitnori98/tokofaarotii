@@ -18,9 +18,9 @@
     <div class="detail-card main-card">
         <div class="card-header">
             <div class="header-left">
-                <div class="type-badge {{ $stockEntry->type == 'in' ? 'badge-in' : 'badge-out' }}">
-                    <i class="fas {{ $stockEntry->type == 'in' ? 'fa-arrow-down' : 'fa-arrow-up' }}"></i>
-                    {{ $stockEntry->type == 'in' ? 'STOK MASUK' : 'STOK KELUAR' }}
+                <div class="type-badge badge-in">
+                    <i class="fas fa-arrow-down"></i>
+                    STOK MASUK
                 </div>
                 <h1 class="entry-title">{{ $stockEntry->product->name }}</h1>
             </div>
@@ -47,8 +47,8 @@
             <div class="info-item">
                 <label>Jumlah (Quantity)</label>
                 <div class="value-wrap">
-                    <span class="qty-value {{ $stockEntry->type == 'in' ? 'text-green' : 'text-red' }}">
-                        {{ $stockEntry->type == 'in' ? '+' : '-' }}{{ $stockEntry->quantity }}
+                    <span class="qty-value text-green">
+                        +{{ $stockEntry->quantity }}
                     </span>
                     <span class="unit-label">{{ $stockEntry->product->unit ?? 'pcs' }}</span>
                 </div>

@@ -10,18 +10,13 @@ class StockEntryController extends Controller
 {
     public function index()
     {
-        $query = StockEntry::with('product');
+        $query = StockEntry::with('product')->where('type', 'in');
         
         // Filter by product
         if (request('product_id')) {
             $query->where('product_id', request('product_id'));
         }
 
-        // Filter by type
-        if (request('type')) {
-            $query->where('type', request('type'));
-        }
-        
         // Filter by date
         if (request('start_date')) {
             $query->whereDate('created_at', '>=', request('start_date'));
@@ -31,14 +26,12 @@ class StockEntryController extends Controller
         $products = Product::orderBy('name')->get();
         
         $totalIn = StockEntry::where('type', 'in')->sum('quantity');
-        $totalOut = StockEntry::where('type', 'out')->sum('quantity');
-        $totalTransactions = StockEntry::count();
+        $totalTransactions = StockEntry::where('type', 'in')->count();
         
         return view('stock-entries.index', compact(
             'stockEntries', 
             'products',
             'totalIn',
-            'totalOut',
             'totalTransactions'
         ));
     }
@@ -57,8 +50,11 @@ class StockEntryController extends Controller
             'entry_date' => 'required|date',
         ]);
 
-        // Simpan riwayat stok masuk
-        StockEntry::create($request->all());
+        // Simpan riwayat stok masuk (selalu tipe 'in')
+        $data = $request->all();
+        $data['type'] = 'in';
+        
+        StockEntry::create($data);
 
         return redirect()->route('stock-entries.index')
                         ->with('success', 'Stok berhasil ditambahkan!');
@@ -80,14 +76,16 @@ class StockEntryController extends Controller
     {
         $request->validate([
             'product_id' => 'required|exists:products,id',
-            'type'       => 'required|in:in,out',
             'quantity'   => 'required|integer|min:1',
             'entry_date' => 'required|date',
             'supplier'   => 'nullable|string|max:255',
             'notes'      => 'nullable|string',
         ]);
 
-        $stockEntry->update($request->all());
+        $data = $request->all();
+        $data['type'] = 'in'; // Tetap paksa tipe 'in'
+
+        $stockEntry->update($data);
 
         return redirect()->route('stock-entries.index')
             ->with('success', 'Stok berhasil diperbarui');

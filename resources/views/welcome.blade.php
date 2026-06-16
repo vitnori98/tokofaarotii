@@ -405,7 +405,7 @@
             <h2 class="fw-bold m-0" style="color: #0f172a;">Temukan Semua yang Anda Butuhkan</h2>
          </div>
          <div>
-            <a href="#" class="text-decoration-none fw-semibold d-flex align-items-center" style="color: #0284c7;">
+            <a href="#" class="text-decoration-none fw-semibold d-flex align-items-center" style="color: #e50914;">
                Lihat Semua Produk <i class="bi bi-arrow-right ms-2"></i>
             </a>
          </div>
@@ -416,7 +416,7 @@
          <div class="col-12 col-md-6" data-aos="fade-up" data-aos-delay="100">
             <div class="card border-0 rounded-4 overflow-hidden position-relative text-white shadow-sm" style="height: 280px; cursor: pointer;">
                <img class="w-100 h-100" src="{{ asset('template-sarab/img/category/frozen.jpg') }}" alt="Frozen Food" style="object-fit: cover;">
-               <div class="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-end p-4" style="background: linear-gradient(to top, rgba(15,23,42,0.85), rgba(15,23,42,0.1));">
+               <div class="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-end p-4" style="background: linear-gradient(to top, rgba(153,27,27,0.85), rgba(153,27,27,0.1));">
                   <span class="badge bg-white bg-opacity-25 blur-effect text-white rounded-pill px-3 py-2 mb-2 align-self-start small">
                      <i class="bi bi-snowflake me-1"></i> 50+ produk
                   </span>
@@ -444,15 +444,15 @@
       <div class="row g-4">
 
          <div class="col-12 col-sm-6 col-md-3" data-aos="fade-up" data-aos-delay="300">
-            <div class="card border-0 rounded-4 p-4 h-100 d-flex flex-column justify-content-between shadow-sm" style="background-color: #f5f3ff; min-height: 160px; cursor: pointer;">
+            <div class="card border-0 rounded-4 p-4 h-100 d-flex flex-column justify-content-between shadow-sm" style="background-color: #fef2f2; min-height: 160px; cursor: pointer;">
                <div>
-                  <div class="rounded-3 d-flex align-items-center justify-content-center mb-3" style="width: 40px; height: 40px; background-color: #ddd6fe; color: #6d28d9;">
+                  <div class="rounded-3 d-flex align-items-center justify-content-center mb-3" style="width: 40px; height: 40px; background-color: #fee2e2; color: #dc2626;">
                      <i class="bi bi-cake2"></i>
                   </div>
-                  <h5 class="fw-bold mb-1" style="color: #1e1b4b;">Kue & Dessert</h5>
+                  <h5 class="fw-bold mb-1" style="color: #7f1d1d;">Kue & Dessert</h5>
                   <p class="text-muted small m-0">Kue ulang tahun, tart, brownies</p>
                </div>
-               <span class="fw-bold small mt-3" style="color: #6d28d9;">20+ produk</span>
+               <span class="fw-bold small mt-3" style="color: #dc2626;">20+ produk</span>
             </div>
          </div>
 
@@ -512,7 +512,7 @@
          
          <div class="col-12 col-md-6" data-aos="fade-up" data-aos-delay="100">
             <div class="card border-0 rounded-4 p-4 position-relative overflow-hidden text-white h-100 shadow-sm" 
-                 style="background: linear-gradient(135deg, #024873 0%, #012340 100%); min-height: 240px;">
+                 style="background: linear-gradient(135deg, #7f1d1d 0%, #450a0a 100%); min-height: 240px;">
                
                <div class="position-absolute end-0 top-50 translate-middle-y opacity-10" 
                     style="width: 180px; height: 180px; border-radius: 50%; background: #ffffff; border: 20px solid #ffffff; margin-right: -40px;"></div>
@@ -521,13 +521,13 @@
                   <div>
                      <div class="rounded-3 d-flex align-items-center justify-content-center mb-3" 
                           style="width: 45px; height: 45px; background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">
-                        <i class="bi bi-box-seam fs-5 text-info"></i>
+                        <i class="bi bi-box-seam fs-5 text-white"></i>
                      </div>
                      <h3 class="fw-bold mb-2 fs-4">VR 3D Showroom</h3>
                      <p class="text-white-50 small mb-4" style="max-width: 85%;">Jelajahi toko kami secara virtual. Lihat produk dari segala sudut sebelum membeli.</p>
                   </div>
-                  <a href="#" class="btn btn-info text-white rounded-pill px-4 py-2 align-self-start btn-sm fw-semibold d-flex align-items-center" 
-                     style="background-color: #0084b4; border: none;">
+                  <a href="#" class="btn rounded-pill px-4 py-2 align-self-start btn-sm fw-semibold d-flex align-items-center text-white" 
+                     style="background-color: #e50914; border: none;">
                      Masuk Showroom <i class="bi bi-arrow-right ms-2"></i>
                   </a>
                </div>
@@ -536,7 +536,7 @@
 
          <div class="col-12 col-md-6" data-aos="fade-up" data-aos-delay="200">
             <div class="card border-0 rounded-4 p-4 position-relative overflow-hidden text-white h-100 shadow-sm" 
-                 style="background: linear-gradient(135deg, #3b0764 0%, #1e0236 100%); min-height: 240px;">
+                 style="background: linear-gradient(135deg, #991b1b 0%, #4c0519 100%); min-height: 240px;">
                
                <div class="position-absolute end-0 top-50 translate-middle-y opacity-10" 
                     style="width: 180px; height: 180px; border-radius: 50%; background: #ffffff; margin-right: -30px;"></div>
@@ -545,12 +545,12 @@
                   <div>
                      <div class="rounded-3 d-flex align-items-center justify-content-center mb-3" 
                           style="width: 45px; height: 45px; background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">
-                        <i class="bi bi-robot fs-5 text-mediumpurple" style="color: #c084fc;"></i>
+                        <i class="bi bi-robot fs-5 text-white"></i>
                      </div>
                      <div class="d-flex align-items-center mb-2">
                         <h3 class="fw-bold m-0 fs-4 me-2">AI Chatbot</h3>
                         <span class="badge rounded-pill text-white font-monospace opacity-75 small" 
-                              style="background-color: #6b21a8; border: 1px solid #a855f7; font-size: 0.65rem;">
+                              style="background-color: #991b1b; border: 1px solid #ef4444; font-size: 0.65rem;">
                            <i class="bi bi-sparkles me-1"></i>Beta
                         </span>
                      </div>
@@ -696,7 +696,7 @@
       </div>
 
       <div class="text-center mt-5" data-aos="fade-up">
-         <a href="{{ route('berita.public') }}" class="btn btn-primary fw-semibold px-4 py-25 rounded-3 d-inline-flex align-items-center shadow-sm" style="background-color: #0066ff; border: none; font-size: 0.95rem; padding-top: 10px; padding-bottom: 10px;">
+         <a href="{{ route('berita.public') }}" class="btn fw-semibold px-4 py-25 rounded-3 d-inline-flex align-items-center shadow-sm text-white" style="background-color: #e50914; border: none; font-size: 0.95rem; padding-top: 10px; padding-bottom: 10px;">
             Lihat Semua Berita <i class="fas fa-arrow-right ms-2"></i>
          </a>
       </div>

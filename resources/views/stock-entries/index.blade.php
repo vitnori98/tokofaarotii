@@ -37,15 +37,6 @@
         </div>
     </div>
     <div class="stat-card">
-        <div class="stat-icon" style="background:#fef2f2;">
-            <i class="fas fa-arrow-up" style="color:#ef4444;"></i>
-        </div>
-        <div>
-            <p class="stat-label">Total Stok Keluar</p>
-            <p class="stat-value" style="color:#ef4444;">{{ number_format($totalOut) }}</p>
-        </div>
-    </div>
-    <div class="stat-card">
         <div class="stat-icon" style="background:#eff6ff;">
             <i class="fas fa-exchange-alt" style="color:#3b82f6;"></i>
         </div>
@@ -89,16 +80,6 @@
                 </select>
             </div>
 
-            {{-- Filter Tipe --}}
-            <div class="filter-group">
-                <label class="filter-label"><i class="fas fa-filter"></i> Tipe</label>
-                <select name="type" class="filter-select" onchange="this.form.submit()">
-                    <option value="">Semua Tipe</option>
-                    <option value="in"  {{ request('type') == 'in'  ? 'selected' : '' }}>Masuk</option>
-                    <option value="out" {{ request('type') == 'out' ? 'selected' : '' }}>Keluar</option>
-                </select>
-            </div>
-
             {{-- Filter Tanggal --}}
             <div class="filter-group">
                 <label class="filter-label"><i class="far fa-calendar-alt"></i> Dari Tanggal</label>
@@ -127,7 +108,6 @@
                     <th class="col-no">NO</th>
                     <th style="width:110px;">TANGGAL</th>
                     <th>PRODUK</th>
-                    <th style="width:90px;text-align:center;">TIPE</th>
                     <th style="width:110px;text-align:center;">KUANTITAS</th>
                     <th>CATATAN</th>
                     <th class="col-action">AKSI</th>
@@ -155,23 +135,10 @@
                         @endif
                     </td>
 
-                    {{-- TIPE --}}
-                    <td style="text-align:center;">
-                        @if($entry->type == 'in')
-                            <span class="type-badge type-in">
-                                <i class="fas fa-arrow-down"></i> Masuk
-                            </span>
-                        @else
-                            <span class="type-badge type-out">
-                                <i class="fas fa-arrow-up"></i> Keluar
-                            </span>
-                        @endif
-                    </td>
-
                     {{-- KUANTITAS --}}
                     <td style="text-align:center;">
-                        <div class="qty-num {{ $entry->type == 'in' ? 'qty-in' : 'qty-out' }}">
-                            {{ $entry->type == 'in' ? '+' : '-' }}{{ number_format($entry->quantity) }}
+                        <div class="qty-num qty-in">
+                            +{{ number_format($entry->quantity) }}
                         </div>
                         <div class="qty-stock">Stok: {{ number_format($entry->product->total_stok ?? 0) }}</div>
                     </td>
@@ -271,31 +238,7 @@
                 @error('product_id')<p class="field-error">{{ $message }}</p>@enderror
             </div>
 
-            {{-- Tipe Stok --}}
-            <div class="form-group">
-                <label class="form-label">
-                    <i class="fas fa-exchange-alt"></i> Tipe Stok <span class="required">*</span>
-                </label>
-                <div class="type-toggle-wrap">
-                    <label class="type-toggle-opt">
-                        <input type="radio" name="type" value="in"
-                               {{ old('type', 'in') == 'in' ? 'checked' : '' }}
-                               onchange="updateTypeStyle()">
-                        <span class="toggle-label toggle-in">
-                            <i class="fas fa-arrow-down"></i> Stok Masuk
-                        </span>
-                    </label>
-                    <label class="type-toggle-opt">
-                        <input type="radio" name="type" value="out"
-                               {{ old('type') == 'out' ? 'checked' : '' }}
-                               onchange="updateTypeStyle()">
-                        <span class="toggle-label toggle-out">
-                            <i class="fas fa-arrow-up"></i> Stok Keluar
-                        </span>
-                    </label>
-                </div>
-                @error('type')<p class="field-error">{{ $message }}</p>@enderror
-            </div>
+            <input type="hidden" name="type" value="in">
 
             {{-- Grid: Jumlah & Tanggal --}}
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
@@ -360,7 +303,7 @@
     .alert-banner button:hover { opacity:1; }
 
     /* ─ Stats ─ */
-    .stats-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.25rem; }
+    .stats-grid { display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-bottom:1.25rem; }
     .stat-card  { background:#fff;border-radius:.875rem;border:1px solid #f1f5f9;box-shadow:0 1px 4px rgba(15,23,42,.06);padding:1rem 1.25rem;display:flex;align-items:center;gap:.875rem; }
     .stat-icon  { width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0; }
     .stat-label { font-size:.75rem;font-weight:500;color:#64748b;margin:0 0 2px; }

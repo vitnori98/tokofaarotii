@@ -277,13 +277,13 @@
                      role="button" 
                      data-bs-toggle="dropdown" 
                      aria-expanded="false"
-                     style="background-color: #f1f5f9; color: #1e293b; border-radius: 8px; padding: 6px 15px; font-size: 13px; font-weight: 500;">
+                     style="background-color: #fef2f2; color: #b91c1c; border-radius: 8px; padding: 6px 15px; font-size: 13px; font-weight: 500;">
                       Dokumentasi
                   </a>
                   <ul class="dropdown-menu border-0 shadow-lg p-3 rounded-4 mt-2" aria-labelledby="navbarDropdown" style="min-width: 260px;">
                      <li>
                         <a class="dropdown-item d-flex align-items-center gap-3 py-2 rounded-3 {{ request()->routeIs('berita.public') ? 'active' : '' }}" href="{{ route('berita.public') }}">
-                           <div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3" style="width: 40px; height: 40px; background-color: #f0f5ff; color: #8a1e1e;">
+                           <div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3" style="width: 40px; height: 40px; background-color: #fee2e2; color: #8a1e1e;">
                               <i class="bi bi-newspaper fs-5"></i>
                            </div>
                            <span class="fw-semibold text-dark" style="font-size: 0.95rem;">Berita FAA</span>
@@ -291,7 +291,7 @@
                      </li>
                      <li>
                         <a class="dropdown-item d-flex align-items-center gap-3 py-2 rounded-3 {{ request()->routeIs('album.public') ? 'active' : '' }}" href="{{ route('album.public') }}">
-                           <div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3" style="width: 40px; height: 40px; background-color: #f0f5ff; color: #8a1e1e;">
+                           <div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3" style="width: 40px; height: 40px; background-color: #fee2e2; color: #8a1e1e;">
                               <i class="bi bi-images fs-5"></i>
                            </div>
                            <span class="fw-semibold text-dark" style="font-size: 0.95rem;">Album Kegiatan</span>
@@ -299,7 +299,7 @@
                      </li>
                      <li>
                         <a class="dropdown-item d-flex align-items-center gap-3 py-2 rounded-3 {{ request()->routeIs('infografis.public') ? 'active' : '' }}" href="{{ route('infografis.public') }}">
-                           <div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3" style="width: 40px; height: 40px; background-color: #f0f5ff; color: #8a1e1e;">
+                           <div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3" style="width: 40px; height: 40px; background-color: #fee2e2; color: #8a1e1e;">
                               <i class="bi bi-bar-chart-line fs-5"></i>
                            </div>
                            <span class="fw-semibold text-dark" style="font-size: 0.95rem;">Infografis</span>
@@ -307,7 +307,7 @@
                      </li>
                      <li>
                         <a class="dropdown-item d-flex align-items-center gap-3 py-2 rounded-3 {{ request()->routeIs('video.public') ? 'active' : '' }}" href="{{ route('video.public') }}">
-                           <div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3" style="width: 40px; height: 40px; background-color: #f0f5ff; color: #8a1e1e;">
+                           <div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3" style="width: 40px; height: 40px; background-color: #fee2e2; color: #8a1e1e;">
                               <i class="bi bi-camera-video fs-5"></i>
                            </div>
                            <span class="fw-semibold text-dark" style="font-size: 0.95rem;">Video</span>
