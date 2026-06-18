@@ -8,7 +8,7 @@
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            filter: drop-shadow(0 0 12px rgba(255, 69, 0, 0.6)); 
+            filter: drop-shadow(0 0 12px rgba(0, 74, 173, 0.6)); 
             animation: floatingEffect 3s ease-in-out infinite;
         }
 
@@ -38,7 +38,7 @@
         .hero-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(229,9,20,0.85) 0%, rgba(15,15,15,0.75) 60%, rgba(185,28,28,0.6) 100%);
+            background: linear-gradient(135deg, rgba(0, 74, 173, 0.85) 0%, rgba(15, 15, 15, 0.75) 60%, rgba(3, 105, 161, 0.6) 100%);
         }
 
         .hero-grid {
@@ -109,7 +109,7 @@
             font-family: 'Playfair Display', serif;
             font-weight: 800;
             font-size: 2.5rem;
-            color: #333;
+            color: #1e293b;
             margin-bottom: 20px;
             position: relative;
             display: inline-block;
@@ -123,13 +123,13 @@
             transform: translateX(-50%);
             width: 60px;
             height: 4px;
-            background: #e50914;
+            background: #004aad;
             border-radius: 2px;
         }
 
         .history-img {
             border-radius: 20px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            box-shadow: 0 15px 40px rgba(0, 74, 173, 0.1);
             width: 100%;
             transition: transform 0.3s;
         }
@@ -145,21 +145,21 @@
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
             height: 100%;
-            border: 1px solid #f1f1f1;
+            border: 1px solid #e2e8f0;
             transition: all 0.3s;
         }
 
         .vm-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(229, 9, 20, 0.1);
-            border-color: #e50914;
+            box-shadow: 0 15px 40px rgba(0, 74, 173, 0.1);
+            border-color: #004aad;
         }
 
         .vm-icon {
             width: 60px;
             height: 60px;
-            background: rgba(229, 9, 20, 0.1);
-            color: #e50914;
+            background: rgba(0, 74, 173, 0.1);
+            color: #004aad;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -180,11 +180,11 @@
         .structure-header .line {
             height: 1px;
             width: 40px;
-            background-color: #e50914; /* Merah sesuai tema */
+            background-color: #f97316; /* Orange */
         }
 
         .structure-header .accent-text {
-            color: #e50914; /* Merah sesuai tema */
+            color: #f97316; /* Orange */
             font-weight: 700;
             font-size: 0.75rem;
             letter-spacing: 3px;
@@ -192,7 +192,7 @@
         }
 
         .section-title.bskm-title {
-            color: #e50914; /* Merah sesuai tema */
+            color: #004aad; /* Biru sesuai tema */
             font-weight: 800;
             font-size: 2.25rem;
             margin-bottom: 10px;
@@ -230,7 +230,7 @@
             height: 180px;
             border-radius: 50%;
             overflow: hidden;
-            border: 2px solid #e50914; /* Merah sesuai tema */
+            border: 2px solid #004aad; /* Biru sesuai tema */
             padding: 5px;
             background: #fff;
             margin-bottom: 15px;
@@ -285,7 +285,7 @@
         }
 
         .swiper-pagination-team .swiper-pagination-bullet-active {
-            background-color: #e50914; /* Merah aktif */
+            background-color: #004aad; /* Biru aktif */
             width: 25px;
         }
     </style>
@@ -335,11 +335,11 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right">
-                    <img src="{{ asset('template-sarab/img/about1.jpg') }}" alt="Sejarah FAA" class="history-img">
+                    <img src="{{ asset('template-sarab/img/banner-faa-new.jpeg') }}" alt="Sejarah FAA" class="history-img">
                 </div>
                 <div class="col-lg-6 ps-lg-5" data-aos="fade-left">
                     <h2 class="section-title">Sejarah Kami</h2>
-                    <p class="lead text-danger fw-bold">Berawal dari cinta untuk hidangan berkualitas.</p>
+                    <p class="lead text-primary fw-bold">Berawal dari cinta untuk hidangan berkualitas.</p>
                     <p>FAA Frozen Food & Bakery didirikan dengan misi sederhana: menyajikan kelezatan yang konsisten dan praktis bagi setiap keluarga. Berawal dari usaha rumahan di Sungai Liat, kami tumbuh dengan dedikasi pada bahan-bahan pilihan dan proses pembuatan yang higienis.</p>
                     <p>Seiring berjalannya waktu, kami terus berinovasi dalam menghadirkan berbagai varian roti segar yang dipanggang setiap hari serta produk frozen food yang telah menjadi favorit masyarakat sekitar. Kepercayaan pelanggan adalah motivasi terbesar kami untuk terus memberikan yang terbaik.</p>
                 </div>
@@ -371,10 +371,10 @@
                         </div>
                         <h3>Misi</h3>
                         <ul class="list-unstyled">
-                            <li class="mb-2"><i class="bi bi-check-circle-fill text-danger me-2"></i> Menggunakan bahan baku premium dan segar.</li>
-                            <li class="mb-2"><i class="bi bi-check-circle-fill text-danger me-2"></i> Menjaga konsistensi rasa dan kualitas produk.</li>
-                            <li class="mb-2"><i class="bi bi-check-circle-fill text-danger me-2"></i> Memberikan pelayanan yang ramah dan profesional.</li>
-                            <li class="mb-2"><i class="bi bi-check-circle-fill text-danger me-2"></i> Terus berinovasi mengikuti selera pelanggan.</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Menggunakan bahan baku premium dan segar.</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Menjaga konsistensi rasa dan kualitas produk.</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Memberikan pelayanan yang ramah dan profesional.</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Terus berinovasi mengikuti selera pelanggan.</li>
                         </ul>
                     </div>
                 </div>
@@ -451,6 +451,9 @@
             });
         });
     </script>
+
+</body>
+</html>
 
 </body>
 </html>

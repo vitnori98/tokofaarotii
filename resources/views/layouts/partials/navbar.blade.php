@@ -1,27 +1,27 @@
 <style>
     :root {
-        --red: #e50914;
-        --red-dark: #b80710;
-        --teal: #0d9488;
-        --teal-light: #14b8a6;
-        --gold: #f59e0b;
-        --dark: #0f0f0f;
-        --gray: #6b7280;
-        --light: #f8f8f6;
+        --blue: #004aad;
+        --blue-dark: #003580;
+        --orange: #f97316;
+        --orange-soft: #fff7ed;
+        --dark: #1e293b;
+        --gray: #64748b;
+        --light: #f8fafc;
         --white: #ffffff;
-        --border: #e5e7eb;
+        --border: #e2e8f0;
     }
 
     .navbar {
-        background: var(--white);
-        border-bottom: 2px solid var(--red);
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-bottom: 3px solid var(--blue);
         position: fixed;
         top: 0;
         left: 0;
         right: 0;
         z-index: 1030;
-        box-shadow: 0 2px 20px rgba(229,9,20,0.08);
-        transition: all 0.3s ease;
+        box-shadow: 0 4px 20px rgba(0, 74, 173, 0.1);
+        transition: all 0.4s ease;
     }
 
     body {
@@ -71,7 +71,7 @@
         font-family: 'Poppins', sans-serif;
         font-weight: 800;
         font-size: 20px;
-        color: var(--red);
+        color: var(--blue) !important;
         letter-spacing: -0.2px;
         line-height: 1;
     }
@@ -105,8 +105,53 @@
         font-family: 'Poppins', sans-serif;
     }
 
-    .nav-links a:hover { background: rgba(229,9,20,0.05); color: var(--red); }
-    .nav-links a.active { color: var(--red); font-weight: 600; }
+    .nav-links a:hover { 
+        background: var(--orange-soft); 
+        color: var(--orange); 
+    }
+    
+    .nav-links a.active { color: var(--blue); font-weight: 600; }
+
+    /* Dokumentasi Dropdown Custom Styling */
+    .nav-link.dropdown-toggle-custom {
+        background-color: transparent;
+        color: #334155 !important;
+        border-radius: 8px;
+        padding: 6px 15px;
+        font-size: 13px;
+        font-weight: 600;
+        transition: all 0.2s;
+    }
+
+    .nav-link.dropdown-toggle-custom:hover {
+        background-color: var(--orange-soft);
+        color: var(--orange) !important;
+    }
+
+    .dropdown-menu {
+        border: none;
+        box-shadow: 0 10px 40px rgba(0, 74, 173, 0.1);
+        border-radius: 12px;
+        padding: 0.75rem;
+    }
+
+    .dropdown-item-icon {
+        width: 35px;
+        height: 35px;
+        background-color: var(--orange-soft);
+        color: var(--orange);
+        transition: all 0.2s;
+    }
+
+    .dropdown-item:hover .dropdown-item-icon {
+        background-color: var(--orange);
+        color: white;
+    }
+
+    .dropdown-item:hover {
+        background-color: var(--orange-soft);
+        color: var(--orange);
+    }
 
     .nav-actions {
         display: flex;
@@ -131,7 +176,7 @@
         font-size: 13px;
     }
 
-    .btn-nav-icon:hover { border-color: var(--red); color: var(--red); }
+    .btn-nav-icon:hover { border-color: var(--blue); color: var(--blue); }
 
     .cart-badge {
         position: absolute;
@@ -139,7 +184,7 @@
         right: -5px;
         width: 17px;
         height: 17px;
-        background: var(--red);
+        background: var(--orange);
         border-radius: 50%;
         font-size: 8px;
         font-weight: 800;
@@ -150,7 +195,7 @@
     }
 
     .btn-login {
-        background: var(--red);
+        background: var(--blue);
         color: white !important;
         padding: 9px 18px;
         border-radius: 10px;
@@ -165,12 +210,12 @@
         gap: 6px;
     }
 
-    .btn-login:hover { background: var(--red-dark); transform: translateY(-1px); }
+    .btn-login:hover { background: var(--blue-dark); transform: translateY(-1px); }
 
     .btn-dashboard {
         background: transparent;
-        color: var(--red) !important;
-        border: 1.5px solid var(--red);
+        color: var(--blue) !important;
+        border: 1.5px solid var(--blue);
         padding: 8px 18px;
         border-radius: 10px;
         font-size: 11px;
@@ -184,7 +229,7 @@
         gap: 6px;
     }
 
-    .btn-dashboard:hover { background: var(--red); color: white !important; }
+    .btn-dashboard:hover { background: var(--blue); color: white !important; }
 
     .navbar-toggler {
         display: none;
@@ -252,15 +297,13 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom py-3 fixed-top">
    <div class="container-fluid px-lg-4">
       
-      <a class="navbar-brand d-flex align-items-center gap-2 text-decoration-none me-4" href="{{ route('welcome') }}">
-         <img src="{{ asset('template-sarab/img/logo-toko-faa.png') }}" alt="Logo FAA" class="brand-logo-img" style="height: 40px; object-fit: contain;">
-         <div class="d-flex flex-column lh-sm">
-            <span class="brand-text fw-bold text-dark m-0" style="font-size: 1.25rem; letter-spacing: 0.5px;">FAA</span>
-         </div>
+      <a class="navbar-brand d-flex align-items-center gap-3 text-decoration-none me-4" href="{{ route('welcome') }}">
+         <img src="{{ asset('template-sarab/img/logo-toko-faa.png') }}" alt="Logo FAA" class="brand-logo-img" style="height: 45px; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));">
+         <span class="brand-text m-0">FAA <small style="font-size: 10px; display: block; font-weight: 500; color: var(--gray);">FROZEN & BAKERY</small></span>
       </a>
 
       <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-         <span class="navbar-toggler-icon"></span>
+         <i class="bi bi-list fs-2 text-blue"></i>
       </button>
 
       <div class="collapse navbar-collapse" id="navbarNav">
@@ -271,46 +314,45 @@
                <li><a href="{{ route('tentang-kami') }}" class="{{ request()->routeIs('tentang-kami') ? 'active' : '' }}">Tentang Kami</a></li>
                
                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" 
+                  <a class="nav-link dropdown-toggle dropdown-toggle-custom" 
                      href="#" 
                      id="navbarDropdown" 
                      role="button" 
                      data-bs-toggle="dropdown" 
-                     aria-expanded="false"
-                     style="background-color: #fef2f2; color: #b91c1c; border-radius: 8px; padding: 6px 15px; font-size: 13px; font-weight: 500;">
+                     aria-expanded="false">
                       Dokumentasi
                   </a>
-                  <ul class="dropdown-menu border-0 shadow-lg p-3 rounded-4 mt-2" aria-labelledby="navbarDropdown" style="min-width: 260px;">
+                  <ul class="dropdown-menu mt-2" aria-labelledby="navbarDropdown" style="min-width: 240px;">
                      <li>
                         <a class="dropdown-item d-flex align-items-center gap-3 py-2 rounded-3 {{ request()->routeIs('berita.public') ? 'active' : '' }}" href="{{ route('berita.public') }}">
-                           <div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3" style="width: 40px; height: 40px; background-color: #fee2e2; color: #8a1e1e;">
-                              <i class="bi bi-newspaper fs-5"></i>
+                           <div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3 dropdown-item-icon">
+                              <i class="bi bi-newspaper fs-6"></i>
                            </div>
-                           <span class="fw-semibold text-dark" style="font-size: 0.95rem;">Berita FAA</span>
+                           <span class="fw-medium text-dark" style="font-size: 0.9rem;">Berita FAA</span>
                         </a>
                      </li>
                      <li>
                         <a class="dropdown-item d-flex align-items-center gap-3 py-2 rounded-3 {{ request()->routeIs('album.public') ? 'active' : '' }}" href="{{ route('album.public') }}">
-                           <div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3" style="width: 40px; height: 40px; background-color: #fee2e2; color: #8a1e1e;">
-                              <i class="bi bi-images fs-5"></i>
+                           <div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3 dropdown-item-icon">
+                              <i class="bi bi-images fs-6"></i>
                            </div>
-                           <span class="fw-semibold text-dark" style="font-size: 0.95rem;">Album Kegiatan</span>
+                           <span class="fw-medium text-dark" style="font-size: 0.9rem;">Album Kegiatan</span>
                         </a>
                      </li>
                      <li>
                         <a class="dropdown-item d-flex align-items-center gap-3 py-2 rounded-3 {{ request()->routeIs('infografis.public') ? 'active' : '' }}" href="{{ route('infografis.public') }}">
-                           <div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3" style="width: 40px; height: 40px; background-color: #fee2e2; color: #8a1e1e;">
-                              <i class="bi bi-bar-chart-line fs-5"></i>
+                           <div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3 dropdown-item-icon">
+                              <i class="bi bi-bar-chart-line fs-6"></i>
                            </div>
-                           <span class="fw-semibold text-dark" style="font-size: 0.95rem;">Infografis</span>
+                           <span class="fw-medium text-dark" style="font-size: 0.9rem;">Infografis</span>
                         </a>
                      </li>
                      <li>
                         <a class="dropdown-item d-flex align-items-center gap-3 py-2 rounded-3 {{ request()->routeIs('video.public') ? 'active' : '' }}" href="{{ route('video.public') }}">
-                           <div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3" style="width: 40px; height: 40px; background-color: #fee2e2; color: #8a1e1e;">
-                              <i class="bi bi-camera-video fs-5"></i>
+                           <div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded-3 dropdown-item-icon">
+                              <i class="bi bi-camera-video fs-6"></i>
                            </div>
-                           <span class="fw-semibold text-dark" style="font-size: 0.95rem;">Video</span>
+                           <span class="fw-medium text-dark" style="font-size: 0.9rem;">Video</span>
                         </a>
                      </li>
                   </ul>
@@ -339,7 +381,7 @@
                   <i class="bi bi-cart3 fs-5" style="color: #334155;"></i>
                   <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-danger d-flex align-items-center justify-content-center p-0 shadow" 
                         id="cartCount" 
-                        style="width: 18px; height: 18px; font-size: 0.65rem; font-family: sans-serif; margin-top: 6px; margin-left: -6px;">
+                        style="width: 18px; height: 18px; font-size: 0.65rem; font-family: sans-serif; margin-top: 6px; margin-left: -6px; background-color: var(--orange) !important;">
                      {{ count(session('cart', [])) }}
                   </span>
                </a>
@@ -359,7 +401,7 @@
                      <a href="{{ route('login') }}" class="text-decoration-none fw-semibold px-2 text-secondary hover-dark" style="font-size: 0.95rem;">
                         Masuk
                      </a>
-                     <a href="{{ route('register') }}" class="btn text-white fw-semibold px-3 py-2 btn-sm shadow-sm" style="background-color: #ff2a00; font-size: 0.95rem; border-radius: 10px !important;">
+                     <a href="{{ route('register') }}" class="btn text-white fw-semibold px-3 py-2 btn-sm shadow-sm" style="background-color: var(--orange); font-size: 0.95rem; border-radius: 10px !important;">
                         Daftar
                      </a>
                   @endauth

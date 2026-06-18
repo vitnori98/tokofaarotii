@@ -1,24 +1,24 @@
 <style>
-    footer { background: var(--dark); color: rgba(255,255,255,0.65); margin-top: 80px; }
+    footer { background: #ffff; color: #1e293b; margin-top: 80px; border-top: 3px solid #004aad; }
 
     .fnm {
         font-family: 'Poppins', sans-serif;
         font-weight: 800;
         font-size: 24px;
-        color: white;
+        color: #004aad;
         margin-bottom: 15px;
     }
 
     .fnm span {
         display: block;
         font-size: 10px;
-        font-weight: 500;
-        color: rgba(255,255,255,0.4);
+        font-weight: 600;
+        color: #f97316;
         letter-spacing: 2px;
         text-transform: uppercase;
     }
 
-    .fdesc { font-size: 14px; line-height: 1.8; color: rgba(255,255,255,0.5); margin-bottom: 25px; }
+    .fdesc { font-size: 14px; line-height: 1.8; color: #64748b; margin-bottom: 25px; }
 
     .fsoc { display: flex; gap: 10px; }
 
@@ -26,20 +26,22 @@
         width: 38px;
         height: 38px;
         border-radius: 10px;
-        border: 1px solid rgba(255,255,255,0.1);
+        border: 1.5px solid #e2e8f0;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: rgba(255,255,255,0.5);
+        color: #004aad;
         text-decoration: none;
         transition: all 0.3s;
+        background: white;
     }
 
     .fsoc a:hover {
-        background: var(--red);
-        border-color: var(--red);
+        background: #004aad;
+        border-color: #004aad;
         color: white;
         transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 74, 173, 0.2);
     }
 
     .ftit {
@@ -48,16 +50,17 @@
         font-weight: 800;
         letter-spacing: 3px;
         text-transform: uppercase;
-        color: white;
+        color: #1e293b;
         margin-bottom: 25px;
         padding-bottom: 12px;
-        border-bottom: 1px solid rgba(255,255,255,0.08);
+        border-bottom: 2px solid #f97316;
+        display: inline-block;
     }
 
     .flinks { list-style: none; padding: 0; }
     .flinks li { margin-bottom: 12px; }
     .flinks a {
-        color: rgba(255,255,255,0.5);
+        color: #64748b;
         text-decoration: none;
         font-size: 14px;
         display: flex;
@@ -66,20 +69,20 @@
         transition: all 0.3s;
     }
 
-    .flinks a i { font-size: 10px; color: var(--red); }
-    .flinks a:hover { color: white; padding-left: 5px; }
+    .flinks a i { font-size: 10px; color: #004aad; }
+    .flinks a:hover { color: #004aad; padding-left: 5px; }
 
     .fci { display: flex; gap: 15px; margin-bottom: 20px; }
 
     .fciico {
         width: 40px;
         height: 40px;
-        background: rgba(229,9,20,0.1);
+        background: #fff7ed;
         border-radius: 10px;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: var(--red);
+        color: #004aad;
         font-size: 14px;
         flex-shrink: 0;
     }
@@ -90,22 +93,23 @@
         font-weight: 700;
         letter-spacing: 2px;
         text-transform: uppercase;
-        color: rgba(255,255,255,0.3);
+        color: #f97316;
         margin-bottom: 4px;
     }
 
-    .fciinfo span { font-size: 13px; color: rgba(255,255,255,0.6); }
+    .fciinfo span { font-size: 13px; color: #64748b; }
 
-    .fbot { border-top: 1px solid rgba(255,255,255,0.06); padding: 25px 0; }
-    .fbot p { font-size: 13px; color: rgba(255,255,255,0.3); margin: 0; }
-    .fbot a { color: var(--red); text-decoration: none; font-weight: 600; }
+    .fbot { border-top: 1px solid #e2e8f0; padding: 25px 0; background: #f8fafc; }
+    .fbot p { font-size: 13px; color: #64748b; margin: 0; }
+    .fbot span { color: #004aad; font-weight: 700; }
+    .fbot a { color: #f97316; text-decoration: none; font-weight: 600; }
 
     #btt {
         position: fixed;
         bottom: 30px;
         right: 30px;
         z-index: 9999;
-        background-color: #e50914;
+        background-color: #004aad;
         color: #ffffff;
         border: none;
         width: 45px;
@@ -123,7 +127,7 @@
     }
 
     #btt.show { opacity: 1; visibility: visible; transform: translateY(0); }
-    #btt:hover { background-color: #b80710; transform: translateY(-3px); }
+    #btt:hover { background-color: #003580; transform: translateY(-3px); }
 </style>
 
 <!-- Footer -->
@@ -137,7 +141,6 @@
             <div class="fsoc">
                 <a href="#"><i class="fab fa-facebook-f"></i></a>
                 <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
                 <a href="#"><i class="fab fa-youtube"></i></a>
                 <a href="#"><i class="fab fa-tiktok"></i></a>
             </div>

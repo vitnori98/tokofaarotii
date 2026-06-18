@@ -58,7 +58,7 @@
         {{-- Penjualan Chart --}}
         <div class="dashboard-card">
             <div class="card-header">
-                <h3 class="card-title"><i class="fas fa-chart-line text-indigo-500"></i> Tren Penjualan</h3>
+                <h3 class="card-title"><i class="fas fa-chart-line text-orange-500"></i> Tren Penjualan</h3>
                 <span class="card-subtitle">6 Bulan Terakhir</span>
             </div>
             <div class="card-body chart-container">
@@ -184,10 +184,10 @@
 
 <style>
     /* ── Welcome Banner ── */
-    .welcome-banner { background: linear-gradient(135deg, #6366f1, #4f46e5); border-radius: 1.5rem; padding: 2rem; color: #fff; display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; box-shadow: 0 10px 25px rgba(99, 102, 241, 0.2); }
+    .welcome-banner { background: linear-gradient(135deg, #f97316, #ea580c); border-radius: 1.5rem; padding: 2rem; color: #fff; display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; box-shadow: 0 10px 25px rgba(249, 115, 22, 0.2); }
     .welcome-title { font-size: 1.5rem; font-weight: 800; margin: 0 0 .5rem; }
     .welcome-text { font-size: .95rem; opacity: .9; margin: 0; }
-    .btn-welcome { background: #fff; color: #6366f1; padding: .75rem 1.5rem; border-radius: .875rem; font-size: .9rem; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: .6rem; transition: all .2s; }
+    .btn-welcome { background: #fff; color: #f97316; padding: .75rem 1.5rem; border-radius: .875rem; font-size: .9rem; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: .6rem; transition: all .2s; }
     .btn-welcome:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
 
     /* ── Stats ── */
@@ -236,7 +236,7 @@
     .alert-info { flex: 1; min-width: 0; }
     .alert-name { font-size: .85rem; font-weight: 700; color: #1e293b; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .alert-status { font-size: .75rem; color: #64748b; margin: 2px 0 0; }
-    .btn-refill { background: #6366f1; color: #fff; padding: .3rem .75rem; border-radius: .5rem; font-size: .7rem; font-weight: 700; text-decoration: none; }
+    .btn-refill { background: #f97316; color: #fff; padding: .3rem .75rem; border-radius: .5rem; font-size: .7rem; font-weight: 700; text-decoration: none; }
     .empty-alert { padding: 3rem 1.5rem; text-align: center; color: #cbd5e1; }
     .empty-alert i { font-size: 2.5rem; margin-bottom: .75rem; display: block; }
     .empty-alert p { font-size: .85rem; font-weight: 600; }
@@ -248,8 +248,8 @@
     /* ── Shortcuts ── */
     .shortcut-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
     .shortcut-item { background: #fff; border-radius: 1.25rem; padding: 1rem; border: 1px solid #f1f5f9; display: flex; flex-direction: column; align-items: center; gap: .5rem; text-decoration: none; transition: all .2s; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
-    .shortcut-item:hover { background: #f8fafc; border-color: #6366f1; transform: translateY(-2px); }
-    .shortcut-item i { font-size: 1.1rem; color: #6366f1; }
+    .shortcut-item:hover { background: #f8fafc; border-color: #f97316; transform: translateY(-2px); }
+    .shortcut-item i { font-size: 1.1rem; color: #f97316; }
     .shortcut-item span { font-size: .75rem; font-weight: 700; color: #475569; }
 
     /* ── Utilities ── */
@@ -276,10 +276,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 datasets: [{
                     label: 'Penjualan',
                     data: @json($chartData ?? []),
-                    backgroundColor: '#6366f1',
+                    backgroundColor: '#f97316',
                     borderRadius: 8,
                     barThickness: 25,
-                    hoverBackgroundColor: '#4f46e5',
+                    hoverBackgroundColor: '#ea580c',
                 }]
             },
             options: {
@@ -317,7 +317,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const l = label.toLowerCase();
             if (l.includes('frozen')) return '#ef4444'; // Red
             if (l.includes('bakery')) return '#f59e0b'; // Amber/Orange
-            return '#6366f1'; // Default Indigo
+            return '#f97316'; // Default Orange
         });
 
         new Chart(categoryCtx.getContext('2d'), {

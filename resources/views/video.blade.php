@@ -116,16 +116,17 @@
             background: #fff;
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            transition: all 0.3s;
+            box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.05), -5px -5px 15px rgba(255, 255, 255, 0.8);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             height: 100%;
-            border: 1px solid #f1f1f1;
+            border: 1px solid rgba(0, 0, 0, 0.02);
+            position: relative;
         }
 
         .video-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(229, 9, 20, 0.15);
-            border-color: #e50914;
+            transform: translateY(-15px);
+            box-shadow: 0 25px 50px rgba(229, 9, 20, 0.15);
+            border-color: rgba(229, 9, 20, 0.1);
         }
 
         .video-thumb-wrapper {
@@ -140,11 +141,12 @@
             height: 100%;
             object-fit: cover;
             opacity: 0.8;
-            transition: opacity 0.3s;
+            transition: all 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
         .video-card:hover .video-thumb {
             opacity: 1;
+            transform: scale(1.1);
         }
 
         .play-btn {
@@ -152,24 +154,26 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             background: #e50914;
             color: #fff;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 2rem;
             box-shadow: 0 0 20px rgba(229, 9, 20, 0.5);
-            transition: all 0.3s;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             z-index: 2;
+            border: 3px solid #fff;
         }
 
         .video-card:hover .play-btn {
-            transform: translate(-50%, -50%) scale(1.1);
+            transform: translate(-50%, -50%) scale(1.15) rotate(360deg);
             background: #ffffff;
             color: #e50914;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
         }
 
         .video-info {

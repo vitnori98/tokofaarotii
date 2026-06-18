@@ -14,9 +14,9 @@
         .cart-item img { width: 80px; height: 80px; object-fit: cover; border-radius: 10px; margin-right: 20px; }
         .cart-info { flex-grow: 1; }
         .cart-info h5 { margin: 0; font-weight: 700; }
-        .cart-price { color: #e50914; font-weight: 700; }
+        .cart-price { color: #004aad; font-weight: 700; }
         .cart-qty { width: 80px; }
-        .cart-remove { color: #ff2a00; cursor: pointer; font-size: 1.2rem; }
+        .cart-remove { color: #f97316; cursor: pointer; font-size: 1.2rem; }
     </style>
 </head>
 <body>
@@ -46,14 +46,14 @@
                 </div>
 
                 <div class="mt-4 text-end">
-                    <h4 class="fw-bold">Total: Rp <span id="cartTotal">{{ number_format(collect($cart)->sum(fn($i) => $item['price'] * $item['quantity']), 0, ',', '.') }}</span></h4>
-                    <button class="btn btn-danger btn-lg mt-3 px-5" style="border-radius: 50px;">Checkout Sekarang</button>
+                    <h4 class="fw-bold">Total: Rp <span id="cartTotal">{{ number_format(collect($cart)->sum(fn($item) => $item['price'] * $item['quantity']), 0, ',', '.') }}</span></h4>
+                    <button class="btn btn-warning btn-lg mt-3 px-5 text-white fw-bold" style="border-radius: 50px; background-color: #f97316; border: none;">Checkout Sekarang</button>
                 </div>
             @else
                 <div class="text-center py-5">
                     <i class="bi bi-cart-x text-muted" style="font-size: 4rem;"></i>
                     <p class="text-muted mt-3">Keranjang Anda masih kosong.</p>
-                    <a href="{{ route('produk.makanan') }}" class="btn btn-danger px-4 py-2 mt-2" style="border-radius: 50px;">Lihat Produk</a>
+                    <a href="{{ route('produk.makanan') }}" class="btn btn-primary px-4 py-2 mt-2" style="border-radius: 50px; background-color: #004aad; border: none;">Lihat Produk</a>
                 </div>
             @endif
         </div>

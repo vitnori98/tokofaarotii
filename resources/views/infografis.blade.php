@@ -22,7 +22,7 @@
         .hero-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(229,9,20,0.85) 0%, rgba(15,15,15,0.75) 60%, rgba(185,28,28,0.6) 100%);
+            background: linear-gradient(135deg, rgba(0, 74, 173, 0.85) 0%, rgba(30, 41, 59, 0.75) 60%, rgba(249, 115, 22, 0.6) 100%);
         }
 
         .hero-grid {
@@ -116,17 +116,18 @@
             background: #fff;
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            transition: all 0.3s;
-            border: 1px solid #f1f1f1;
+            box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.05), -5px -5px 15px rgba(255, 255, 255, 0.8);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(0, 0, 0, 0.02);
             cursor: pointer;
             height: 100%;
+            position: relative;
         }
 
         .info-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(229, 9, 20, 0.15);
-            border-color: #e50914;
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(229, 9, 20, 0.15);
+            border-color: rgba(229, 9, 20, 0.1);
         }
 
         .info-img-wrapper {
@@ -139,22 +140,23 @@
             width: 100%;
             height: auto;
             display: block;
-            transition: transform 0.5s;
+            transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
         .info-card:hover .info-img {
-            transform: scale(1.02);
+            transform: scale(1.05);
         }
 
         .info-overlay {
             position: absolute;
             inset: 0;
-            background: rgba(229, 9, 20, 0.8);
+            background: rgba(229, 9, 20, 0.7);
             display: flex;
             align-items: center;
             justify-content: center;
             opacity: 0;
-            transition: all 0.3s;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(4px);
         }
 
         .info-card:hover .info-overlay {
@@ -164,6 +166,12 @@
         .info-overlay i {
             color: #fff;
             font-size: 2.5rem;
+            transform: scale(0.5);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .info-card:hover .info-overlay i {
+            transform: scale(1);
         }
 
         .info-content {

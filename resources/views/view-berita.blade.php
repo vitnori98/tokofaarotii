@@ -52,7 +52,7 @@
         .hero-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(229,9,20,0.85) 0%, rgba(15,15,15,0.75) 60%, rgba(185,28,28,0.6) 100%);
+            background: linear-gradient(135deg, rgba(0, 74, 173, 0.85) 0%, rgba(30, 41, 59, 0.75) 60%, rgba(249, 115, 22, 0.6) 100%);
         }
 
         .hero-grid {
@@ -92,7 +92,7 @@
             content: '';
             width: 6px;
             height: 6px;
-            background: var(--gold);
+            background: #f97316;
             border-radius: 50%;
             animation: pulse-dot 2s infinite;
             flex-shrink: 0;
@@ -115,7 +115,7 @@
 
         .hero h1 em {
             font-style: italic;
-            color: var(--gold);
+            color: #f97316;
         }
 
         .hero-breadcrumb {
@@ -132,7 +132,7 @@
 
         .hero-breadcrumb a { color: #ffffff; text-decoration: none; transition: color 0.2s; opacity: 0.8; }
         .hero-breadcrumb a:hover { opacity: 1; }
-        .hero-breadcrumb .crumb-active { color: var(--gold); }
+        .hero-breadcrumb .crumb-active { color: #f97316; }
         .hero-breadcrumb .sep { color: rgba(255,255,255,0.25); }
 
         .hero-wave {
@@ -156,7 +156,7 @@
             font-weight: 800;
             letter-spacing: 3px;
             text-transform: uppercase;
-            color: var(--red);
+            color: #f97316;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -168,7 +168,7 @@
             display: block;
             width: 30px;
             height: 3px;
-            background: var(--red);
+            background: #f97316;
             border-radius: 2px;
         }
 
@@ -181,7 +181,7 @@
             letter-spacing: -1px;
         }
 
-        .section-title span { color: var(--red); }
+        .section-title span { color: #f97316; }
         .section-desc { font-size: 13px; color: var(--gray); margin-top: 8px; }
 
         /* ==============================
@@ -201,17 +201,36 @@
             background: white;
             border-radius: 24px;
             overflow: hidden;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            border: 1px solid rgba(229,9,20,0.1);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.05), -5px -5px 20px rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(229,9,20,0.05);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex;
             flex-direction: column;
+            position: relative;
         }
 
         .card-featured:hover {
-            transform: translateY(-12px);
-            box-shadow: 0 24px 64px rgba(229,9,20,0.18);
-            border-color: transparent;
+            transform: translateY(-15px);
+            box-shadow: 0 30px 60px rgba(229,9,20,0.15);
+            border-color: rgba(229,9,20,0.2);
+        }
+
+        .card-featured::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--red), #ff6b35);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+            transform-origin: left;
+            z-index: 5;
+        }
+
+        .card-featured:hover::before {
+            transform: scaleX(1);
         }
 
         .card-featured-img {
@@ -224,10 +243,10 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 1.2s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
-        .card-featured:hover .card-featured-img img { transform: scale(1.08); }
+        .card-featured:hover .card-featured-img img { transform: scale(1.1); }
 
         .img-badge-top {
             position: absolute;
@@ -242,6 +261,7 @@
             text-transform: uppercase;
             padding: 6px 14px;
             border-radius: 6px;
+            z-index: 2;
         }
 
         .img-date-badge {
@@ -253,6 +273,7 @@
             padding: 10px 16px;
             text-align: center;
             box-shadow: 0 4px 20px rgba(0,0,0,0.14);
+            z-index: 2;
         }
 
         .img-date-badge .day {
@@ -317,7 +338,7 @@
             color: var(--dark);
             line-height: 1.3;
             margin-bottom: 12px;
-            transition: color 0.2s;
+            transition: color 0.3s;
         }
 
         .card-featured:hover h3 { color: var(--red); }
@@ -348,14 +369,14 @@
             text-decoration: none;
             margin-top: 22px;
             align-self: flex-start;
-            transition: all 0.25s;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 6px 20px rgba(229,9,20,0.28);
         }
 
         .btn-read:hover {
             background: var(--red-dark);
-            transform: translateX(4px);
-            box-shadow: 0 8px 24px rgba(229,9,20,0.38);
+            transform: translateX(10px);
+            box-shadow: 0 10px 25px rgba(229,9,20,0.4);
             color: white;
         }
 
@@ -363,25 +384,43 @@
         .side-stack {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 20px;
         }
 
         .card-side {
             background: white;
             border-radius: 18px;
             padding: 24px;
-            border: 1px solid rgba(229,9,20,0.08);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(229,9,20,0.05);
+            box-shadow: 8px 8px 20px rgba(0,0,0,0.03);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             flex: 1;
             display: flex;
             flex-direction: column;
+            position: relative;
+            overflow: hidden;
         }
 
         .card-side:hover {
             border-color: var(--red);
-            box-shadow: 0 12px 40px rgba(229,9,20,0.16);
-            transform: translateY(-6px);
+            box-shadow: 0 15px 35px rgba(229,9,20,0.12);
+            transform: translateX(10px);
+        }
+
+        .card-side::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--red);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .card-side:hover::after {
+            transform: scaleY(1);
         }
 
         .side-top {
@@ -456,10 +495,21 @@
             justify-content: center;
             text-align: center;
             border: none;
-            box-shadow: 0 8px 28px rgba(229,9,20,0.28);
+            box-shadow: 0 10px 30px rgba(229,9,20,0.3);
+            transition: transform 0.4s ease;
         }
 
-        .card-side-promo i { font-size: 30px; opacity: 0.6; margin-bottom: 10px; }
+        .card-side-promo:hover {
+            transform: scale(1.03);
+        }
+
+        .card-side-promo i { font-size: 30px; opacity: 0.8; margin-bottom: 10px; animation: pulse 2s infinite; }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
 
         .card-side-promo h4 {
             font-family: 'Poppins', sans-serif;
@@ -471,7 +521,7 @@
             color: white;
         }
 
-        .card-side-promo p { font-size: 11px; opacity: 0.75; color: white; }
+        .card-side-promo p { font-size: 11px; opacity: 0.9; color: white; }
 
         /* ==============================
            ALL NEWS
@@ -497,37 +547,59 @@
             border: 1.5px solid var(--border);
             background: white;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
             color: var(--gray);
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
         }
 
         .filter-tab.active, .filter-tab:hover {
             background: var(--red);
             border-color: var(--red);
             color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(229,9,20,0.2);
         }
 
         .news-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            gap: 24px;
         }
 
         .card-news {
             background: white;
             border-radius: 20px;
             overflow: hidden;
-            border: 1px solid rgba(229,9,20,0.08);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(229,9,20,0.05);
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex;
             flex-direction: column;
+            position: relative;
         }
 
         .card-news:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 60px rgba(229,9,20,0.15);
-            border-color: transparent;
+            transform: translateY(-12px);
+            box-shadow: 0 25px 50px rgba(229,9,20,0.15);
+            border-color: rgba(229,9,20,0.1);
+        }
+
+        .card-news::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--red);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+            transform-origin: right;
+        }
+
+        .card-news:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
         }
 
         .card-news-img {
@@ -540,10 +612,10 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 1.2s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
-        .card-news:hover .card-news-img img { transform: scale(1.1); }
+        .card-news:hover .card-news-img img { transform: scale(1.15); }
 
         .news-date-pill {
             position: absolute;
@@ -558,7 +630,8 @@
             color: var(--dark);
             padding: 6px 12px;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            z-index: 2;
         }
 
         .news-number {
@@ -577,6 +650,7 @@
             font-weight: 900;
             color: white;
             box-shadow: 0 4px 14px rgba(229,9,20,0.4);
+            z-index: 2;
         }
 
         .card-news-body {
@@ -618,7 +692,7 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
             margin-bottom: 8px;
-            transition: color 0.2s;
+            transition: color 0.3s;
             text-transform: uppercase;
         }
 
@@ -660,10 +734,10 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            transition: gap 0.2s;
+            transition: all 0.3s;
         }
 
-        .card-news:hover .btn-detail { gap: 10px; }
+        .card-news:hover .btn-detail { gap: 10px; color: var(--red-dark); }
         .news-read-time { font-size: 9px; color: var(--gray); font-weight: 500; }
 
         .empty-state {

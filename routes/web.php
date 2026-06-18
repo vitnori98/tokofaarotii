@@ -50,6 +50,28 @@ Route::get('/berita/public', function () {
 })->name('berita.public');
 Route::get('/berita/{berita}', [BeritaController::class, 'show'])->name('berita.show');
 
+// Route Diagnosa Email (Hapus setelah berhasil)
+Route::get('/test-email', function() {
+    try {
+        \Illuminate\Support\Facades\Mail::raw('Halo, ini adalah pesan tes dari sistem Toko FAA!', function($message) {
+            $message->to('vitnori39@gmail.com')->subject('Tes Pengiriman Email Toko FAA');
+        });
+        return "SUKSES! Email tes telah dikirim ke vitnori39@gmail.com. Silakan cek inbox/spam.";
+    } catch (\Exception $e) {
+        return "GAGAL! Terjadi kesalahan: " . $e->getMessage();
+    }
+});
+
+// Tombol Reset Pendaftaran yang Gagal
+Route::get('/reset-pendaftaran/{email}', function($email) {
+    $user = \App\Models\User::where('email', $email)->first();
+    if ($user) {
+        $user->delete();
+        return "BERHASIL! Data email $email telah dihapus. Silakan coba DAFTAR LAGI sekarang.";
+    }
+    return "Data email $email tidak ditemukan di database. Anda seharusnya sudah bisa daftar.";
+});
+
 // TEMPORARY ADMIN SETUP (Hapus setelah digunakan)
 Route::get('/setup-admin/{email}', function($email) {
     $user = \App\Models\User::where('email', $email)->first();

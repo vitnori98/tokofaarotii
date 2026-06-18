@@ -67,7 +67,7 @@
                     <td style="text-align:center;">
                         @switch($user->role)
                             @case('admin_master')
-                                <span class="role-badge badge-indigo">ADMIN MASTER</span>
+                                <span class="role-badge badge-red">ADMIN MASTER</span>
                                 @break
                             @case('pemilik')
                                 <span class="role-badge badge-orange">PEMILIK</span>
@@ -208,8 +208,8 @@
     /* ── Toolbar ── */
     .toolbar-wrap { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; }
     .toolbar-title { font-size: 1.25rem; font-weight: 800; color: #1e293b; margin: 0; }
-    .btn-primary { background: #6366f1; color: #fff; border: none; padding: .625rem 1.25rem; border-radius: .75rem; font-size: .85rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: .5rem; transition: all .2s; }
-    .btn-primary:hover { background: #4f46e5; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(99, 102, 241, .2); }
+    .btn-primary { background: #f97316; color: #fff; border: none; padding: .625rem 1.25rem; border-radius: .75rem; font-size: .85rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: .5rem; transition: all .2s; }
+    .btn-primary:hover { background: #ea580c; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(249, 115, 22, .2); }
 
     /* ── Table ── */
     .table-container { background: #fff; border-radius: 1.5rem; border: 1px solid #f1f5f9; box-shadow: 0 1px 3px rgba(0,0,0,0.02); overflow: hidden; }
@@ -219,7 +219,7 @@
     td { padding: 1rem 1.5rem; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
     
     .td-user { display: flex; align-items: center; gap: .75rem; }
-    .user-avatar { width: 40px; height: 40px; background: #eff6ff; color: #6366f1; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+    .user-avatar { width: 40px; height: 40px; background: #fff7ed; color: #f97316; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
     .user-info { display: flex; flex-direction: column; }
     .u-name { font-size: .9rem; font-weight: 700; color: #1e293b; }
     .self-tag { background: #f0fdf4; color: #16a34a; font-size: .6rem; font-weight: 800; padding: .1rem .4rem; border-radius: 4px; width: fit-content; margin-top: 2px; }
@@ -228,7 +228,7 @@
     .u-date { font-size: .85rem; color: #94a3b8; font-weight: 600; }
 
     .role-badge { display: inline-block; padding: .25rem .75rem; border-radius: 9999px; font-size: .65rem; font-weight: 800; letter-spacing: .05em; }
-    .badge-indigo { background: #e0e7ff; color: #4338ca; }
+    .badge-red { background: #fee2e2; color: #dc2626; }
     .badge-orange { background: #ffedd5; color: #c2410c; }
     .badge-gray { background: #f1f5f9; color: #475569; }
 
@@ -252,7 +252,7 @@
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
     .form-group label { display: block; font-size: .8rem; font-weight: 700; color: #475569; margin-bottom: .5rem; }
     .form-group input, .form-group select, .form-group textarea { width: 100%; padding: .625rem 1rem; border: 1.5px solid #e2e8f0; border-radius: .625rem; font-size: .85rem; outline: none; transition: all .2s; box-sizing: border-box; }
-    .form-group input:focus { border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99, 102, 241, .1); }
+    .form-group input:focus { border-color: #f97316; box-shadow: 0 0 0 3px rgba(249, 115, 22, .1); }
 
     .divider { display: flex; align-items: center; margin: 1.5rem 0; color: #cbd5e1; }
     .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: #e2e8f0; }
@@ -260,8 +260,8 @@
 
     .modal-footer { display: flex; justify-content: flex-end; gap: .75rem; margin-top: 1.5rem; }
     .btn-cancel { background: #fff; border: 1.5px solid #e2e8f0; color: #64748b; padding: .625rem 1.25rem; border-radius: .625rem; font-size: .85rem; font-weight: 700; cursor: pointer; }
-    .btn-submit { background: #6366f1; border: none; color: #fff; padding: .625rem 1.25rem; border-radius: .625rem; font-size: .85rem; font-weight: 700; cursor: pointer; transition: all .2s; }
-    .btn-submit:hover { background: #4f46e5; }
+    .btn-submit { background: #f97316; border: none; color: #fff; padding: .625rem 1.25rem; border-radius: .625rem; font-size: .85rem; font-weight: 700; cursor: pointer; transition: all .2s; }
+    .btn-submit:hover { background: #ea580c; }
 
     .hidden { display: none !important; }
 

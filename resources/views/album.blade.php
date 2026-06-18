@@ -107,7 +107,7 @@
             transform: translateX(-50%);
             width: 60px;
             height: 4px;
-            background: #e50914;
+            background: #004aad;
             border-radius: 2px;
         }
 
@@ -116,17 +116,35 @@
             background: #fff;
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            transition: all 0.3s;
+            box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.05), -5px -5px 15px rgba(255, 255, 255, 0.8);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             height: 100%;
-            border: 1px solid #f1f1f1;
+            border: 1px solid rgba(0, 0, 0, 0.02);
             cursor: pointer;
+            position: relative;
         }
 
         .album-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(229, 9, 20, 0.15);
-            border-color: #e50914;
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(229, 9, 20, 0.15);
+            border-color: rgba(229, 9, 20, 0.1);
+        }
+
+        .album-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: #e50914;
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+            transform-origin: left;
+        }
+
+        .album-card:hover::after {
+            transform: scaleX(1);
         }
 
         .album-img-wrapper {
@@ -139,7 +157,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s;
+            transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
         .album-card:hover .album-img {

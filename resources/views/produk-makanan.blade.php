@@ -22,7 +22,7 @@
         .hero-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(229,9,20,0.85) 0%, rgba(15,15,15,0.75) 60%, rgba(185,28,28,0.6) 100%);
+            background: linear-gradient(135deg, rgba(0, 74, 173, 0.85) 0%, rgba(15, 15, 15, 0.75) 60%, rgba(3, 105, 161, 0.6) 100%);
         }
 
         .hero-grid {
@@ -116,7 +116,7 @@
             transform: translateX(-50%);
             width: 50px;
             height: 3px;
-            background: #e50914;
+            background: #f97316;
             border-radius: 2px;
         }
 
@@ -234,7 +234,7 @@
         .btn-cart-add {
             width: 35px;
             height: 35px;
-            background: #e50914;
+            background: #f97316;
             color: #fff;
             border-radius: 50%;
             display: flex;
@@ -245,7 +245,7 @@
         }
 
         .btn-cart-add:hover {
-            background: #b80710;
+            background: #ea580c;
             transform: scale(1.1);
         }
 
@@ -406,11 +406,11 @@
                 <div class="modal-body p-4">
                     <img id="modalImg" src="" alt="" class="modal-product-img">
                     <h3 id="modalName" class="fw-bold mb-2"></h3>
-                    <p id="modalPrice" class="text-danger fs-4 fw-bold mb-3"></p>
+                    <p id="modalPrice" class="text-primary fs-4 fw-bold mb-3" style="color: #004aad !important;"></p>
                     <p id="modalDesc" class="text-muted mb-4"></p>
                     <div class="mb-4">
                         <span class="badge bg-light text-dark p-2 px-3 border" style="border-radius: 10px;">
-                            <i class="bi bi-tag-fill text-danger me-2"></i> Satuan: <span id="modalUnit"></span>
+                            <i class="bi bi-tag-fill text-warning me-2" style="color: #f97316 !important;"></i> Satuan: <span id="modalUnit"></span>
                         </span>
                     </div>
                     <a href="#" id="waOrderBtn" target="_blank">

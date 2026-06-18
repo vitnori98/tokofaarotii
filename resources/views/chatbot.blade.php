@@ -10,14 +10,14 @@
     <style>
         body { background: #f0f2f5; padding-top: 100px; height: 100vh; display: flex; flex-direction: column; }
         .chat-container { flex-grow: 1; max-width: 800px; margin: 0 auto; width: 100%; background: #fff; border-radius: 20px 20px 0 0; display: flex; flex-direction: column; box-shadow: 0 -5px 30px rgba(0,0,0,0.05); overflow: hidden; }
-        .chat-header { padding: 20px; background: #e50914; color: #fff; display: flex; align-items: center; gap: 15px; }
+        .chat-header { padding: 20px; background: #004aad; color: #fff; display: flex; align-items: center; gap: 15px; }
         .chat-messages { flex-grow: 1; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
         .msg { max-width: 80%; padding: 12px 18px; border-radius: 15px; font-size: 0.95rem; line-height: 1.5; }
         .msg-ai { align-self: flex-start; background: #f1f3f4; color: #333; border-bottom-left-radius: 2px; }
-        .msg-user { align-self: flex-end; background: #e50914; color: #fff; border-bottom-right-radius: 2px; }
+        .msg-user { align-self: flex-end; background: #f97316; color: #fff; border-bottom-right-radius: 2px; }
         .chat-input-area { padding: 20px; background: #fff; border-top: 1px solid #eee; display: flex; gap: 10px; }
         .chat-input { border-radius: 50px; padding: 12px 20px; border: 1px solid #ddd; flex-grow: 1; }
-        .btn-send { width: 50px; height: 50px; border-radius: 50%; background: #e50914; color: #fff; border: none; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+        .btn-send { width: 50px; height: 50px; border-radius: 50%; background: #004aad; color: #fff; border: none; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
     </style>
 </head>
 <body>
@@ -25,7 +25,7 @@
 
     <div class="chat-container">
         <div class="chat-header">
-            <div class="bg-white text-danger rounded-circle d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+            <div class="bg-white text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 45px; height: 45px; color: #004aad !important;">
                 <i class="bi bi-robot fs-4"></i>
             </div>
             <div>

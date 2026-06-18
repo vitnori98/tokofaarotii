@@ -8,8 +8,8 @@
         align-items: center;
         justify-content: center;
         border-radius: 50%; /* Memastikan efek shadow berbentuk bulat sempurna */
-        /* Menggunakan drop-shadow merah/oranye halus biar mirip contoh */
-        filter: drop-shadow(0 0 12px rgba(255, 69, 0, 0.6)); 
+        /* Menggunakan drop-shadow biru halus */
+        filter: drop-shadow(0 0 12px rgba(0, 74, 173, 0.6)); 
         animation: floatingEffect 3s ease-in-out infinite; /* Opsional: animasi naik turun halus */
     }
 
@@ -24,11 +24,11 @@
     .text-faa {
         font-family: 'Poppins', sans-serif; 
         letter-spacing: 1px;
-        color: #dc3545;
+        color: #004aad;
     }
 
     .text-faa .text-red {
-        color: #dc3545; 
+        color: #004aad; 
     }
 
     #btt {
@@ -37,8 +37,8 @@
     right: 30px;           /* Jarak dari kanan layar */
     z-index: 9999;         /* Memastikan tombol berada di lapisan paling atas, tidak tertutup footer */
     
-    /* Styling agar mirip dengan gambar (merah, rounded, dan rapi) */
-    background-color: #e50914; /* Ganti kode hex ini sesuai warna merah Sarab kamu */
+    /* Styling agar mirip dengan gambar (biru, rounded, dan rapi) */
+    background-color: #004aad; /* Ganti ke biru */
     color: #ffffff;        /* Warna icon panah putih */
     border: none;
     width: 45px;
@@ -66,24 +66,67 @@
 
    /* Efek sedikit menggelap saat diarahkan kursor (hover) */
    #btt:hover {
-      background-color: #b80710;
+      background-color: #003580;
       transform: translateY(-3px); /* Efek tombol sedikit naik saat di-hover */
    }
 
-    /* Accordion FAQ Styling agar selaras dengan tema merah */
+    /* Accordion FAQ Styling agar selaras dengan tema biru */
+    .accordion-item {
+        border: 1px solid rgba(0, 0, 0, 0.03) !important;
+        box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .accordion-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 74, 173, 0.1);
+        border-color: rgba(0, 74, 173, 0.2) !important;
+    }
+
+    #faq .accordion-button {
+        transition: all 0.3s ease;
+        padding: 1.25rem;
+    }
+
     #faq .accordion-button:not(.collapsed) {
-        background-color: #dc3545;
+        background: linear-gradient(135deg, #004aad 0%, #003580 100%);
         color: white;
+        box-shadow: 0 4px 12px rgba(0, 74, 173, 0.3);
     }
+
     #faq .accordion-button:focus {
-        box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
-        border-color: #dc3545;
+        box-shadow: none;
+        border-color: rgba(0, 74, 173, 0.25);
     }
+
     #faq .accordion-button::after {
         background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+        transition: transform 0.3s ease;
     }
+
     #faq .accordion-button:not(.collapsed)::after {
         background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+    }
+
+    .accordion-body {
+        line-height: 1.8;
+        background-color: #fff;
+    }
+
+    .stitle span {
+        position: relative;
+        z-index: 1;
+    }
+
+    .stitle span::after {
+        content: '';
+        position: absolute;
+        bottom: 8px;
+        left: 0;
+        width: 100%;
+        height: 12px;
+        background: rgba(249, 115, 22, 0.1);
+        z-index: -1;
     }
 
    </style>
