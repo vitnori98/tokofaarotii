@@ -73,7 +73,7 @@
                                 <span class="role-badge badge-orange">PEMILIK</span>
                                 @break
                             @default
-                                <span class="role-badge badge-gray">PEGAWAI</span>
+                                <span class="role-badge badge-gray">PENGGUNA</span>
                         @endswitch
                     </td>
                     <td style="text-align:center;">
@@ -131,7 +131,7 @@
             <div class="form-group">
                 <label>Role / Hak Akses</label>
                 <select name="role" required class="form-input">
-                    <option value="pegawai">Pegawai</option>
+                    <option value="pengguna">Pengguna</option>
                     <option value="pemilik">Pemilik</option>
                     <option value="admin_master">Admin Master</option>
                 </select>
@@ -176,7 +176,7 @@
             <div class="form-group" id="edit-role-wrapper">
                 <label>Role / Hak Akses</label>
                 <select name="role" id="edit-role" required class="form-input">
-                    <option value="pegawai">Pegawai</option>
+                    <option value="pengguna">Pengguna</option>
                     <option value="pemilik">Pemilik</option>
                     <option value="admin_master">Admin Master</option>
                 </select>

@@ -93,9 +93,74 @@ Route::middleware('auth')->group(function () {
     Route::delete('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
     Route::post('/cart/update', [CartController::class, 'updateCart'])->name('cart.update');
 
+    // 1. Rute untuk menampilkan halaman Chatbot (Akses lewat browser)
     Route::get('/chatbot-ai', function () {
-        return view('chatbot');
+        return view('chatbot'); // Pastikan nama file blade kamu adalah chatbot.blade.php
     })->name('chatbot.ai');
+
+    // 2. Rute Bridge/Proxy untuk menembak server FastAPI Python
+    Route::post('/chatbot/proxy', function (Request $request) {
+        $pesanUser = trim((string) $request->input('message'));
+
+        if (blank($pesanUser)) {
+            return response()->json(['response' => 'Pesan tidak boleh kosong.'], 400);
+        }
+
+        try {
+            // Timeout dinaikkan jadi 20 detik (cukup untuk inference model ringan),
+            // ditambah connect_timeout terpisah agar koneksi gagal cepat terdeteksi
+            // tanpa harus menunggu sampai 20 detik penuh.
+            $response = Http::withoutVerifying()
+                ->connectTimeout(3)
+                ->timeout(20)
+                ->post('http://127.0.0.1:5000/chat', [
+                    'message' => $pesanUser,
+                ]);
+
+            if ($response->successful()) {
+                $data = $response->json();
+
+                return response()->json([
+                    'response' => $data['response'] ?? 'Maaf, asisten tidak memberikan jawaban.',
+                ]);
+            }
+
+            return response()->json([
+                'response' => 'Otak AI merespons, namun terjadi kesalahan internal: '.$response->status(),
+            ], $response->status());
+
+        } catch (\Illuminate\Http\Client\ConnectionException $e) {
+            // Server FastAPI mati / belum jalan / port salah
+            return response()->json([
+                'response' => 'Asisten AI sedang tidak dapat dihubungi. Silakan coba beberapa saat lagi. 🙏',
+            ], 503);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'response' => 'Koneksi ke server AI gagal. Detail Eror: '.substr($e->getMessage(), 0, 150),
+            ], 500);
+        }
+    })->name('chatbot.proxy'); // Nama ini WAJIB sama dengan yang dipanggil di JavaScript fetch
+
+    // 3. (Opsional, tapi direkomendasikan) Rute untuk cek status model AI
+    //    Berguna kalau mau menampilkan indikator "AI sedang siap / masih loading" di frontend.
+    Route::get('/chatbot/status', function () {
+        try {
+            $response = Http::withoutVerifying()
+                ->connectTimeout(2)
+                ->timeout(5)
+                ->get('http://127.0.0.1:5000/health');
+
+            if ($response->successful()) {
+                return response()->json($response->json());
+            }
+
+            return response()->json(['model_ready' => false], 503);
+
+        } catch (\Exception $e) {
+            return response()->json(['model_ready' => false, 'error' => 'Server tidak terjangkau'], 503);
+        }
+    })->name('chatbot.status');
 
     Route::get('/showroom-3d', function () {
         return view('showroom');
