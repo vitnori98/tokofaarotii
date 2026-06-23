@@ -44,10 +44,12 @@ Route::get('/album-kegiatan', [DokumentasiController::class, 'publicAlbum'])->na
 Route::get('/infografis-dokumentasi', [DokumentasiController::class, 'publicInfografis'])->name('infografis.public');
 Route::get('/video-dokumentasi', [DokumentasiController::class, 'publicVideo'])->name('video.public');
 Route::get('/faq-pertanyaan', [FaqController::class, 'publicIndex'])->name('faq.public');
+
 Route::get('/berita/public', function () {
-    $beritas = Berita::latest()->get();
-    return view('view-berita', compact('beritas'));
-})->name('berita.public');
+        $beritas = Berita::latest()->get();
+        return view('view-berita', compact('beritas'));
+    })->name('berita.public');
+
 Route::get('/berita/{berita}', [BeritaController::class, 'show'])->name('berita.show');
 
 // Route Diagnosa Email (Hapus setelah berhasil)
