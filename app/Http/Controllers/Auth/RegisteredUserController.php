@@ -27,34 +27,39 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $otp = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+        $otpExpiresAt = \Carbon\Carbon::now()->addMinutes(10);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'role' => 'user',
-            'password' => Hash::make($request->password),
-            'otp' => $otp,
-            'otp_expires_at' => \Carbon\Carbon::now()->addMinutes(10),
+        // Simpan data pendaftaran sementara di session
+        session([
+            'registration_data' => [
+                'name' => $validatedData['name'],
+                'email' => $validatedData['email'],
+                'password' => Hash::make($validatedData['password']),
+                'role' => 'user', // Role default untuk pengguna baru
+                'otp' => $otp,
+                'otp_expires_at' => $otpExpiresAt->timestamp, // Simpan sebagai timestamp
+            ]
         ]);
 
         try {
-            \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\OtpMail($otp));
+            // Kirim email OTP ke email yang didaftarkan
+            \Illuminate\Support\Facades\Mail::to($validatedData['email'])->send(new \App\Mail\OtpMail($otp));
         } catch (\Exception $e) {
-            // Jika email gagal, kita hapus usernya agar bisa daftar ulang lagi dengan benar
-            $user->delete();
-            return back()->withInput()->withErrors(['email' => 'Gagal mengirim email OTP. Silakan cek koneksi internet atau pengaturan SMTP Anda. Error: ' . $e->getMessage()]);
+            // Jika email gagal, hapus data session dan kembalikan error
+            session()->forget('registration_data');
+            \Log::error('Gagal mengirim email OTP saat pendaftaran: ' . $e->getMessage());
+            return back()->withInput()->withErrors(['email' => 'Gagal mengirim email OTP. Silakan cek koneksi internet atau pengaturan SMTP Anda.']);
         }
 
-        event(new Registered($user));
-
-        return redirect()->route('otp.verify.show', ['email' => $user->email])
+        // Arahkan ke halaman verifikasi OTP
+        return redirect()->route('otp.verify.show', ['email' => $validatedData['email']])
             ->with('status', 'Silakan cek email Anda untuk kode OTP verifikasi.');
     }
 }
