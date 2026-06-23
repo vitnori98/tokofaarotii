@@ -68,6 +68,9 @@
             <p class="text-sm text-gray-600">
                 {{ __('Masukkan 6 digit kode OTP yang kami kirimkan ke alamat email Anda untuk mengaktifkan akun FAA.') }}
             </p>
+            @if(isset($email))
+                <p class="text-sm font-semibold text-gray-700 mt-2">Email: <strong>{{ $email }}</strong></p>
+            @endif
         </div>
 
         @if (session('status'))
@@ -76,16 +79,21 @@
             </div>
         @endif
 
-        @if (session('error'))
+        @if ($errors->any())
             <div class="mb-6 p-3 bg-red-50 border-l-4 border-red-500 text-red-700 text-sm font-semibold rounded-r-lg">
-                {{ session('error') }}
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
             </div>
         @endif
 
-        <form method="POST" action="{{ route('otp.verify') }}">
+        <form method="POST" action="{{ route('otp.verify.store') }}">
             @csrf
 
-            <input type="hidden" name="email" value="{{ $email }}">
+            <!-- Email Address (Hidden but required for validation) -->
+            <input type="hidden" name="email" value="{{ $email ?? old('email') }}">
 
             <!-- OTP Code -->
             <div class="mb-6">
@@ -95,10 +103,11 @@
                        type="text" 
                        name="otp" 
                        maxlength="6"
+                       inputmode="numeric" 
+                       pattern="[0-9]{6}" 
                        placeholder="000000"
                        required 
                        autofocus />
-                <x-input-error :messages="$errors->get('otp')" class="mt-2 text-center" />
             </div>
 
             <div class="flex flex-col gap-4 mt-8">
@@ -111,7 +120,7 @@
         <div class="mt-8 pt-6 border-t border-gray-100 flex flex-col items-center gap-4">
             <form method="POST" action="{{ route('otp.resend') }}" class="w-full">
                 @csrf
-                <input type="hidden" name="email" value="{{ $email }}">
+                <input type="hidden" name="email" value="{{ $email ?? old('email') }}">
                 <button type="submit" class="text-xs font-bold text-gray-400 hover:text-red-600 transition-colors flex items-center justify-center gap-2 mx-auto uppercase tracking-tighter">
                     <i class="bi bi-arrow-clockwise"></i> {{ __('Belum terima kode? Kirim Ulang') }}
                 </button>
