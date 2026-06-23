@@ -4,19 +4,16 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Mail\OtpMail; // Mungkin tidak lagi digunakan untuk pengiriman, tapi tetap perlu jika view mail.otp masih ada
+use App\Mail\OtpMail; // Menggunakan Mailable yang sudah ada
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail; // Mungkin tidak lagi digunakan untuk pengiriman, tapi tetap perlu jika ada logika lain
+use Illuminate\Support\Facades\Mail; // Menggunakan facade Mail Laravel
 use Illuminate\View\View;
 use Illuminate\Validation\ValidationException;
 use Carbon\Carbon;
 use Illuminate\Auth\Events\Registered;
-use PHPMailer\PHPMailer\PHPMailer; // Tambahkan ini
-use PHPMailer\PHPMailer\Exception; // Tambahkan ini
-use PHPMailer\PHPMailer\SMTP;     // Tambahkan ini
 
 class OtpVerificationController extends Controller
 {
@@ -133,59 +130,15 @@ class OtpVerificationController extends Controller
         ]);
 
         try {
-            $mail = new PHPMailer(true); // true enables exceptions
-
-            // Pengaturan Debugging PHPMailer
-            $mail->SMTPDebug = SMTP::DEBUG_SERVER; // Aktifkan output debug lengkap di browser
-            $mail->isSMTP();
-
-            // ------- Konfigurasi untuk GMAIL SMTP (Gunakan App Password) -------
-            // Pastikan Anda sudah membuat App Password untuk akun Gmail Anda
-            // dan mengaturnya di file .env sebagai MAIL_USERNAME dan MAIL_PASSWORD
-            $mail->Host       = 'smtp.gmail.com';
-            $mail->SMTPAuth   = true;
-            $mail->Username   = env('MAIL_USERNAME'); // Contoh: 'your_email@gmail.com'
-            $mail->Password   = env('MAIL_PASSWORD'); // Contoh: 'your_app_password'
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // Menggunakan TLS
-            $mail->Port       = 587; // Port TLS
-            // ------------------------------------------------------------------
-
-            /*
-            // ------- Alternatif Konfigurasi untuk MAILTRAP SMTP (Non-aktifkan Gmail di atas jika menggunakan ini) -------
-            // Pastikan Anda sudah mengonfigurasi kredensial Mailtrap di file .env
-            // atau langsung masukkan di sini (tidak disarankan untuk produksi)
-            // $mail->Host       = 'sandbox.smtp.mailtrap.io'; // Host Mailtrap
-            // $mail->SMTPAuth   = true;
-            // $mail->Username   = 'YOUR_MAILTRAP_USERNAME'; // Ganti dengan user Mailtrap Anda
-            // $mail->Password   = 'YOUR_MAILTRAP_PASSWORD'; // Ganti dengan password Mailtrap Anda
-            // $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // Atau PHPMailer::ENCRYPTION_SMTPS untuk port 465
-            // $mail->Port       = 587; // Port Mailtrap, bisa 2525, 465, 587
-            // ---------------------------------------------------------------------------------------------------------
-            */
-
-            // Recipients
-            $mail->setFrom(env('MAIL_FROM_ADDRESS', 'no-reply@toko-faa.com'), env('MAIL_FROM_NAME', 'Toko FAA'));
-            $mail->addAddress($request->email); // Alamat email penerima
-
-            // Content
-            $mail->isHTML(true);
-            $mail->Subject = 'Kode OTP Verifikasi Akun FAA';
-            // Render view blade untuk konten email
-            $mail->Body    = view('mail.otp', ['otp' => $newOtp])->render();
-            $mail->AltBody = 'Kode OTP Anda adalah: ' . $newOtp . '. Kode ini akan kedaluwarsa dalam 10 menit.';
-
-            $mail->send();
+            // Kirim ulang email OTP menggunakan Laravel Mail
+            \Illuminate\Support\Facades\Mail::to($request->email)->send(new OtpMail($newOtp));
             \Log::info('Email OTP berhasil dikirim ulang ke ' . $request->email);
 
-        } catch (Exception $e) {
-            \Log::error('Gagal mengirim ulang email OTP: ' . $e->getMessage() . ' PHPMailer Error: ' . $mail->ErrorInfo);
+        } catch (\Exception $e) {
+            \Log::error('Gagal mengirim ulang email OTP: ' . $e->getMessage());
 
-            // Tampilkan debug info PHPMailer langsung di browser
-            echo "<h1>Error Pengiriman Email OTP!</h1>";
-            echo "Pesan kesalahan: " . $e->getMessage();
-            echo "<br>Detail Debug PHPMailer:<br>";
-            echo "<pre>" . $mail->ErrorInfo . "</pre>"; // Debug info dari PHPMailer
-            die(); // Hentikan eksekusi untuk menampilkan detail error
+            // Tampilkan pesan error langsung di browser untuk debugging lokal
+            return back()->withInput()->withErrors(['email' => 'Gagal mengirim ulang email OTP. Silakan cek koneksi internet atau pengaturan SMTP di file .env Anda. Error: ' . $e->getMessage()]);
         }
 
         return back()->with('status', 'Kode OTP baru telah dikirim ke email Anda.');
