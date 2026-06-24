@@ -15,24 +15,10 @@ use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\DokumentasiController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\Auth\OtpVerificationController; // Tambahkan ini
 
 
 // Authentication Routes
 require __DIR__.'/auth.php';
-
-// OTP Verification Routes (Setelah pendaftaran, sebelum login penuh)
-Route::get('/verify-otp', [OtpVerificationController::class, 'showVerificationForm'])
-    ->middleware('guest')
-    ->name('otp.verify.show');
-
-Route::post('/verify-otp', [OtpVerificationController::class, 'verifyOtp'])
-    ->middleware('guest')
-    ->name('otp.verify.store');
-
-Route::post('/resend-otp', [OtpVerificationController::class, 'resendOtp'])
-    ->middleware('guest')
-    ->name('otp.resend');
 
 use App\Models\Product;
 use App\Models\Category;

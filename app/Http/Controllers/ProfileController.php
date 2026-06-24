@@ -16,6 +16,7 @@ class ProfileController extends Controller
 
     public function update(Request $request)
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
         
         $request->validate([
@@ -24,6 +25,12 @@ class ProfileController extends Controller
             'current_password' => 'nullable|string',
             'new_password' => 'nullable|string|min:8|confirmed',
         ]);
+
+        // Jika email diubah, pastikan email_verified_at tetap terisi waktu sekarang 
+        // supaya user tidak tersangkut proteksi verifikasi akun di kemudian hari
+        if ($user->email !== $request->email) {
+            $user->email_verified_at = now();
+        }
 
         $user->name = $request->name;
         $user->email = $request->email;

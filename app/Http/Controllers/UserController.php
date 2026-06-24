@@ -35,6 +35,7 @@ class UserController extends Controller
                 'email' => $validated['email'],
                 'password' => Hash::make($validated['password']),
                 'role' => $validated['role'],
+                'email_verified_at' => now(), // Memastikan user baru langsung aktif tanpa OTP
             ]);
 
             return redirect()->back()->with('success', 'User berhasil ditambahkan!');
