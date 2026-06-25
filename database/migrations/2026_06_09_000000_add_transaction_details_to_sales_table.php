@@ -12,8 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('sales', function (Blueprint $table) {
-            $table->string('transaction_group')->nullable()->after('notes');
-            $table->string('payment_method')->default('tunai')->after('transaction_group');
+            // tambahkan kolom transaction_group dan payment_method jika belum ada
+            if (!Schema::hasColumn('sales', 'transaction_group')) {
+                $table->string('transaction_group')->nullable()->after('id');
+            }
+            if (!Schema::hasColumn('sales', 'payment_method')) {
+                $table->string('payment_method')->default('tunai')->after('id');
+            }
         });
     }
 

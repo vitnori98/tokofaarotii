@@ -68,8 +68,7 @@
                 </div>
             @endif
 
-            <a href="{{ route('stock-entries.create', ['product_id' => $product->id]) }}"
-               class="stock-refill-btn">
+            <a href="{{ route('products.index', ['open_stock' => $product->id]) }}" class="stock-refill-btn">
                 <i class="fas fa-plus"></i> ISI ULANG STOK
             </a>
         </div>
@@ -77,7 +76,7 @@
         {{-- Aksi --}}
         <div class="detail-card" style="display:flex;flex-direction:column;gap:.625rem;">
             <p style="font-size:.7rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em;margin:0;">Aksi Produk</p>
-            <a href="{{ route('products.edit', $product->id) }}" class="action-btn-full btn-edit-full">
+            <a href="{{ route('products.index', ['edit_id' => $product->id]) }}" class="action-btn-full btn-edit-full">
                 <i class="fas fa-pencil-alt"></i> Edit Produk
             </a>
             <form action="{{ route('products.destroy', $product->id) }}" method="POST"
@@ -212,7 +211,10 @@
                             </td>
                             <td style="text-align:right;">
                                 <span class="log-balance">{{ number_format($runningBalance) }}</span>
-                                @php $runningBalance += ($entry->type == 'in' ? -$entry->quantity : $entry->quantity); @endphp
+                                {{-- 🛠️ PERBAIKAN LOGIKA DISINI: Menghitung mundur saldo awal sebelum transaksi ini terjadi --}}
+                                @php 
+                                    $runningBalance -= ($entry->type == 'in' ? $entry->quantity : -$entry->quantity); 
+                                @endphp
                             </td>
                         </tr>
                         @empty

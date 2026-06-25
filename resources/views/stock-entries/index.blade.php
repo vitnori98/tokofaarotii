@@ -140,12 +140,12 @@
                         <div class="qty-num qty-in">
                             +{{ number_format($entry->quantity) }}
                         </div>
-                        <div class="qty-stock">Stok: {{ number_format($entry->product->total_stok ?? 0) }}</div>
+                        <div class="qty-stock">Stok Saat Ini: {{ number_format($entry->product->total_stok ?? 0) }}</div>
                     </td>
 
-                    {{-- CATATAN --}}
+                    {{-- Catatan (Sesuai nama kolom database) --}}
                     <td>
-                        <span class="note-text">{{ $entry->note ?? '-' }}</span>
+                        <span class="note-text">{{ $entry->notes ?? $entry->note ?? '-' }}</span>
                     </td>
 
                     {{-- AKSI --}}

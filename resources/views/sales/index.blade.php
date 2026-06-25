@@ -96,7 +96,7 @@
                     </td>
                     <td>
                         <div class="td-payment">
-                            @if(strtolower($sale->payment_method) == 'tunai')
+                            @if(strtolower($sale->payment_method ?? 'tunai') == 'tunai')
                                 <span class="badge-tunai"><i class="fas fa-money-bill-wave"></i> Tunai</span>
                             @else
                                 <span class="badge-qris"><i class="fas fa-qrcode"></i> QRIS</span>
@@ -111,7 +111,7 @@
                     </td>
                     <td>
                         <div class="action-btns">
-                            <button onclick="reprintStruk('{{ $sale->transaction_group }}', '{{ addslashes($sale->customer_name) }}', '{{ \Carbon\Carbon::parse($sale->sale_date)->translatedFormat('d M Y') }}', '{{ addslashes($sale->product_names) }}', '{{ $sale->total_items }}', '{{ number_format($sale->total_revenue, 0, ',', '.') }}', '{{ $sale->payment_method }}')" class="btn-action btn-view" title="Cetak Struk">
+                            <button onclick="reprintStruk('{{ $sale->transaction_group }}', '{{ addslashes($sale->customer_name ?? 'Umum') }}', '{{ \Carbon\Carbon::parse($sale->sale_date)->translatedFormat('d M Y') }}', '{{ addslashes($sale->product_names) }}', '{{ $sale->total_items }}', '{{ number_format($sale->total_revenue, 0, ',', '.') }}', '{{ $sale->payment_method ?? 'tunai' }}')" class="btn-action btn-view" title="Cetak Struk">
                                 <i class="fas fa-print"></i> Struk
                             </button>
 
@@ -126,7 +126,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6" class="empty-state">
+                    <td colspan="7" class="empty-state">
                         <i class="fas fa-receipt"></i>
                         <p>Belum ada data penjualan</p>
                     </td>
@@ -190,7 +190,6 @@
     .action-btns { display: flex; flex-direction: column; gap: 5px; align-items: center; }
     .btn-action { display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem; padding: 0.3rem 0.75rem; border: none; border-radius: 0.35rem; font-size: 0.72rem; font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap; width: 85px; text-decoration: none; }
     .btn-action:hover { filter: brightness(1.1); transform: translateY(-1px); }
-    .btn-confirm { background: #f59e0b; color: #fff; }
     .btn-view { background: #2563eb; color: #fff; }
     .btn-delete { background: #ef4444; color: #fff; }
 
@@ -220,6 +219,9 @@ function reprintStruk(trxId, customer, date, products, qty, total, payment) {
     
     // Pecah nama produk jika banyak
     let productList = products.split(', ').map(p => `<div>- ${p}</div>`).join('');
+    
+    // Validasi string payment aman dari null / kosong
+    let paymentMethodText = (payment || 'TUNAI').toUpperCase();
 
     strukWindow.document.write(`
         <html>
@@ -234,7 +236,7 @@ function reprintStruk(trxId, customer, date, products, qty, total, payment) {
                 <div style="display: flex; justify-content: space-between;"><span>No:</span> <span>${trxId}</span></div>
                 <div style="display: flex; justify-content: space-between;"><span>Tgl:</span> <span>${date}</span></div>
                 <div style="display: flex; justify-content: space-between;"><span>Plg:</span> <span>${customer}</span></div>
-                <div style="display: flex; justify-content: space-between;"><span>Byr:</span> <span>${payment.toUpperCase()}</span></div>
+                <div style="display: flex; justify-content: space-between;"><span>Byr:</span> <span>${paymentMethodText}</span></div>
             </div>
             <div style="border-bottom: 1px dashed #000; padding-bottom: 5px; margin-bottom: 5px; font-size: 11px;">
                 <div style="font-weight: bold; margin-bottom: 3px;">Item:</div>

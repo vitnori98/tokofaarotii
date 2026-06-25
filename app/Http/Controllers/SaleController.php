@@ -48,6 +48,9 @@ class SaleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
         $request->validate([
@@ -61,25 +64,34 @@ class SaleController extends Controller
 
         $product = Product::findOrFail($request->product_id);
         
+        // 1. Cek validasi stok sebelum menyimpan
         if ($product->total_stok < $request->quantity_sold) {
-            return back()->withErrors(['quantity_sold' => 'Stok tidak mencukupi. Tersedia: ' . $product->total_stok]);
+            return back()->withErrors(['quantity_sold' => 'Stok tidak mencukupi. Tersedia: ' . $product->total_stok])->withInput();
         }
 
+        // Generasi nomor invoice / transaction group
+        $transactionId = 'TRX-S-' . date('Ymd') . '-' . rand(100, 999);
+
         Sale::create([
+            'invoice_number' => $transactionId, // Sinkronisasi kolom invoice
             'product_id' => $request->product_id,
             'quantity_sold' => $request->quantity_sold,
+            'price_at_sale' => $product->price, // ✅ MENGUNCI HARGA SAAT INI
             'total_price' => $request->total_price,
             'customer_name' => $request->customer_name ?? 'Umum',
             'source' => $request->source,
             'status' => 'completed',
             'notes' => $request->notes,
             'payment_method' => $request->payment_method,
-            'transaction_group' => 'TRX-S-' . time() . '-' . rand(100, 999),
+            'transaction_group' => $transactionId,
         ]);
 
         return redirect()->route('sales.index')->with('success', 'Penjualan berhasil dicatat');
     }
 
+    /**
+     * Store POS transaction items (Dari Halaman Kasir)
+     */
     public function storePos(Request $request)
     {
         if (!$request->items || count($request->items) == 0) {
@@ -87,18 +99,35 @@ class SaleController extends Controller
         }
 
         try {
-            $transactionId = 'TRX-' . time();
+            $transactionId = 'TRX-' . date('Ymd') . '-' . rand(1000, 9999);
 
+            // 1. VALIDASI STOK TERLEBIH DAHULU UNTUK SEMUA BARANG DI KERANJANG
             foreach ($request->items as $item) {
-                \App\Models\Sale::create([
+                $product = Product::find($item['id']);
+                if (!$product || $product->total_stok < $item['qty']) {
+                    return response()->json([
+                        'success' => false, 
+                        'message' => 'Stok produk "' . ($product->name ?? 'Produk') . '" tidak mencukupi. Sisa stok: ' . ($product->total_stok ?? 0)
+                    ]);
+                }
+            }
+
+            // 2. JIKA SEMUA STOK AMAN, BARU SIMPAN KE DATABASE
+            foreach ($request->items as $item) {
+                $product = Product::find($item['id']);
+                
+                Sale::create([
+                    'invoice_number' => $transactionId, // Sinkronisasi kolom invoice
                     'product_id'    => $item['id'],
                     'quantity_sold' => $item['qty'],
+                    'price_at_sale' => $product->price, // ✅ MENGUNCI HARGA SAAT INI
                     'total_price'   => $item['price'] * $item['qty'],
                     'customer_name' => $request->customer_name ?? 'Umum',
                     'source'        => 'offline',
                     'status'        => 'completed',
                     'transaction_group' => $transactionId,
-                    'payment_method' => $request->payment_method ?? 'tunai'
+                    'payment_method' => $request->payment_method ?? 'tunai',
+                    'sale_date'      => now(),
                 ]);
             }
 

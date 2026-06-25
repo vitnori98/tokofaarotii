@@ -6,10 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class StockEntry extends Model
 {
-    protected $fillable = ['product_id', 'quantity', 'entry_date'];
+    // Sesuaikan dengan kolom fillable di database kamu
+    protected $fillable = ['product_id', 'type', 'quantity', 'entry_date', 'notes'];
 
+    /**
+     * Relasi ke model Product
+     * Hubungan: Satu entri stok mencatat satu produk tertentu
+     */
     public function product()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Product::class, 'product_id');
     }
 }

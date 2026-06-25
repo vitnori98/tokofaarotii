@@ -11,8 +11,13 @@ class ReportController extends Controller
 {
     public function index(Request $request)
     {
-        $startDate = $request->start_date ? \Carbon\Carbon::parse($request->start_date) : now()->startOfMonth();
-        $endDate = $request->end_date ? \Carbon\Carbon::parse($request->end_date) : now()->endOfMonth();
+        // Menyalin instance agar manipulasi startOfDay tidak merusak pembatasan format tanggal sales
+        $start = $request->start_date ? \Carbon\Carbon::parse($request->start_date) : now()->startOfMonth();
+        $end = $request->end_date ? \Carbon\Carbon::parse($request->end_date) : now()->endOfMonth();
+        
+        $startDate = $start->copy();
+        $endDate = $end->copy();
+        
         $groupBy = $request->get('group_by', 'day');
         $categoryId = $request->get('category_id');
 
@@ -27,7 +32,10 @@ class ReportController extends Controller
         $totalSales = $salesQuery->sum('total_price');
         $totalItemsSold = $salesQuery->sum('quantity_sold');
         
-        $stockQuery = StockEntry::whereBetween('created_at', [$startDate->startOfDay(), $endDate->endOfDay()]);
+        // 🌟 PERBAIKAN: Hanya hitung riwayat stock_entries yang bertipe 'in' sebagai Stok Masuk
+        $stockQuery = StockEntry::where('type', 'in')
+             ->whereBetween('entry_date', [$startDate->format('Y-m-d'), $endDate->format('Y-m-d')]);
+             
         if ($categoryId) {
             $stockQuery->whereHas('product', function($q) use ($categoryId) {
                 $q->where('category_id', $categoryId);
@@ -46,6 +54,7 @@ class ReportController extends Controller
         }
         $products = $productQuery->get();
 
+        // Menggunakan accessor total_stok dari model Product secara akurat
         $lowStockCount = $products->filter(fn($p) => $p->total_stok < 10 && $p->total_stok > 0)->count();
         $outOfStockCount = $products->filter(fn($p) => $p->total_stok <= 0)->count();
 

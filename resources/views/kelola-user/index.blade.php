@@ -73,7 +73,7 @@
                                 <span class="role-badge badge-orange">PEMILIK</span>
                                 @break
                             @default
-                                <span class="role-badge badge-gray">PENGGUNA</span>
+                                <span class="role-badge badge-gray">PELANGGAN</span>
                         @endswitch
                     </td>
                     <td style="text-align:center;">
@@ -90,8 +90,8 @@
                                 <i class="fas fa-edit"></i> Edit
                             </button>
                             
-                            {{-- Admin master TIDAK BOLEH menghapus dirinya sendiri --}}
-                            @if($user->id !== auth()->id())
+                            {{-- Admin master / Pemilik tidak boleh menghapus dirinya sendiri & Pemilik toko tidak bisa dihapus di sini --}}
+                            @if($user->id !== auth()->id() && $user->role !== 'pemilik' && $user->role !== 'admin_master')
                             <form action="{{ route('kelola-user.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus user ini?')" style="margin:0;">
                                 @csrf @method('DELETE')
                                 <button type="submit" class="btn-action btn-delete" title="Hapus User">
@@ -112,26 +112,28 @@
     </div>
     @endif
 </div>
+
+{{-- ── MODAL TAMBAH (FIXED AUTOFILL) ── --}}
 <div id="modal-tambah" class="modal-overlay hidden">
     <div class="modal-card">
         <div class="modal-header">
             <h3 class="modal-title">Tambah User Baru</h3>
             <button onclick="toggleModal('modal-tambah')" class="btn-close-modal"><i class="fas fa-times"></i></button>
         </div>
-        <form action="{{ route('kelola-user.store') }}" method="POST" class="modal-form">
+        <form action="{{ route('kelola-user.store') }}" method="POST" class="modal-form" autocomplete="off">
             @csrf
             <div class="form-group">
                 <label>Nama Lengkap</label>
-                <input type="text" name="name" required placeholder="Contoh: Budi Santoso">
+                <input type="text" name="name" required placeholder="Contoh: Fitri Ria" autocomplete="none">
             </div>
             <div class="form-group">
                 <label>Alamat Email</label>
-                <input type="email" name="email" required placeholder="budi@tokofaa.com">
+                <input type="email" name="email" required placeholder="fitri@gmail.com" autocomplete="none">
             </div>
             <div class="form-group">
                 <label>Role / Hak Akses</label>
                 <select name="role" required class="form-input">
-                    <option value="pengguna">Pengguna</option>
+                    <option value="pengguna">Pelanggan</option>
                     <option value="pemilik">Pemilik</option>
                     <option value="admin_master">Admin Master</option>
                 </select>
@@ -139,11 +141,11 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Kata Sandi</label>
-                    <input type="password" name="password" required placeholder="••••••••">
+                    <input type="password" name="password" required placeholder="••••••••" autocomplete="new-password">
                 </div>
                 <div class="form-group">
                     <label>Konfirmasi Kata Sandi</label>
-                    <input type="password" name="password_confirmation" required placeholder="••••••••">
+                    <input type="password" name="password_confirmation" required placeholder="••••••••" autocomplete="new-password">
                 </div>
             </div>
             <div class="modal-footer">
@@ -154,29 +156,28 @@
     </div>
 </div>
 
-{{-- ── MODAL EDIT ── --}}
+{{-- ── MODAL EDIT (FIXED LOGIC & DROPDOWN) ── --}}
 <div id="modal-edit" class="modal-overlay hidden">
     <div class="modal-card">
         <div class="modal-header">
             <h3 class="modal-title">Edit User</h3>
             <button onclick="toggleModal('modal-edit')" class="btn-close-modal"><i class="fas fa-times"></i></button>
         </div>
-        <form id="form-edit" method="POST" class="modal-form">
+        <form id="form-edit" method="POST" class="modal-form" autocomplete="off">
             @csrf @method('PUT')
             <div class="form-group">
                 <label>Nama Lengkap</label>
-                <input type="text" name="name" id="edit-name" required>
+                <input type="text" name="name" id="edit-name" required autocomplete="none">
             </div>
             <div class="form-group">
                 <label>Alamat Email</label>
-                <input type="email" name="email" id="edit-email" required>
+                <input type="email" name="email" id="edit-email" required autocomplete="none">
             </div>
             
-            {{-- Proteksi: Jika mengedit akun sendiri, pilihan role disembunyikan/dikunci agar hak akses admin tidak hilang --}}
             <div class="form-group" id="edit-role-wrapper">
                 <label>Role / Hak Akses</label>
                 <select name="role" id="edit-role" required class="form-input">
-                    <option value="pengguna">Pengguna</option>
+                    <option value="pengguna">Pelanggan</option>
                     <option value="pemilik">Pemilik</option>
                     <option value="admin_master">Admin Master</option>
                 </select>
@@ -185,17 +186,21 @@
                 </p>
             </div>
 
-            <div class="divider"><span>Ganti Kata Sandi (Opsional)</span></div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Kata Sandi Baru</label>
-                    <input type="password" name="password" placeholder="Kosongkan jika tidak diubah">
-                </div>
-                <div class="form-group">
-                    <label>Konfirmasi Kata Sandi Baru</label>
-                    <input type="password" name="password_confirmation" placeholder="Kosongkan jika tidak diubah">
+            {{-- Section Ganti Password ini akan di sembunyikan/ditampilkan lewat JS secara dinamis --}}
+            <div id="edit-password-section">
+                <div class="divider"><span>Ganti Kata Sandi (Opsional)</span></div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Kata Sandi Baru</label>
+                        <input type="password" name="password" placeholder="Kosongkan jika tidak diubah" autocomplete="new-password">
+                    </div>
+                    <div class="form-group">
+                        <label>Konfirmasi Kata Sandi Baru</label>
+                        <input type="password" name="password_confirmation" placeholder="Kosongkan jika tidak diubah" autocomplete="new-password">
+                    </div>
                 </div>
             </div>
+            
             <div class="modal-footer">
                 <button type="button" onclick="toggleModal('modal-edit')" class="btn-cancel">Batal</button>
                 <button type="submit" class="btn-submit">Update User</button>
@@ -292,28 +297,38 @@
             
             const roleSelect = document.getElementById('edit-role');
             const roleWarning = document.getElementById('edit-role-warning');
+            const passwordSection = document.getElementById('edit-password-section');
 
-            // Jika user mengedit akunnya sendiri, kunci pilihan role
-            if (user.id === currentUserId) {
+            // Sinkronisasi data role ke dropdown dengan aman
+            if(user.role === 'pelanggan') {
+                roleSelect.value = 'pengguna';
+            } else {
                 roleSelect.value = user.role;
+            }
+            
+            // ── VALIDASI UTAMA: LOGIKA KATA SANDI & AKSES ROLE ──
+            if (user.id === currentUserId) {
+                // Jika mengedit akun sendiri: Form password MUNCUL, dropdown role DIKUNCI
+                passwordSection.classList.remove('hidden');
+                
                 roleSelect.disabled = true;
                 roleWarning.classList.remove('hidden');
                 
-                // Tambahkan input hidden agar value role tetap terkirim saat form di-submit
                 if(!document.getElementById('hidden-role-input')) {
                     let hiddenRole = document.createElement('input');
                     hiddenRole.setAttribute('type', 'hidden');
                     hiddenRole.setAttribute('name', 'role');
                     hiddenRole.setAttribute('id', 'hidden-role-input');
-                    hiddenRole.setAttribute('value', user.role);
+                    hiddenRole.setAttribute('value', roleSelect.value);
                     document.getElementById('form-edit').appendChild(hiddenRole);
                 }
             } else {
-                roleSelect.value = user.role;
+                // Jika mengedit akun orang lain: Form password HILANG, dropdown role DIBUKA
+                passwordSection.classList.add('hidden');
+                
                 roleSelect.disabled = false;
                 roleWarning.classList.add('hidden');
                 
-                // Hapus input hidden jika ada jika mengedit user lain
                 const hiddenInput = document.getElementById('hidden-role-input');
                 if(hiddenInput) hiddenInput.remove();
             }
