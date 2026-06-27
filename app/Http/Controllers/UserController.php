@@ -22,7 +22,7 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'role' => ['required', 'string', Rule::in(['admin_master', 'pemilik', 'pegawai'])],
+            'role' => ['required', 'string', Rule::in(['admin_master', 'pemilik', 'pegawai', 'pelanggan'])],
         ], [
             'email.unique' => 'Email sudah terdaftar dalam sistem.',
             'role.in' => 'Role yang dipilih tidak valid.',
@@ -49,9 +49,9 @@ class UserController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user->id)],
-            'role' => ['required', 'string', Rule::in(['admin_master', 'pemilik', 'pegawai'])],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
+            'role' => ['required', 'string', Rule::in(['admin_master', 'pemilik', 'pegawai', 'pelanggan'])],
         ], [
             'email.unique' => 'Email sudah terdaftar dalam sistem.',
             'role.in' => 'Role yang dipilih tidak valid.',

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Sale;
 use App\Models\Product;
 use Illuminate\Http\Request;
+// use Midtrans\Config;
+// use Midtrans\Snap;
 
 class SaleController extends Controller
 {
@@ -207,3 +209,40 @@ class SaleController extends Controller
             ->with('success', 'Penjualan berhasil dikonfirmasi');
     }
 }
+
+    // // logika midtrans
+    // public function __construct(){
+    //     Config::$serverKey = env('MIDTRANS_SERVER_KEY');
+    //     Config::$isProduction = env('MIDTRANS_IS_PRODUCTION');
+    //     Config::$isSanitized = true;
+    //     Config::$is3ds = true; 
+    // }
+
+    // public function buatTransaksiMidtrans(Request $request) {
+    //     // hitung total belanja dari kasir faa
+    //     $totalBelanja = $request->total_price;
+    //     $transactionId = 'TRX-' . time();
+
+    //     // dikirim ke midtrans
+    //     $params = [
+    //         'transaction_details' => [
+    //             'order_id' => $transactionId,
+    //             'gross_amount' => (int) $totalBelanja,
+    //         ],
+    //         'customer_details' => [
+    //             'first_name' => $request->customer_name ?? 'Umum',
+    //         ],
+    //     ];
+
+    //     try {
+    //         $snapToken = Snap::getSnapToken($params);
+
+    //         return response()->json([
+    //             'success' => true,
+    //             'snap_token' => $snapToken,
+    //             'transaction_id' => $transactionId
+    //         ]);
+    //     } catch (\Exception $e) {
+    //         return response()->json(['success' => false, 'message' => $e->getMessage()]);
+    //     }
+    // }

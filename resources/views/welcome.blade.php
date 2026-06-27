@@ -864,5 +864,7 @@
             });
          });
       </script>
+
+      @include('chatbot')
    </body>
 </html>

@@ -28,31 +28,6 @@ class AuthenticatedSessionController extends Controller
 
         $user = Auth::user();
 
-        // Cek apakah user sudah verifikasi (kecuali admin/pemilik)
-        if (!in_array($user->role, ['admin_master', 'pemilik']) && is_null($user->email_verified_at)) {
-            // Generate OTP baru jika belum ada atau sudah kadaluwarsa
-            if (is_null($user->otp) || \Carbon\Carbon::now()->gt($user->otp_expires_at)) {
-                $otp = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
-                $user->otp = $otp;
-                $user->otp_expires_at = \Carbon\Carbon::now()->addMinutes(10);
-                $user->save();
-                
-                try {
-                    \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\OtpMail($otp));
-                } catch (\Exception $e) {
-                    Auth::logout();
-                    return redirect()->route('login')->withErrors(['email' => 'Gagal mengirim ulang OTP. ' . $e->getMessage()]);
-                }
-            }
-
-            Auth::logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-
-            return redirect()->route('otp.verify.show', ['email' => $user->email])
-                ->with('status', 'Email Anda belum terverifikasi. Silakan masukkan kode OTP yang dikirim ke email Anda.');
-        }
-
         $request->session()->regenerate();
 
         // Cek Role untuk Redirection

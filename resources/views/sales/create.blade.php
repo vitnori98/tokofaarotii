@@ -340,5 +340,19 @@
             alert('Terjadi kesalahan koneksi ke server.');
         });
     }
+    <!-- <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script> -->
+    // Contoh trigger pop-up di blade kasir kamu
+    snap.pay(snapTokenDariController, {
+        onSuccess: function(result){
+            alert("Pembayaran Berhasil!");
+            window.location.href = "{{ route('sales.index') }}";
+        },
+        onPending: function(result){
+            alert("Menunggu pembayaran pelanggan...");
+        },
+        onError: function(result){
+            alert("Pembayaran gagal!");
+        }
+    });
 </script>
 @endsection
