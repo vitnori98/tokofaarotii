@@ -455,5 +455,5 @@
 </body>
 </html>
 
-</body>
+@include('chatbot') </body>
 </html>

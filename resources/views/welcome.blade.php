@@ -865,6 +865,5 @@
          });
       </script>
 
-      @include('chatbot')
-   </body>
+      @include('chatbot') </body>
 </html>
