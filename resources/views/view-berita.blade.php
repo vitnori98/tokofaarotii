@@ -8,36 +8,52 @@
     <title>Portal Berita - FAA Frozen Food & Bakery</title>
     
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Poppins:wght@300;400;500;600;700;800;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- CSS Assets -->
     <link href="{{ asset('template-sarab/css/bootstrap.min.css') }}" rel="stylesheet"/>
     <link href="{{ asset('template-sarab/css/aos.css') }}" rel="stylesheet"/>
     <link href="{{ asset('template-sarab/css/swiper-bundle.min.css') }}" rel="stylesheet"/>
     <link href="{{ asset('template-sarab/css/all.min.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('template-sarab/css/magnific-popup.css') }}" rel="stylesheet"/>
     <link href="{{ asset('template-sarab/css/style.css') }}" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <style>
+        /* Modern Color Variables */
+        :root {
+            --primary: #f97316;
+            --primary-dark: #ea580c;
+            --primary-light: #ffedd5;
+            --dark: #0f172a;
+            --slate: #475569;
+            --light: #f8fafc;
+            --border: #e2e8f0;
+            --white: #ffffff;
+            --shadow-sm: 0 2px 4px rgba(15, 23, 42, 0.05);
+            --shadow-md: 0 10px 25px -5px rgba(15, 23, 42, 0.08);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+        }
+
         body {
-            font-family: 'DM Sans', sans-serif;
-            background: var(--light);
-            color: var(--dark);
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light);
+            color: var(--slate);
+            padding-top: 90px;
             overflow-x: hidden;
-            padding-top: 85px;
         }
 
         /* ==============================
-           HERO
+           HERO SECTION
         ============================== */
         .hero {
             position: relative;
-            height: 420px;
+            height: 380px;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            border-radius: 0 0 32px 32px;
         }
 
         .hero-bg {
@@ -52,185 +68,117 @@
         .hero-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(0, 74, 173, 0.85) 0%, rgba(30, 41, 59, 0.75) 60%, rgba(249, 115, 22, 0.6) 100%);
-        }
-
-        .hero-grid {
-            position: absolute;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
-            background-size: 60px 60px;
+            background: linear-gradient(to bottom, rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.6));
         }
 
         .hero-content {
             position: relative;
             z-index: 10;
             text-align: center;
-            padding: 0 24px;
+            padding: 0 20px;
         }
 
         .hero-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255,255,255,0.12);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.2);
-            color: white;
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 3px;
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: var(--white);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            padding: 8px 20px;
+            padding: 6px 18px;
             border-radius: 50px;
-            margin-bottom: 20px;
-        }
-
-        .hero-tag::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            background: #f97316;
-            border-radius: 50%;
-            animation: pulse-dot 2s infinite;
-            flex-shrink: 0;
-        }
-
-        @keyframes pulse-dot {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.6); }
+            margin-bottom: 16px;
         }
 
         .hero h1 {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(40px, 7vw, 78px);
-            font-weight: 900;
-            color: white;
-            line-height: 1;
-            letter-spacing: -2px;
-            margin-bottom: 22px;
+            font-size: clamp(32px, 5vw, 54px);
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 16px;
         }
 
         .hero h1 em {
             font-style: italic;
-            color: #f97316;
+            color: var(--primary);
         }
 
         .hero-breadcrumb {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #ffffff;
+            gap: 10px;
+            font-size: 13px;
         }
 
-        .hero-breadcrumb a { color: #ffffff; text-decoration: none; transition: color 0.2s; opacity: 0.8; }
-        .hero-breadcrumb a:hover { opacity: 1; }
-        .hero-breadcrumb .crumb-active { color: #f97316; }
-        .hero-breadcrumb .sep { color: rgba(255,255,255,0.25); }
-
-        .hero-wave {
-            position: absolute;
-            bottom: -1px;
-            left: 0;
-            right: 0;
+        .hero-breadcrumb a { 
+            color: rgba(255, 255, 255, 0.8); 
+            text-decoration: none; 
+            transition: color 0.2s; 
         }
+        
+        .hero-breadcrumb a:hover { color: var(--primary); }
+        .hero-breadcrumb .crumb-active { color: var(--primary); font-weight: 500; }
+        .hero-breadcrumb .sep { color: rgba(255, 255, 255, 0.4); }
 
         /* ==============================
-           MAIN CONTENT
+           MAIN CONTENT STYLE
         ============================== */
         .main-content {
-            max-width: 1280px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 48px 24px;
+            padding: 60px 20px;
         }
+
+        .section-header { margin-bottom: 36px; }
 
         .section-tag {
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: 3px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
-            color: #f97316;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .section-tag::before {
-            content: '';
-            display: block;
-            width: 30px;
-            height: 3px;
-            background: #f97316;
-            border-radius: 2px;
+            color: var(--primary);
+            margin-bottom: 8px;
         }
 
         .section-title {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(26px, 4vw, 40px);
-            font-weight: 900;
+            font-size: clamp(26px, 4vw, 36px);
+            font-weight: 700;
             color: var(--dark);
-            line-height: 1.1;
-            letter-spacing: -1px;
         }
 
-        .section-title span { color: #f97316; }
-        .section-desc { font-size: 13px; color: var(--gray); margin-top: 8px; }
+        .section-title span { color: var(--primary); }
+        .section-desc { font-size: 14px; color: var(--slate); margin-top: 6px; }
 
         /* ==============================
-           FEATURED GRID
+           FEATURED GRID (2 COLUMNS)
         ============================== */
         .featured-grid {
             display: grid;
-            grid-template-columns: 1fr 360px;
-            gap: 24px;
-            margin-bottom: 56px;
+            grid-template-columns: 1fr 380px;
+            gap: 30px;
+            margin-bottom: 60px;
         }
-
-        .section-header { margin-bottom: 28px; }
 
         /* Featured Big Card */
         .card-featured {
-            background: white;
-            border-radius: 24px;
+            background: var(--white);
+            border-radius: var(--radius-lg);
             overflow: hidden;
-            box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.05), -5px -5px 20px rgba(255, 255, 255, 0.8);
-            border: 1px solid rgba(229,9,20,0.05);
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
             display: flex;
             flex-direction: column;
-            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .card-featured:hover {
-            transform: translateY(-15px);
-            box-shadow: 0 30px 60px rgba(229,9,20,0.15);
-            border-color: rgba(229,9,20,0.2);
-        }
-
-        .card-featured::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, var(--red), #ff6b35);
-            transform: scaleX(0);
-            transition: transform 0.4s ease;
-            transform-origin: left;
-            z-index: 5;
-        }
-
-        .card-featured:hover::before {
-            transform: scaleX(1);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 35px -5px rgba(15, 23, 42, 0.12);
         }
 
         .card-featured-img {
@@ -243,142 +191,85 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 1.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+            transition: transform 0.5s ease;
         }
 
-        .card-featured:hover .card-featured-img img { transform: scale(1.1); }
+        .card-featured:hover .card-featured-img img { transform: scale(1.04); }
 
         .img-badge-top {
             position: absolute;
-            top: 20px;
-            left: 20px;
-            background: var(--red);
-            color: white;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 900;
-            font-size: 9px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            padding: 6px 14px;
+            top: 16px;
+            left: 16px;
+            background: var(--primary);
+            color: var(--white);
+            font-size: 11px;
+            font-weight: 500;
+            padding: 4px 12px;
             border-radius: 6px;
             z-index: 2;
         }
 
-        .img-date-badge {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: white;
-            border-radius: 14px;
-            padding: 10px 16px;
-            text-align: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.14);
-            z-index: 2;
-        }
-
-        .img-date-badge .day {
-            display: block;
-            font-family: 'Playfair Display', serif;
-            font-size: 26px;
-            font-weight: 900;
-            color: var(--red);
-            line-height: 1;
-        }
-
-        .img-date-badge .mon {
-            display: block;
-            font-size: 9px;
-            font-weight: 700;
-            color: var(--gray);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-top: 2px;
-        }
-
         .card-featured-body {
-            padding: 36px;
-            flex: 1;
+            padding: 30px;
             display: flex;
             flex-direction: column;
+            flex-grow: 1;
         }
 
         .card-meta {
             display: flex;
             align-items: center;
-            gap: 14px;
-            margin-bottom: 14px;
+            gap: 12px;
+            margin-bottom: 12px;
+            font-size: 12px;
         }
 
         .meta-tag {
-            font-size: 9px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--red);
-            background: rgba(229,9,20,0.06);
-            padding: 5px 12px;
-            border-radius: 6px;
+            font-weight: 600;
+            color: var(--primary);
+            background: var(--primary-light);
+            padding: 3px 10px;
+            border-radius: 4px;
         }
 
-        .meta-loc {
-            font-size: 10px;
-            color: var(--gray);
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .meta-loc i { color: var(--red); font-size: 9px; }
+        .meta-loc { color: var(--slate); }
+        .meta-loc i { color: var(--primary); margin-right: 4px; }
 
         .card-featured h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(20px, 2.2vw, 26px);
-            font-weight: 900;
+            font-size: clamp(20px, 2.5vw, 24px);
+            font-weight: 700;
             color: var(--dark);
-            line-height: 1.3;
+            line-height: 1.4;
             margin-bottom: 12px;
-            transition: color 0.3s;
         }
-
-        .card-featured:hover h3 { color: var(--red); }
 
         .card-featured p {
             font-size: 14px;
-            color: var(--gray);
-            line-height: 1.8;
+            line-height: 1.6;
+            color: var(--slate);
             display: -webkit-box;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
-            flex: 1;
+            margin-bottom: 20px;
         }
 
         .btn-read {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            background: var(--red);
-            color: white;
-            padding: 13px 28px;
-            border-radius: 12px;
-            font-size: 10px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            gap: 8px;
+            background: var(--primary);
+            color: var(--white) !important;
+            padding: 10px 22px;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            font-weight: 500;
             text-decoration: none;
-            margin-top: 22px;
             align-self: flex-start;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 6px 20px rgba(229,9,20,0.28);
+            transition: background 0.2s ease;
         }
 
-        .btn-read:hover {
-            background: var(--red-dark);
-            transform: translateX(10px);
-            box-shadow: 0 10px 25px rgba(229,9,20,0.4);
-            color: white;
-        }
+        .btn-read:hover { background: var(--primary-dark); }
 
         /* Side Stack */
         .side-stack {
@@ -388,176 +279,102 @@
         }
 
         .card-side {
-            background: white;
-            border-radius: 18px;
-            padding: 24px;
-            border: 1px solid rgba(229,9,20,0.05);
-            box-shadow: 8px 8px 20px rgba(0,0,0,0.03);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
+            background: var(--white);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s ease;
         }
 
         .card-side:hover {
-            border-color: var(--red);
-            box-shadow: 0 15px 35px rgba(229,9,20,0.12);
-            transform: translateX(10px);
-        }
-
-        .card-side::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 4px;
-            height: 100%;
-            background: var(--red);
-            transform: scaleY(0);
-            transition: transform 0.3s ease;
-        }
-
-        .card-side:hover::after {
-            transform: scaleY(1);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-md);
         }
 
         .side-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            font-size: 11px;
         }
 
-        .side-badge {
-            font-size: 8px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--red);
-        }
-
-        .side-date { font-size: 9px; color: var(--gray); font-weight: 600; }
+        .side-badge { font-weight: 600; color: var(--primary); }
+        .side-date { color: var(--slate); }
 
         .card-side h4 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 13px;
-            font-weight: 700;
+            font-size: 14px;
+            font-weight: 600;
             color: var(--dark);
-            line-height: 1.5;
+            line-height: 1.4;
+            margin-bottom: 6px;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
-            margin-bottom: 8px;
-            transition: color 0.2s;
         }
 
-        .card-side:hover h4 { color: var(--red); }
-
         .card-side p {
-            font-size: 11px;
-            color: var(--gray);
-            line-height: 1.7;
+            font-size: 13px;
+            color: var(--slate);
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
-            flex: 1;
+            margin-bottom: 12px;
         }
 
         .side-link {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 9px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--red);
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--primary);
             text-decoration: none;
-            margin-top: 12px;
-            transition: gap 0.2s;
         }
-
-        .card-side:hover .side-link { gap: 10px; }
+        .side-link:hover { color: var(--primary-dark); }
 
         .card-side-promo {
-            background: linear-gradient(135deg, var(--red), #ff6b35);
-            border-radius: 18px;
-            padding: 28px 22px;
-            color: white;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: var(--radius-md);
+            padding: 24px;
+            color: var(--white);
             text-align: center;
-            border: none;
-            box-shadow: 0 10px 30px rgba(229,9,20,0.3);
-            transition: transform 0.4s ease;
         }
 
-        .card-side-promo:hover {
-            transform: scale(1.03);
-        }
-
-        .card-side-promo i { font-size: 30px; opacity: 0.8; margin-bottom: 10px; animation: pulse 2s infinite; }
-
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.2); opacity: 1; }
-            100% { transform: scale(1); opacity: 0.8; }
-        }
-
-        .card-side-promo h4 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 12px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 6px;
-            color: white;
-        }
-
-        .card-side-promo p { font-size: 11px; opacity: 0.9; color: white; }
+        .card-side-promo i { font-size: 24px; margin-bottom: 8px; }
+        .card-side-promo h4 { color: var(--white); font-size: 14px; margin-bottom: 4px; }
+        .card-side-promo p { font-size: 12px; opacity: 0.9; margin-bottom: 0; }
 
         /* ==============================
-           ALL NEWS
+           ALL NEWS GRID (3 COLUMNS)
         ============================== */
         .all-news-header {
             display: flex;
-            align-items: flex-end;
+            align-items: center;
             justify-content: space-between;
-            margin-bottom: 28px;
+            margin-bottom: 30px;
             flex-wrap: wrap;
-            gap: 16px;
+            gap: 20px;
         }
 
         .filter-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
 
         .filter-tab {
-            font-size: 9px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            text-transform: uppercase;
+            font-size: 12px;
+            font-weight: 500;
             padding: 8px 16px;
-            border-radius: 8px;
-            border: 1.5px solid var(--border);
-            background: white;
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            background: var(--white);
+            color: var(--slate);
             cursor: pointer;
-            transition: all 0.3s;
-            color: var(--gray);
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+            transition: all 0.2s;
         }
 
         .filter-tab.active, .filter-tab:hover {
-            background: var(--red);
-            border-color: var(--red);
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(229,9,20,0.2);
+            background: var(--primary);
+            border-color: var(--primary);
+            color: var(--white);
         }
 
         .news-grid {
@@ -567,211 +384,134 @@
         }
 
         .card-news {
-            background: white;
-            border-radius: 20px;
+            background: var(--white);
+            border-radius: var(--radius-md);
             overflow: hidden;
-            border: 1px solid rgba(229,9,20,0.05);
-            box-shadow: 5px 5px 15px rgba(0,0,0,0.05);
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
             display: flex;
             flex-direction: column;
-            position: relative;
+            height: 100%; /* Menyamakan tinggi kartu */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .card-news:hover {
-            transform: translateY(-12px);
-            box-shadow: 0 25px 50px rgba(229,9,20,0.15);
-            border-color: rgba(229,9,20,0.1);
-        }
-
-        .card-news::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: var(--red);
-            transform: scaleX(0);
-            transition: transform 0.4s ease;
-            transform-origin: right;
-        }
-
-        .card-news:hover::after {
-            transform: scaleX(1);
-            transform-origin: left;
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
         }
 
         .card-news-img {
             position: relative;
             aspect-ratio: 4/3;
             overflow: hidden;
+            background-color: #eaeaea;
         }
 
         .card-news-img img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 1.2s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
-
-        .card-news:hover .card-news-img img { transform: scale(1.15); }
 
         .news-date-pill {
             position: absolute;
-            top: 14px;
-            right: 14px;
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(10px);
-            font-size: 8px;
-            font-weight: 800;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: var(--dark);
-            padding: 6px 12px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            z-index: 2;
-        }
-
-        .news-number {
-            position: absolute;
-            bottom: 14px;
-            left: 14px;
-            width: 34px;
-            height: 34px;
-            background: var(--red);
-            border-radius: 9px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Playfair Display', serif;
-            font-size: 15px;
-            font-weight: 900;
-            color: white;
-            box-shadow: 0 4px 14px rgba(229,9,20,0.4);
-            z-index: 2;
+            top: 12px;
+            right: 12px;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(4px);
+            font-size: 11px;
+            color: var(--white);
+            padding: 3px 10px;
+            border-radius: 4px;
         }
 
         .card-news-body {
-            padding: 22px;
-            flex: 1;
+            padding: 20px;
             display: flex;
             flex-direction: column;
+            flex-grow: 1; /* Supaya konten mengisi sisa ruang */
         }
 
         .news-source {
-            font-size: 9px;
-            font-weight: 800;
-            letter-spacing: 2px;
+            font-size: 11px;
+            font-weight: 600;
             text-transform: uppercase;
-            color: var(--red);
-            margin-bottom: 9px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .news-source::before {
-            content: '';
-            display: block;
-            width: 18px;
-            height: 2px;
-            background: var(--red);
-            border-radius: 1px;
+            color: var(--primary);
+            margin-bottom: 6px;
         }
 
         .card-news h5 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 13px;
-            font-weight: 700;
+            font-size: 15px;
+            font-weight: 600;
             color: var(--dark);
-            line-height: 1.5;
+            line-height: 1.4;
+            margin-bottom: 8px;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
-            margin-bottom: 8px;
-            transition: color 0.3s;
-            text-transform: uppercase;
         }
 
-        .card-news:hover h5 { color: var(--red); }
-
         .card-news p {
-            font-size: 12px;
-            color: var(--gray);
-            line-height: 1.8;
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--slate);
             display: -webkit-box;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
-            flex: 1;
-        }
-
-        .card-news p em {
-            font-style: normal;
-            font-weight: 700;
-            color: var(--red);
+            margin-bottom: 16px;
         }
 
         .card-news-footer {
-            margin-top: 18px;
-            padding-top: 14px;
-            border-top: 1px solid var(--light);
+            margin-top: auto; /* Menggeser footer selalu ke paling bawah kartu */
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
 
         .btn-detail {
-            font-size: 9px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--red);
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--primary);
             text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.3s;
         }
-
-        .card-news:hover .btn-detail { gap: 10px; color: var(--red-dark); }
-        .news-read-time { font-size: 9px; color: var(--gray); font-weight: 500; }
+        .btn-detail:hover { color: var(--primary-dark); }
+        .news-read-time { font-size: 11px; color: var(--slate); opacity: 0.8; }
 
         .empty-state {
             grid-column: 1 / -1;
-            padding: 80px 20px;
+            padding: 60px 20px;
             text-align: center;
         }
+        .empty-state i { font-size: 40px; color: var(--slate); opacity: 0.3; margin-bottom: 10px; display: block;}
 
-        .empty-state i { font-size: 48px; color: var(--border); display: block; margin-bottom: 14px; }
-        .empty-state p { font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--gray); }
-
-        /* Fade In */
+        /* Animation Simple Classes */
         .fade-in {
             opacity: 0;
-            transform: translateY(24px);
-            transition: opacity 0.65s ease, transform 0.65s ease;
+            transform: translateY(15px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
         }
         .fade-in.visible { opacity: 1; transform: translateY(0); }
 
         /* ==============================
-           RESPONSIVE
+           MEDIA QUERIES (RESPONSIVE)
         ============================== */
-        @media (max-width: 1100px) {
-            .featured-grid { grid-template-columns: 1fr; }
+        @media (max-width: 1024px) {
+            .featured-grid { grid-template-columns: 1fr; gap: 24px; }
             .side-stack { flex-direction: row; }
+            .side-stack > div { flex: 1; }
             .news-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (max-width: 768px) {
-            .hero { height: 300px; }
-            .news-grid { grid-template-columns: 1fr; }
+            body { padding-top: 70px; }
+            .hero { height: 280px; }
             .side-stack { flex-direction: column; }
+            .news-grid { grid-template-columns: 1fr; }
             .all-news-header { flex-direction: column; align-items: flex-start; }
-            .featured-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -785,10 +525,9 @@
     <section class="hero">
         <div class="hero-bg"></div>
         <div class="hero-overlay"></div>
-        <div class="hero-grid"></div>
 
         <div class="hero-content fade-in">
-            <div class="hero-tag">Portal Berita &amp; Kegiatan FAA</div>
+            <div class="hero-tag">Portal Berita &amp; Kegiatan</div>
             <h1>Berita <em>Kegiatan</em></h1>
             <nav class="hero-breadcrumb">
                 <a href="{{ route('welcome') }}">Beranda</a>
@@ -798,10 +537,6 @@
                 <span class="crumb-active">Berita</span>
             </nav>
         </div>
-
-        <svg class="hero-wave" viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-            <path d="M0 60 L0 30 Q360 0 720 30 Q1080 60 1440 30 L1440 60 Z" fill="#f8f8f6"/>
-        </svg>
     </section>
 
     <!-- ===========================
@@ -810,7 +545,7 @@
     <main class="main-content">
 
         <!-- SECTION: BERITA TERBARU -->
-        <section style="margin-bottom: 80px;" class="fade-in">
+        <section style="margin-bottom: 60px;" class="fade-in">
             <div class="section-header">
                 <div class="section-tag">Berita Terbaru</div>
                 <h2 class="section-title">Update Terkini dari <span>Toko FAA</span></h2>
@@ -832,21 +567,17 @@
                         @else
                             <img src="{{ asset('template-sarab/img/blog/1.jpg') }}" alt="Default">
                         @endif
-                        <div class="img-badge-top">#Terupdate 1</div>
-                        <div class="img-date-badge">
-                            <span class="day">{{ \Carbon\Carbon::parse($featured->created_at)->translatedFormat('d') }}</span>
-                            <span class="mon">{{ \Carbon\Carbon::parse($featured->created_at)->translatedFormat('M Y') }}</span>
-                        </div>
+                        <div class="img-badge-top">Sorotan Utama</div>
                     </div>
                     <div class="card-featured-body">
                         <div class="card-meta">
-                            <span class="meta-tag">Update Terkini</span>
-                            <span class="meta-loc"><i class="fas fa-map-marker-alt"></i> Desa Karyamakmur</span>
+                            <span class="meta-tag">Terupdate</span>
+                            <span class="meta-loc"><i class="bi bi-geo-alt-fill"></i> Desa Karyamakmur</span>
                         </div>
                         <h3>{{ $featured->judul }}</h3>
                         <p>{{ strip_tags($featured->isi) }}</p>
                         <a href="{{ route('berita.show', $featured->id) }}" class="btn-read">
-                            Baca Selengkapnya <i class="fas fa-arrow-right"></i>
+                            Baca Selengkapnya <i class="bi bi-arrow-right"></i>
                         </a>
                     </div>
                 </div>
@@ -856,22 +587,22 @@
                     @foreach($sideItems as $side)
                     <div class="card-side">
                         <div class="side-top">
-                            <span class="side-badge">Update</span>
+                            <span class="side-badge">Kegiatan</span>
                             <span class="side-date">{{ \Carbon\Carbon::parse($side->created_at)->translatedFormat('d M Y') }}</span>
                         </div>
                         <h4>{{ $side->judul }}</h4>
                         <p>{{ Str::limit(strip_tags($side->isi), 100) }}</p>
                         <a href="{{ route('berita.show', $side->id) }}" class="side-link">
-                            Detail Berita <i class="fas fa-chevron-right"></i>
+                            Detail Berita <i class="bi bi-chevron-right"></i>
                         </a>
                     </div>
                     @endforeach
 
                     @if($sideItems->count() < 2)
                     <div class="card-side-promo">
-                        <i class="fas fa-bell"></i>
+                        <i class="bi bi-bell-fill"></i>
                         <h4>Nantikan Info Lainnya</h4>
-                        <p>Pantau terus portal ini untuk update terbaru dari FAA</p>
+                        <p>Pantau terus portal ini untuk update terbaru selanjutnya.</p>
                     </div>
                     @endif
                 </div>
@@ -895,7 +626,7 @@
             </div>
 
             <div class="news-grid" id="newsGrid">
-                @forelse($beritas as $index => $item)
+                @forelse($beritas as $item)
                 <div class="card-news news-item fade-in" data-cat="{{ $item->kategori ?? 'all' }}">
                     <div class="card-news-img">
                         @if($item->gambar)
@@ -904,27 +635,23 @@
                             <img src="{{ asset('template-sarab/img/blog/2.jpg') }}" alt="Default">
                         @endif
                         <div class="news-date-pill">{{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d M Y') }}</div>
-                        <div class="news-number">{{ $loop->iteration }}</div>
                     </div>
                     <div class="card-news-body">
-                        <div class="news-source">Kegiatan Toko</div>
+                        <div class="news-source">Berita Toko</div>
                         <h5>{{ $item->judul }}</h5>
-                        <p>
-                            <em>Desa Karyamakmur, {{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d F Y') }}</em> — 
-                            {{ Str::limit(strip_tags($item->isi), 120) }}
-                        </p>
+                        <p>{{ Str::limit(strip_tags($item->isi), 120) }}</p>
                         <div class="card-news-footer">
                             <a href="{{ route('berita.show', $item->id) }}" class="btn-detail">
-                                Selengkapnya <i class="fas fa-arrow-right"></i>
+                                Selengkapnya <i class="bi bi-arrow-right"></i>
                             </a>
-                            <span class="news-read-time">3 menit baca</span>
+                            <span class="news-read-time"><i class="bi bi-clock"></i> 3 mnt</span>
                         </div>
                     </div>
                 </div>
                 @empty
                 <div class="empty-state">
-                    <i class="fas fa-newspaper"></i>
-                    <p>Belum ada arsip berita saat ini.</p>
+                    <i class="bi bi-newspaper"></i>
+                    <p class="m-0">Belum ada arsip berita saat ini.</p>
                 </div>
                 @endforelse
             </div>
@@ -937,29 +664,24 @@
     <script>
     document.addEventListener('DOMContentLoaded', function () {
 
-        // ── Fade In on Scroll ──────────────────────────
+        // ── Smooth Fade In Scroll ──────────────────────
         const fadeEls = document.querySelectorAll('.fade-in');
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry, i) => {
                 if (entry.isIntersecting) {
-                    setTimeout(() => entry.target.classList.add('visible'), i * 80);
+                    setTimeout(() => entry.target.classList.add('visible'), i * 50);
                     observer.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.08 });
+        }, { threshold: 0.05 });
         fadeEls.forEach(el => observer.observe(el));
 
-        // ── Hero Parallax ──────────────────────────────
-        const heroBg = document.querySelector('.hero-bg');
-        window.addEventListener('scroll', () => {
-            if (heroBg) heroBg.style.transform = `translateY(${window.scrollY * 0.28}px)`;
-        });
-
-        // ── Filter Tabs ────────────────────────────────
+        // ── Filter Kategori Tabs ───────────────────────
         document.querySelectorAll('.filter-tab').forEach(btn => {
             btn.addEventListener('click', function () {
                 document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
+                
                 const cat = this.dataset.cat;
                 document.querySelectorAll('.news-item').forEach(card => {
                     const cardCat = card.dataset.cat || 'all';
@@ -967,22 +689,9 @@
                 });
             });
         });
-
-        // ── Inline Search Filter ───────────────────────
-        const searchInput = document.getElementById('searchInput');
-        if (searchInput) {
-            searchInput.addEventListener('input', function () {
-                const q = this.value.toLowerCase().trim();
-                document.querySelectorAll('.news-item').forEach(card => {
-                    const title = card.querySelector('h5')?.textContent.toLowerCase() || '';
-                    const body  = card.querySelector('p')?.textContent.toLowerCase() || '';
-                    card.style.display = (title.includes(q) || body.includes(q)) ? 'flex' : 'none';
-                });
-            });
-        }
-
     });
     </script>
 
-@include('chatbot') </body>
+    @include('chatbot')
+</body>
 </html>

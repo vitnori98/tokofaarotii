@@ -1,26 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
    <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Sarab">
+    <meta name="description" content="Sarab - Fast Food & Restaurant HTML Template">
+    <title>FAA - Frozen Food & Bakery</title>
+      
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet"/>
+      
+    <link href="{{ asset('template-sarab/css/bootstrap.min.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('template-sarab/css/aos.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('template-sarab/css/swiper-bundle.min.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('template-sarab/css/all.min.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('template-sarab/css/magnific-popup.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('template-sarab/css/style.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
     <style>
-        /* Efek Ngambang / Glowing pada Logo Bulat */
+    /* ==========================================
+       USER-FRIENDLY & BRANDING STYLES (FAA Blue & Orange)
+       ========================================== */
+
+    /* Global Smooth Scroll */
+    html {
+        scroll-behavior: smooth;
+    }
+
+    /* Efek Ngambang / Glowing pada Logo Bulat */
     .logo-floating-wrapper {
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 50%; /* Memastikan efek shadow berbentuk bulat sempurna */
-        /* Menggunakan drop-shadow biru halus */
-        filter: drop-shadow(0 0 12px rgba(0, 74, 173, 0.6)); 
-        animation: floatingEffect 3s ease-in-out infinite; /* Opsional: animasi naik turun halus */
+        border-radius: 50%;
+        filter: drop-shadow(0 0 12px rgba(0, 74, 173, 0.4)); 
+        animation: floatingEffect 3s ease-in-out infinite;
     }
 
-    /* Animasi naik turun manja (opsional, hapus baris animation di atas kalau mau statis) */
     @keyframes floatingEffect {
         0% { transform: translateY(0px); }
-        50% { transform: translateY(-4px); }
+        50% { transform: translateY(-6px); }
         100% { transform: translateY(0px); }
     }
 
-    /* Pengaturan Warna Teks FAA */
     .text-faa {
         font-family: 'Poppins', sans-serif; 
         letter-spacing: 1px;
@@ -28,49 +51,46 @@
     }
 
     .text-faa .text-red {
-        color: #004aad; 
+        color: #f97316; /* Diselaraskan ke warna orange aksen FAA */
     }
 
+    /* Back To Top Button - Lebih Halus & Responsif */
     #btt {
-    position: fixed;       /* Membuat tombol tetap melayang di layar */
-    bottom: 30px;          /* Jarak dari bawah layar */
-    right: 30px;           /* Jarak dari kanan layar */
-    z-index: 9999;         /* Memastikan tombol berada di lapisan paling atas, tidak tertutup footer */
-    
-    /* Styling agar mirip dengan gambar (biru, rounded, dan rapi) */
-    background-color: #004aad; /* Ganti ke biru */
-    color: #ffffff;        /* Warna icon panah putih */
-    border: none;
-    width: 45px;
-    height: 45px;
-    border-radius: 10px;   /* Membuat sudut tombol melengkung (rounded) */
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        z-index: 9999;
+        background-color: #004aad;
+        color: #ffffff;
+        border: none;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%; /* Bulat sempurna lebih disukai user untuk BTT */
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 15px rgba(0, 74, 173, 0.3);
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(20px);
+    }
 
-    /* Hidden by default */
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(20px);
-   }
+    #btt.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
 
-   /* Muncul saat di-scroll */
-   #btt.show {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-   }
+    #btt:hover {
+        background-color: #f97316; /* Berubah jadi orange saat hover agar kontras */
+        color: #ffffff;
+        transform: translateY(-5px);
+        box-shadow: 0 6px 20px rgba(249, 115, 22, 0.4);
+    }
 
-   /* Efek sedikit menggelap saat diarahkan kursor (hover) */
-   #btt:hover {
-      background-color: #003580;
-      transform: translateY(-3px); /* Efek tombol sedikit naik saat di-hover */
-   }
-
-    /* Accordion FAQ Styling agar selaras dengan tema biru */
+    /* Accordion FAQ Styling */
     #faq .accordion-button:not(.collapsed) {
         background-color: #004aad;
         color: white;
@@ -79,212 +99,206 @@
         box-shadow: 0 0 0 0.25rem rgba(0, 74, 173, 0.25);
         border-color: #004aad;
     }
-    #faq .accordion-button::after {
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+
+    /* Slider / Banner Section Typography Fix */
+    .slider_section {
+        padding: 0;
+        background-color: #f9f9f9;
+        overflow: hidden;
     }
-    #faq .accordion-button:not(.collapsed)::after {
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+
+    .slider_item-box {
+        width: 100%;
+        min-height: 550px;
+        display: flex;
+        align-items: center;
+        background-size: cover;
+        background-position: center;
+        position: relative;
     }
 
-    /* Custom Slider Section Styles */
-   .slider_section {
-       padding: 0;
-       background-color: #f9f9f9;
-       overflow: hidden;
-   }
+    .slider_item-box::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.4) 100%);
+        z-index: 1;
+    }
 
-   .slider_item-box {
-       width: 100%;
-       min-height: 500px;
-       display: flex;
-       align-items: center;
-       background-size: cover;
-       background-position: center;
-       position: relative;
-   }
+    .slider_item-container {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+    }
 
-   .slider_item-box::before {
-       content: "";
-       position: absolute;
-       top: 0;
-       left: 0;
-       width: 100%;
-       height: 100%;
-       background: rgba(0, 0, 0, 0.5); /* Gelapkan banner agar teks putih terlihat jelas */
-       z-index: 1;
-   }
+    /* Mengatasi bentrokan warna teks slider */
+    .slider_item-detail h1 {
+        font-size: calc(1.8rem + 1.5vw); /* Responsif ukuran font */
+        color: #ffffff !important;
+        font-weight: 800;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
+    }
 
-   .slider_item-container {
-       position: relative;
-       z-index: 2;
-       width: 100%;
-   }
+    .slider_item-detail p.text-muted, 
+    .slider_item-detail p {
+        font-size: 1.1rem;
+        color: rgba(255, 255, 255, 0.9) !important; /* Terbaca jelas pada background gelap */
+        font-weight: 400;
+        margin-bottom: 30px;
+        max-width: 600px;
+        text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+    }
 
-   .slider_item-detail h1 {
-       font-size: 3.5rem;
-       color: #ffffff !important; /* Paksa ke putih */
-       font-weight: 800; /* Tebalkan */
-       margin-bottom: 20px;
-       text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-   }
+    .slider_img-box img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        transition: transform 0.5s ease;
+    }
+    
+    .slider_img-box:hover img {
+        transform: scale(1.03);
+    }
 
-   .slider_item-detail p {
-       font-size: 1.2rem;
-       color: #ffffff !important; /* Paksa ke putih, menimpa text-muted */
-       font-weight: 500;
-       margin-bottom: 30px;
-       max-width: 600px;
-       text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-   }
+    /* Custom Navigation Buttons Carousel */
+    .custom-carousel-btn {
+        width: 50px !important;
+        height: 50px !important;
+        background-color: rgba(0, 74, 173, 0.8) !important;
+        border-radius: 50% !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        opacity: 0.8 !important;
+        transition: all 0.3s ease !important;
+        z-index: 5 !important;
+        border: none !important;
+    }
 
-   .slider_img-box img {
-       max-width: 100%;
-       height: auto;
-       border-radius: 20px;
-       box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-   }
+    .carousel-control-prev.custom-carousel-btn { left: 20px !important; }
+    .carousel-control-next.custom-carousel-btn { right: 20px !important; }
 
-   /* Custom Navigation Buttons */
-   .custom-carousel-btn {
-       width: 50px !important;
-       height: 50px !important;
-       background-color: rgba(0, 74, 173, 0.8) !important; /* Branded blue with transparency */
-       border-radius: 50% !important;
-       top: 50% !important;
-       bottom: auto !important;
-       transform: translateY(-50%) !important;
-       opacity: 0.7 !important;
-       transition: all 0.3s ease !important;
-       z-index: 5 !important;
-       border: none !important;
-   }
+    .custom-carousel-btn:hover {
+        background-color: #f97316 !important;
+        opacity: 1 !important;
+    }
 
-   .carousel-control-prev.custom-carousel-btn {
-       left: 20px !important;
-   }
+    .carousel-indicators [data-bs-target] {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #ffffff;
+        opacity: 0.5;
+        margin: 0 6px;
+        transition: all 0.3s ease;
+    }
+    
+    .carousel-indicators .active {
+        background-color: #f97316 !important;
+        width: 24px;
+        border-radius: 5px;
+        opacity: 1;
+    }
 
-   .carousel-control-next.custom-carousel-btn {
-       right: 20px !important;
-   }
+    /* Keunggulan Section 3D Card */
+    .keunggulan-card {
+        background: #ffffff;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        border: 1px solid rgba(0, 74, 173, 0.05);
+        position: relative;
+        overflow: hidden;
+    }
 
-   .custom-carousel-btn:hover {
-       background-color: rgba(0, 53, 128, 1) !important;
-       opacity: 1 !important;
-       transform: translateY(-50%) scale(1.1) !important;
-   }
+    .keunggulan-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 74, 173, 0.12);
+    }
 
-   .carousel-indicators [data-bs-target] {
-       width: 12px;
-       height: 12px;
-       border-radius: 50%;
-       background-color: #f97316;
-       margin: 0 5px;
-   }
-   /* Memastikan wrapper utama carousel relatif */
-#carouselExampleControls {
-    position: relative;
-}
+    .keunggulan-card::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: #f97316;
+        transform: scaleX(0);
+        transition: transform 0.4s ease;
+        transform-origin: left;
+    }
 
-/* Keunggulan Section 3D Effect */
-.keunggulan-card {
-    background: #ffffff;
-    border-radius: 20px;
-    box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.05), -8px -8px 20px rgba(255, 255, 255, 0.8);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    border: 1px solid rgba(0, 0, 0, 0.02);
-    position: relative;
-    overflow: hidden;
-}
+    .keunggulan-card:hover::after {
+        transform: scaleX(1);
+    }
 
-.keunggulan-card:hover {
-    transform: translateY(-15px);
-    box-shadow: 0 25px 50px rgba(0, 74, 173, 0.1);
-    background: linear-gradient(145deg, #ffffff, #f0f9ff);
-}
+    /* Hover Lift Effect */
+    .hover-lift {
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+    }
 
-.keunggulan-card::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: #f97316;
-    transform: scaleX(0);
-    transition: transform 0.4s ease;
-    transform-origin: left;
-}
+    .hover-lift:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12) !important;
+    }
 
-.keunggulan-card:hover::after {
-    transform: scaleX(1);
-}
+    /* News Card Enhancement */
+    .news-card {
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
 
-/* Hover Lift Effect for Categories & Quick Access */
-.hover-lift {
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
-}
+    .news-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1) !important;
+    }
 
-.hover-lift:hover {
-    transform: translateY(-12px) scale(1.02);
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15) !important;
-    z-index: 10;
-}
+    .news-card .img-container {
+        overflow: hidden;
+        position: relative;
+    }
 
-/* News Card Enhancement */
-.news-card {
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-}
+    .news-card:hover img {
+        transform: scale(1.08);
+    }
 
-.news-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12) !important;
-}
+    .news-card img {
+        transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
 
-.news-card .img-container {
-    overflow: hidden;
-    border-radius: 12px 12px 0 0;
-}
+    .blur-effect {
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
 
-.news-card:hover img {
-    transform: scale(1.1);
-}
-
-.news-card img {
-    transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-}
-
-.blur-effect {
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-}
+    /* Pop-up Menu Modifikasi Modern */
+    #menuPop {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(15, 23, 42, 0.6);
+        backdrop-filter: blur(4px);
+        z-index: 10000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+    
+    #menuPop.active {
+        display: flex;
+    }
    </style>
-      <meta charset="UTF-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <meta name="author" content="Sarab">
-      <meta name="description" content="Sarab - Fast Food & Restaurant HTML Template">
-      <title>FAA - Frozen Food & Bakery</title>
-      
-      <!-- Fonts -->
-      <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet"/>
-      
-      <!-- CSS Assets -->
-      <link href="{{ asset('template-sarab/css/bootstrap.min.css') }}" rel="stylesheet"/>
-      <link href="{{ asset('template-sarab/css/aos.css') }}" rel="stylesheet"/>
-      <link href="{{ asset('template-sarab/css/swiper-bundle.min.css') }}" rel="stylesheet"/>
-      <link href="{{ asset('template-sarab/css/all.min.css') }}" rel="stylesheet"/>
-      <link href="{{ asset('template-sarab/css/magnific-popup.css') }}" rel="stylesheet"/>
-      <link href="{{ asset('template-sarab/css/style.css') }}" rel="stylesheet" />
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
    </head>
    <body>
 
       @include('layouts.partials.navbar')
 
-      <!-- slider section -->
-       <section class="slider_section position-relative">
+      <section class="slider_section position-relative">
          <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-            <!-- Indicators -->
             <div class="carousel-indicators">
                <button type="button" data-bs-target="#carouselExampleControls" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
                <button type="button" data-bs-target="#carouselExampleControls" data-bs-slide-to="1" aria-label="Slide 2"></button>
@@ -300,23 +314,21 @@
                      <div class="row align-items-center">
                         <div class="col-md-6">
                            <div class="slider_item-detail">
-                           <div>
                               <h1 class="fw-bold mb-3">
                                  Welcome to <br />
                                  FAA Frozen Food & Bakery
                               </h1>
-                              <p class="text-muted mb-4">
+                              <p class="mb-4">
                                  Nikmati kelezatan roti segar dan berbagai pilihan makanan beku berkualitas tinggi setiap hari. Kami menyajikan produk terbaik untuk keluarga Anda.
                               </p>
-                              <div class="d-flex">
-                                 <a href="{{ route('produk.makanan') }}" class="btn btn-warning text-uppercase rounded-pill me-3 px-4 py-2 text-white fw-bold" style="background-color: #f97316; border: none;">
+                              <div class="d-flex flex-wrap gap-2">
+                                 <a href="{{ route('produk.makanan') }}" class="btn btn-warning text-uppercase rounded-pill px-4 py-2 text-white fw-bold" style="background-color: #f97316; border: none;">
                                  Pesan Sekarang
                                  </a>
-                                 <a href="#contact-section" class="btn btn-outline-primary text-uppercase rounded-pill px-4 py-2 fw-bold" style="color: #004aad; border-color: #004aad;">
+                                 <a href="#contact-section" class="btn btn-outline-light text-uppercase rounded-pill px-4 py-2 fw-bold">
                                  Hubungi Kami
                                  </a>
                               </div>
-                           </div>
                            </div>
                         </div>
                         <div class="col-md-6 mt-4 mt-md-0">
@@ -339,23 +351,21 @@
                      <div class="row align-items-center">
                         <div class="col-md-6">
                            <div class="slider_item-detail">
-                           <div>
                               <h1 class="fw-bold mb-3">
                                  Roti Segar <br />
                                  Setiap Hari
                               </h1>
-                              <p class="text-muted mb-4">
+                              <p class="mb-4">
                                  Dipanggang dengan cinta dan bahan-bahan premium untuk memastikan kelembutan dan rasa yang tak terlupakan di setiap gigitan.
                               </p>
-                              <div class="d-flex">
-                                 <a href="{{ route('produk.makanan') }}" class="btn btn-warning text-uppercase rounded-pill me-3 px-4 py-2 text-white fw-bold" style="background-color: #f97316; border: none;">
+                              <div class="d-flex flex-wrap gap-2">
+                                 <a href="{{ route('produk.makanan') }}" class="btn btn-warning text-uppercase rounded-pill px-4 py-2 text-white fw-bold" style="background-color: #f97316; border: none;">
                                  Lihat Menu
                                  </a>
-                                 <a href="#contact-section" class="btn btn-outline-dark text-uppercase rounded-pill px-4 py-2">
+                                 <a href="#contact-section" class="btn btn-outline-light text-uppercase rounded-pill px-4 py-2 fw-bold">
                                  Hubungi Kami
                                  </a>
                               </div>
-                           </div>
                            </div>
                         </div>
                         <div class="col-md-6 mt-4 mt-md-0">
@@ -378,23 +388,21 @@
                      <div class="row align-items-center">
                         <div class="col-md-6">
                            <div class="slider_item-detail">
-                           <div>
                               <h1 class="fw-bold mb-3">
                                  Frozen Food <br />
                                  Kualitas Premium
                               </h1>
-                              <p class="text-muted mb-4">
+                              <p class="mb-4">
                                  Solusi praktis dan lezat untuk hidangan keluarga Anda. Tersedia berbagai pilihan mulai dari daging olahan hingga camilan lezat.
                               </p>
-                              <div class="d-flex">
-                                 <a href="{{ route('produk.makanan') }}" class="btn btn-warning text-uppercase rounded-pill me-3 px-4 py-2 text-white fw-bold" style="background-color: #f97316; border: none;">
+                              <div class="d-flex flex-wrap gap-2">
+                                 <a href="{{ route('produk.makanan') }}" class="btn btn-warning text-uppercase rounded-pill px-4 py-2 text-white fw-bold" style="background-color: #f97316; border: none;">
                                  Belanja Sekarang
                                  </a>
-                                 <a href="#contact-section" class="btn btn-outline-dark text-uppercase rounded-pill px-4 py-2">
+                                 <a href="#contact-section" class="btn btn-outline-light text-uppercase rounded-pill px-4 py-2 fw-bold">
                                  Hubungi Kami
                                  </a>
                               </div>
-                           </div>
                            </div>
                         </div>
                         <div class="col-md-6 mt-4 mt-md-0">
@@ -412,7 +420,6 @@
 
             </div>
 
-            <!-- Navigation Controls -->
             <button class="carousel-control-prev custom-carousel-btn" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                <span class="visually-hidden">Previous</span>
@@ -423,9 +430,6 @@
             </button>
          </div>
        </section>
-      <!-- end slider section -->
-
-      <!-- Keunggulan Toko Section -->
       <section id="keunggulan" class="py-5 bg-white">
          <div class="container">
             <div class="text-center mb-5" data-aos="fade-up">
@@ -434,7 +438,6 @@
                <div class="sline"></div>
             </div>
             <div class="row g-4 text-center">
-               <!-- Keunggulan 1 -->
                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
                   <div class="keunggulan-card p-4 h-100">
                      <div class="mb-3 fs-1" style="color: #004aad;">
@@ -444,7 +447,6 @@
                      <p class="text-muted">Roti kami dipanggang setiap pagi untuk menjamin kelembutan dan kesegaran rasa di setiap gigitan.</p>
                   </div>
                </div>
-               <!-- Keunggulan 2 -->
                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
                   <div class="keunggulan-card p-4 h-100">
                      <div class="mb-3 fs-1" style="color: #f97316;">
@@ -454,7 +456,6 @@
                      <p class="text-muted">Proses produksi kami mengikuti standar kebersihan yang ketat dan menggunakan bahan-bahan pilihan yang 100% halal.</p>
                   </div>
                </div>
-               <!-- Keunggulan 3 -->
                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
                   <div class="keunggulan-card p-4 h-100">
                      <div class="mb-3 fs-1" style="color: #004aad;">
@@ -468,7 +469,6 @@
          </div>
       </section>
 
-      <!-- Kategori Produk Section -->
       <section id="categories" class="py-5 bg-white">
    <div class="container">
       
@@ -572,7 +572,6 @@
    </div>
 </section>
 
-<!-- Quick Access Section ke vr dan chatbot -->
 <section id="quick-access" class="pb-5 bg-white">
    <div class="container">
       
@@ -674,8 +673,7 @@
    </div>
 </section>
 
-<!-- Berita & Pembaruan Section -->
-      <div id="menuPop">
+<div id="menuPop">
    <div class="mpbox">
       <button id="mpClose" class="mpclose"><i class="fas fa-times"></i></button>
       <div class="mpimg">
@@ -730,7 +728,7 @@
                      $date = \Carbon\Carbon::parse($berita->created_at);
                   @endphp
                   
-                  <div class="position-absolute top-0 start-0 m-3 bg-primary text-white rounded-3 d-flex flex-column align-items-center justify-content-center shadow" style="width: 45px; height: 48px; line-height: 1.1; background-color: #004aad !important;">
+                  <div class="position-absolute top-0 start-0 m-3 text-white rounded-3 d-flex flex-column align-items-center justify-content-center shadow" style="width: 45px; height: 48px; line-height: 1.1; background-color: #004aad !important;">
                      <span class="fw-bold fs-5">{{ $date->translatedFormat('d') }}</span>
                      <span class="text-uppercase fw-semibold" style="font-size: 0.65rem; letter-spacing: 0.5px;">{{ $date->translatedFormat('M') }}</span>
                   </div>
@@ -777,7 +775,6 @@
    </div>
 </section>
 
-      <!-- Contact Section -->
       <section id="contact-section">
          <div class="container">
             <div class="text-center mb-5" data-aos="fade-up">
@@ -833,37 +830,85 @@
          </div>
       </section>
 
+      <button id="btt" title="Kembali ke atas"><i class="bi bi-chevron-up fs-5"></i></button>
+
       @include('layouts.partials.footer')
 
-      <!-- Hidden Placeholders for Compatibility with main.js -->
       <div style="display:none;">
          <button id="resBtn"></button>
-         <div id="resOk"></div >
+         <div id="resOk"></div>
          <button id="nlBtn"></button>
          <input id="nlEmail">
       </div>
 
-      <!-- Custom Main Script -->
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
       <script>
-         // Live Search Product
-         document.getElementById('searchInput').addEventListener('input', function() {
-            let query = this.value.toLowerCase();
-            let items = document.querySelectorAll('.mwrap');
+         document.addEventListener("DOMContentLoaded", function () {
             
-            items.forEach(item => {
-               let title = item.querySelector('.card-title').textContent.toLowerCase();
-               let desc = item.querySelector('.text-muted').textContent.toLowerCase();
-               
-               if (title.includes(query) || desc.includes(query)) {
-                  item.classList.remove('gone');
-                  item.style.display = 'block';
-               } else {
-                  item.classList.add('gone');
-                  item.style.display = 'none';
-               }
-            });
+            // 1. Live Search Product - Ditambahkan fitur 'Safe Check' & Feedback kosong
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+               searchInput.addEventListener('input', function() {
+                  let query = this.value.toLowerCase().trim();
+                  let items = document.querySelectorAll('.mwrap');
+                  let hasResults = false;
+                  
+                  items.forEach(item => {
+                     let titleEl = item.querySelector('.card-title');
+                     let descEl = item.querySelector('.text-muted');
+                     
+                     let title = titleEl ? titleEl.textContent.toLowerCase() : '';
+                     let desc = descEl ? descEl.textContent.toLowerCase() : '';
+                     
+                     if (title.includes(query) || desc.includes(query)) {
+                        item.classList.remove('gone');
+                        item.style.display = 'block';
+                        hasResults = true;
+                     } else {
+                        item.classList.add('gone');
+                        item.style.display = 'none';
+                     }
+                  });
+               });
+            }
+
+            // 2. Back To Top (BTT) Logic Fungsional
+            const bttButton = document.getElementById('btt');
+            if (bttButton) {
+               window.addEventListener('scroll', function () {
+                  if (window.scrollY > 300) {
+                     bttButton.classList.add('show');
+                  } else {
+                     bttButton.classList.add('show');
+                     bttButton.classList.remove('show');
+                  }
+               });
+
+               bttButton.addEventListener('click', function () {
+                  window.scrollTo({
+                     top: 0,
+                     behavior: 'smooth'
+                  });
+               });
+            }
+
+            // 3. Form Contact Simulation Feedback
+            const ctcBtn = document.getElementById('ctcBtn');
+            const ctcOk = document.getElementById('ctcOk');
+            if (ctcBtn && ctcOk) {
+               ctcBtn.addEventListener('click', function(e) {
+                  e.preventDefault();
+                  // Tampilkan animasi sukses kirim pesan
+                  ctcOk.style.display = 'block';
+                  setTimeout(() => {
+                     ctcOk.style.display = 'none';
+                  }, 4000);
+               });
+            }
          });
       </script>
 
-      @include('chatbot') </body>
+      @include('chatbot') 
+   </body>
 </html>
