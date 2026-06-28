@@ -6,15 +6,17 @@
         --faa-bg: #eef1f5;
     }
     
-    /* Wrapper Utama Terluar - Menempel pas di layar viewport browser */
+    /* Wrapper Utama Terluar dikunci di pojok kanan bawah */
     .faa-chatbot-wrapper {
         position: fixed !important;
-        bottom: 0 !important;
-        right: 0 !important;
-        width: auto !important;
-        height: auto !important;
+        bottom: 100px !important;
+        right: 25px !important;
         z-index: 9999999 !important;
         pointer-events: none;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-end !important;
+        justify-content: flex-end !important;
     }
 
     .faa-chatbot-wrapper button, 
@@ -31,6 +33,7 @@
         to { opacity: 1; transform: translateY(0); }
     }
     
+    /* Perbaikan Scrollbar Quick Replies */
     .quick-replies::-webkit-scrollbar { height: 4px; }
     .quick-replies::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     
@@ -49,19 +52,19 @@
 
 <div class="faa-chatbot-wrapper">
 
-    <button id="chatbot-trigger" onclick="toggleChatbot()" style="position: absolute !important; bottom: 95px !important; right: 25px !important; width: 60px !important; height: 60px !important; background: linear-gradient(135deg, var(--faa-primary), var(--faa-primary-dark)) !important; border: none !important; border-radius: 50% !important; color: white !important; font-size: 1.5rem !important; cursor: pointer !important; box-shadow: 0 4px 15px rgba(0, 74, 173, 0.4) !important; display: flex !important; align-items: center !important; justify-content: center !important; transition: all 0.3s ease !important;">
+    <button id="chatbot-trigger" onclick="toggleChatbot()" style="width: 60px !important; height: 60px !important; background: linear-gradient(135deg, var(--faa-primary), var(--faa-primary-dark)) !important; border: none !important; border-radius: 50% !important; color: white !important; font-size: 1.5rem !important; cursor: pointer !important; box-shadow: 0 4px 15px rgba(0, 74, 173, 0.4) !important; display: flex !important; align-items: center !important; justify-content: center !important; transition: all 0.3s ease !important;">
         <i class="bi bi-chat-dots-fill" id="chat-icon"></i>
     </button>
 
-    <div id="chatbot-window" style="position: absolute !important; top: auto !important; left: auto !important; bottom: 160px !important; right: 25px !important; width: 380px !important; max-width: 90vw !important; height: 440px !important; background: #fff !important; border-radius: 20px !important; box-shadow: 0 10px 35px rgba(0,0,0,0.2) !important; display: none; flex-direction: column !important; overflow: hidden !important; border: 1px solid #eee !important; transition: all 0.3s ease !important; animation: popUpIn 0.25s ease-out !important;">
+    <div id="chatbot-window" style="width: 380px !important; max-width: 90vw !important; height: 500px !important; background: #fff !important; border-radius: 20px !important; box-shadow: 0 10px 35px rgba(0,0,0,0.2) !important; display: none; flex-direction: column !important; overflow: hidden !important; border: 1px solid #eee !important; transition: all 0.3s ease !important; animation: popUpIn 0.25s ease-out !important;">
 
-        <div class="chat-header" style="padding: 15px 20px; background: linear-gradient(135deg, var(--faa-primary), var(--faa-primary-dark)); color: #fff; display: flex; align-items: center; justify-content: space-between; gap: 15px;">
+        <div class="chat-header" style="padding: 15px 20px; background: linear-gradient(135deg, var(--faa-primary), var(--faa-primary-dark)); color: #fff; display: flex; align-items: center; justify-content: space-between; gap: 15px; flex-shrink: 0;">
             <div class="chat-header-left" style="display: flex; align-items: center; gap: 12px;">
-                <div class="chat-avatar rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: #fff; color: var(--faa-primary); font-size: 1.1rem;">
+                <div class="chat-avatar rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: #fff; color: var(--faa-primary); font-size: 1.1rem; flex-shrink: 0;">
                     <i class="bi bi-robot"></i>
                 </div>
                 <div>
-                    <h6 class="m-0 fw-bold" style="font-size: 0.95rem;">FAA AI Assistant</h6>
+                    <h6 class="m-0 fw-bold" style="font-size: 0.95rem; line-height: 1.2;">FAA AI Assistant</h6>
                     <small class="opacity-75" style="font-size: 0.75rem; display: flex; align-items: center; gap: 4px;">
                         <span class="status-dot" id="statusDot" style="width: 8px; height: 8px; border-radius: 50%; display: inline-block; background: #9ca3af;"></span>
                         <span id="statusText">Menghubungkan...</span>
@@ -71,23 +74,23 @@
             <button onclick="toggleChatbot()" style="background: none; border: none; color: white; cursor: pointer; font-size: 1.2rem; padding: 0 5px;"><i class="bi bi-x-lg"></i></button>
         </div>
 
-        <div class="chat-messages" id="chatMessages" style="flex-grow: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; background: #f8fafc; scroll-behavior: smooth;">
+        <div class="chat-messages" id="chatMessages" style="flex-grow: 1; flex-shrink: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; background: #f8fafc; scroll-behavior: smooth;">
             <div class="msg msg-ai" style="max-width: 85%; padding: 10px 14px; border-radius: 16px; font-size: 0.9rem; line-height: 1.5; align-self: flex-start; background: #fff; color: #2b2b2b; border-bottom-left-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;">
                 Halo <strong>{{ auth()->check() ? auth()->user()->name : 'Pelanggan' }}</strong>! 👋 Selamat datang di FAA Frozen Food & Bakery. Ada yang bisa saya bantu hari ini?
             </div>
         </div>
 
-        <div class="quick-replies" style="display: flex; flex-wrap: nowrap; gap: 6px; padding: 10px 15px; overflow-x: auto; background: #f8fafc; border-top: 1px solid #f1f5f9; -webkit-overflow-scrolling: touch;">
-            <button type="button" class="quick-reply-btn btn btn-outline-secondary rounded-pill" data-text="Apa saja produk rekomendasi di Toko FAA?" style="white-space: nowrap; font-size: 0.78rem; padding: 5px 12px;">🌟 Rekomendasi</button>
-            <button type="button" class="quick-reply-btn btn btn-outline-secondary rounded-pill" data-text="Apakah ada promo atau diskon minggu ini?" style="white-space: nowrap; font-size: 0.78rem; padding: 5px 12px;">🔥 Promo</button>
-            <button type="button" class="quick-reply-btn btn btn-outline-secondary rounded-pill" data-text="Kapan jam operasional toko FAA?" style="white-space: nowrap; font-size: 0.78rem; padding: 5px 12px;">🕒 Jam Buka</button>
-            <button type="button" class="quick-reply-btn btn btn-outline-secondary rounded-pill" data-text="Dimana lokasi toko FAA?" style="white-space: nowrap; font-size: 0.78rem; padding: 5px 12px;">📍 Lokasi</button>
+        <div class="quick-replies" style="flex-shrink: 0; display: flex; flex-wrap: nowrap; gap: 8px; padding: 12px 15px; overflow-x: auto; background: #f8fafc; border-top: 1px solid #e2e8f0; -webkit-overflow-scrolling: touch;">
+            <button type="button" class="quick-reply-btn btn btn-sm btn-outline-secondary rounded-pill" data-text="Apa saja produk rekomendasi di Toko FAA?" style="white-space: nowrap; font-size: 0.8rem; padding: 6px 14px; background: #fff;">🌟 Rekomendasi</button>
+            <button type="button" class="quick-reply-btn btn btn-sm btn-outline-secondary rounded-pill" data-text="Apakah ada promo atau diskon minggu ini?" style="white-space: nowrap; font-size: 0.8rem; padding: 6px 14px; background: #fff;">🔥 Promo</button>
+            <button type="button" class="quick-reply-btn btn btn-sm btn-outline-secondary rounded-pill" data-text="Kapan jam operasional toko FAA?" style="white-space: nowrap; font-size: 0.8rem; padding: 6px 14px; background: #fff;">🕒 Jam Buka</button>
+            <button type="button" class="quick-reply-btn btn btn-sm btn-outline-secondary rounded-pill" data-text="Dimana lokasi toko FAA?" style="white-space: nowrap; font-size: 0.8rem; padding: 6px 14px; background: #fff;">📍 Lokasi</button>
         </div>
 
-        <div class="chat-input-area" style="padding: 12px 15px; background: #fff; border-top: 1px solid #eee; display: flex; gap: 8px; align-items: center;">
+        <div class="chat-input-area" style="flex-shrink: 0; padding: 12px 15px; background: #fff; border-top: 1px solid #eee; display: flex; gap: 8px; align-items: center;">
             <input type="text" class="form-control chat-input" id="userInput" placeholder="Ketik pesan Anda..." autocomplete="off" style="border-radius: 50px; padding: 8px 16px; font-size: 0.9rem;">
-            <button class="btn btn-primary d-flex align-items-center justify-content-center" id="sendBtn" type="button" style="width: 40px; height: 40px; min-width: 40px; border-radius: 50%; background: var(--faa-primary);">
-                <i class="bi bi-send-fill"></i>
+            <button class="btn btn-primary d-flex align-items-center justify-content-center" id="sendBtn" type="button" style="width: 40px; height: 40px; min-width: 40px; border-radius: 50%; background: var(--faa-primary); border: none;">
+                <i class="bi bi-send-fill" style="color: white;"></i>
             </button>
         </div>
     </div>
@@ -97,15 +100,15 @@
 <script>
 function toggleChatbot() {
     const chatWindow = document.getElementById('chatbot-window');
-    const triggerIcon = document.getElementById('chat-icon');
+    const triggerBtn = document.getElementById('chatbot-trigger');
     
     if (chatWindow.style.display === 'none' || chatWindow.style.display === '') {
         chatWindow.style.display = 'flex';
-        triggerIcon.className = 'bi bi-chevron-down';
-        document.getElementById('userInput').focus();
+        triggerBtn.style.display = 'none'; // Sembunyikan tombol saat chat terbuka
+        setTimeout(() => document.getElementById('userInput').focus(), 50);
     } else {
         chatWindow.style.display = 'none';
-        triggerIcon.className = 'bi bi-chat-dots-fill';
+        triggerBtn.style.display = 'flex'; // Munculkan kembali tombol saat chat ditutup
     }
 }
 
@@ -123,10 +126,14 @@ document.addEventListener('DOMContentLoaded', function () {
         return div.innerHTML;
     }
 
+    function parseMarkdown(text) {
+        return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    }
+
     function addMessage(text, type, isHtml = false) {
         const div = document.createElement('div');
         div.className = `msg msg-${type}`;
-        div.style = `max-width: 85%; padding: 10px 14px; border-radius: 16px; font-size: 0.9rem; line-height: 1.5; word-wrap: break-word; animation: msgIn 0.25s ease;`;
+        div.style = `max-width: 85%; padding: 10px 14px; border-radius: 16px; font-size: 0.9rem; line-height: 1.5; word-wrap: break-word; animation: msgIn 0.25s ease; flex-shrink: 0;`;
         
         if(type === 'user') {
             div.style.cssText += "align-self: flex-end; background: var(--faa-accent); color: #fff; border-bottom-right-radius: 4px; box-shadow: 0 2px 4px rgba(249,115,22,0.15);";
@@ -136,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function () {
             div.style.cssText += "align-self: flex-start; background: #fdecea; color: #b3261e; border: 1px solid #f6c4c0;";
         }
 
-        div.innerHTML = isHtml ? text : escapeHtml(text);
+        div.innerHTML = isHtml ? text : parseMarkdown(escapeHtml(text));
         chatMessages.appendChild(div);
         chatMessages.scrollTop = chatMessages.scrollHeight;
         return div;
@@ -178,7 +185,7 @@ document.addEventListener('DOMContentLoaded', function () {
             loadingDiv.remove();
 
             if (data && data.response) {
-                let formattedResponse = data.response.replace(/\n/g, '<br>');
+                let formattedResponse = parseMarkdown(data.response.replace(/\n/g, '<br>'));
                 addMessage(formattedResponse, response.ok ? 'ai' : 'error', true);
             } else {
                 addMessage('Maaf, terjadi kesalahan saat memproses jawaban.', 'error');

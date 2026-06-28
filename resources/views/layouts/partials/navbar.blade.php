@@ -373,10 +373,6 @@
                   <i class="bi bi-box-seam fs-5" style="color: #64748b;"></i>
                </a>
 
-               <a href="{{ route('chatbot.ai') }}" class="text-secondary p-2 d-flex align-items-center justify-content-center rounded-circle hover-bg-light" title="AI Chatbot">
-                  <i class="bi bi-robot fs-5" style="color: #64748b;"></i>
-               </a>
-
                <a href="{{ route('cart.index') }}" class="text-secondary p-2 d-flex align-items-center justify-content-center rounded-circle position-relative hover-bg-light me-1" title="Keranjang">
                   <i class="bi bi-cart3 fs-5" style="color: #334155;"></i>
                   <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-danger d-flex align-items-center justify-content-center p-0 shadow" 
