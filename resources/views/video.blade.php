@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Video Dokumentasi - FAA Frozen Food & Bakery</title>
     
-    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"/>
     
-    <!-- CSS Assets -->
     <link href="{{ asset('template-sarab/css/bootstrap.min.css') }}" rel="stylesheet"/>
     <link href="{{ asset('template-sarab/css/aos.css') }}" rel="stylesheet"/>
     <link href="{{ asset('template-sarab/css/all.min.css') }}" rel="stylesheet"/>
@@ -183,13 +181,37 @@
         }
 
         .play-btn i {
-            margin-left: 4px; /* Centering penyesuaian ikon play */
+            margin-left: 4px;
         }
 
         .video-card:hover .play-btn {
             transform: translate(-50%, -50%) scale(1.1);
             background: var(--primary-dark);
             box-shadow: 0 6px 20px rgba(234, 88, 12, 0.5);
+        }
+
+        /* Styling Khusus Cover Pengganti Instagram & TikTok */
+        .social-badge-overlay {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            z-index: 3;
+        }
+        .badge-instagram {
+            background: #fdf2f8;
+            color: #db2777;
+        }
+        .badge-tiktok {
+            background: #f8fafc;
+            color: #0f172a;
         }
 
         .video-info {
@@ -252,7 +274,6 @@
 
     @include('layouts.partials.navbar')
 
-    <!-- Hero Section -->
     <section class="video-hero">
         <div class="hero-bg"></div>
         <div class="hero-overlay"></div>
@@ -268,7 +289,6 @@
         </div>
     </section>
 
-    <!-- Video Gallery Section -->
     <section class="video-section">
         <div class="container">
             <div class="text-center mb-5" data-aos="fade-up">
@@ -280,21 +300,37 @@
             <div class="row g-4">
                 @forelse($videos as $video)
                 @php
+                    $isSocialMedia = str_contains($video->url, 'instagram.com') || str_contains($video->url, 'tiktok.com');
                     $videoID = '';
-                    if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $video->url, $match)) {
+                    
+                    if (!$isSocialMedia && preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $video->url, $match)) {
                         $videoID = $match[1];
                     }
-                    // Menggunakan hqdefault untuk toleransi resolusi video lama agar grid aman
-                    $thumbUrl = $videoID ? "https://img.youtube.com/vi/{$videoID}/hqdefault.jpg" : asset('template-sarab/img/frozen-banner.jpg');
+                    
+                    // Jika YouTube pakai thumbnail aslinya, jika Medsos pakai gambar banner default toko
+                    $thumbUrl = (!$isSocialMedia && $videoID) ? "https://img.youtube.com/vi/{$videoID}/hqdefault.jpg" : asset('template-sarab/img/frozen-banner.jpg');
                 @endphp
                 <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="{{ $loop->iteration * 50 }}">
                     <div class="video-card-wrapper">
                         <div class="video-card">
                             <div class="video-thumb-wrapper">
                                 <img src="{{ $thumbUrl }}" alt="{{ $video->judul }}" class="video-thumb" onerror="this.src='{{ asset('template-sarab/img/frozen-banner.jpg') }}'">
-                                <a href="#" class="play-btn" data-bs-toggle="modal" data-bs-target="#videoModal" data-url="{{ $video->url }}" data-title="{{ $video->judul }}" aria-label="Putar Video">
-                                    <i class="bi bi-play-fill"></i>
-                                </a>
+                                
+                                @if($isSocialMedia)
+                                    @if(str_contains($video->url, 'instagram.com'))
+                                        <div class="social-badge-overlay badge-instagram"><i class="bi bi-instagram"></i> Instagram</div>
+                                    @else
+                                        <div class="social-badge-overlay badge-tiktok"><i class="bi bi-tiktok"></i> TikTok</div>
+                                    @endif
+                                    
+                                    <a href="{{ $video->url }}" target="_blank" class="play-btn" aria-label="Tonton di Media Sosial">
+                                        <i class="bi bi-box-arrow-up-right" style="font-size: 18px; margin-left: 0;"></i>
+                                    </a>
+                                @else
+                                    <a href="#" class="play-btn" data-bs-toggle="modal" data-bs-target="#videoModal" data-url="{{ $video->url }}" data-title="{{ $video->judul }}" aria-label="Putar Video">
+                                        <i class="bi bi-play-fill"></i>
+                                    </a>
+                                @endif
                             </div>
                             <div class="video-info">
                                 <h5>{{ $video->judul }}</h5>
@@ -315,7 +351,6 @@
         </div>
     </section>
 
-    <!-- Video Modal -->
     <div class="modal fade" id="videoModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
@@ -338,23 +373,25 @@
             const videoModal = document.getElementById('videoModal');
             const videoIframe = document.getElementById('videoIframe');
 
-            videoModal.addEventListener('show.bs.modal', function (event) {
-                const button = event.relatedTarget;
-                let url = button.getAttribute('data-url');
-                
-                if (url.includes('watch?v=')) {
-                    url = url.replace('watch?v=', 'embed/');
-                } else if (url.includes('youtu.be/')) {
-                    url = url.replace('youtu.be/', 'youtube.com/embed/');
-                }
+            if (videoModal && videoIframe) {
+                videoModal.addEventListener('show.bs.modal', function (event) {
+                    const button = event.relatedTarget;
+                    let url = button.getAttribute('data-url');
+                    
+                    if (url.includes('watch?v=')) {
+                        url = url.replace('watch?v=', 'embed/');
+                    } else if (url.includes('youtu.be/')) {
+                        url = url.replace('youtu.be/', 'youtube.com/embed/');
+                    }
 
-                url += url.includes('?') ? '&autoplay=1' : '?autoplay=1';
-                videoIframe.setAttribute('src', url);
-            });
+                    url += url.includes('?') ? '&autoplay=1' : '?autoplay=1';
+                    videoIframe.setAttribute('src', url);
+                });
 
-            videoModal.addEventListener('hide.bs.modal', function () {
-                videoIframe.setAttribute('src', '');
-            });
+                videoModal.addEventListener('hide.bs.modal', function () {
+                    videoIframe.setAttribute('src', '');
+                });
+            }
         });
     </script>
 

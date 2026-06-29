@@ -1,228 +1,257 @@
 <!DOCTYPE html>
-<html lang="en">
-   <head>
-    <style>
-        /* Efek Ngambang / Glowing pada Logo Bulat */
-    .logo-floating-wrapper {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%; /* Memastikan efek shadow berbentuk bulat sempurna */
-        /* Menggunakan drop-shadow biru halus */
-        filter: drop-shadow(0 0 12px rgba(0, 74, 173, 0.6)); 
-        animation: floatingEffect 3s ease-in-out infinite; /* Opsional: animasi naik turun halus */
-    }
-
-    /* Animasi naik turun manja (opsional, hapus baris animation di atas kalau mau statis) */
-    @keyframes floatingEffect {
-        0% { transform: translateY(0px); }
-        50% { transform: translateY(-4px); }
-        100% { transform: translateY(0px); }
-    }
-
-    /* Pengaturan Warna Teks FAA */
-    .text-faa {
-        font-family: 'Poppins', sans-serif; 
-        letter-spacing: 1px;
-        color: #004aad;
-    }
-
-    .text-faa .text-red {
-        color: #004aad; 
-    }
-
-    #btt {
-    position: fixed;       /* Membuat tombol tetap melayang di layar */
-    bottom: 30px;          /* Jarak dari bawah layar */
-    right: 30px;           /* Jarak dari kanan layar */
-    z-index: 9999;         /* Memastikan tombol berada di lapisan paling atas, tidak tertutup footer */
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FAQ - FAA Frozen Food & Bakery</title>
     
-    /* Styling agar mirip dengan gambar (biru, rounded, dan rapi) */
-    background-color: #004aad; /* Ganti ke biru */
-    color: #ffffff;        /* Warna icon panah putih */
-    border: none;
-    width: 45px;
-    height: 45px;
-    border-radius: 10px;   /* Membuat sudut tombol melengkung (rounded) */
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    
+    <!-- CSS Assets -->
+    <link href="{{ asset('template-sarab/css/bootstrap.min.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('template-sarab/css/aos.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('template-sarab/css/swiper-bundle.min.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('template-sarab/css/all.min.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('template-sarab/css/magnific-popup.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('template-sarab/css/style.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    /* Hidden by default */
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(20px);
-   }
+    <style>
+        /* Modern Warm Palette Integration */
+        :root {
+            --primary: #f97316;
+            --primary-dark: #ea580c;
+            --primary-light: #ffedd5;
+            --dark: #0f172a;
+            --slate: #475569;
+            --light: #f8fafc;
+            --border: #e2e8f0;
+            --white: #ffffff;
+            --shadow-sm: 0 4px 6px -1px rgba(15, 23, 42, 0.03), 0 2px 4px -2px rgba(15, 23, 42, 0.03);
+            --shadow-md: 0 10px 25px -5px rgba(15, 23, 42, 0.05);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+        }
 
-   /* Muncul saat di-scroll */
-   #btt.show {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-   }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light);
+            color: var(--slate);
+        }
 
-   /* Efek sedikit menggelap saat diarahkan kursor (hover) */
-   #btt:hover {
-      background-color: #003580;
-      transform: translateY(-3px); /* Efek tombol sedikit naik saat di-hover */
-   }
+        /* FAQ Section Base */
+        .faq-section {
+            padding: 80px 0;
+        }
 
-    /* Accordion FAQ Styling agar selaras dengan tema biru */
-    .accordion-item {
-        border: 1px solid rgba(0, 0, 0, 0.03) !important;
-        box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.05);
-        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
+        .section-tag {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--primary);
+            margin-bottom: 6px;
+        }
 
-    .accordion-item:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 25px rgba(0, 74, 173, 0.1);
-        border-color: rgba(0, 74, 173, 0.2) !important;
-    }
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: clamp(28px, 4vw, 38px);
+            color: var(--dark);
+            margin-bottom: 12px;
+        }
 
-    #faq .accordion-button {
-        transition: all 0.3s ease;
-        padding: 1.25rem;
-    }
+        .section-title span {
+            color: var(--primary);
+            position: relative;
+        }
 
-    #faq .accordion-button:not(.collapsed) {
-        background: linear-gradient(135deg, #004aad 0%, #003580 100%);
-        color: white;
-        box-shadow: 0 4px 12px rgba(0, 74, 173, 0.3);
-    }
+        /* Accordion Customization */
+        .custom-faq-container {
+            max-width: 820px;
+            margin: 0 auto;
+        }
 
-    #faq .accordion-button:focus {
-        box-shadow: none;
-        border-color: rgba(0, 74, 173, 0.25);
-    }
+        .accordion-flush {
+            background: transparent;
+        }
 
-    #faq .accordion-button::after {
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
-        transition: transform 0.3s ease;
-    }
+        .accordion-item-custom {
+            background-color: var(--white) !important;
+            border: 1px solid var(--border) !important;
+            border-radius: var(--radius-md) !important;
+            overflow: hidden;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
 
-    #faq .accordion-button:not(.collapsed)::after {
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
-    }
+        .accordion-item-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
+        }
 
-    .accordion-body {
-        line-height: 1.8;
-        background-color: #fff;
-    }
+        .accordion-button-custom {
+            padding: 20px 24px !important;
+            font-size: 15px;
+            font-weight: 600 !important;
+            color: var(--dark) !important;
+            background-color: var(--white) !important;
+            box-shadow: none !important;
+            transition: color 0.2s ease, background-color 0.3s ease;
+        }
 
-    .stitle span {
-        position: relative;
-        z-index: 1;
-    }
+        .accordion-button-custom:not(.collapsed) {
+            color: var(--primary-dark) !important;
+            background-color: var(--primary-light) !important;
+            border-bottom: 1px solid var(--border);
+        }
 
-    .stitle span::after {
-        content: '';
-        position: absolute;
-        bottom: 8px;
-        left: 0;
-        width: 100%;
-        height: 12px;
-        background: rgba(249, 115, 22, 0.1);
-        z-index: -1;
-    }
+        .accordion-button-custom::after {
+            background-size: 1.25rem;
+            transition: transform 0.2s ease;
+        }
 
-   </style>
-      <meta charset="UTF-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <meta name="author" content="Sarab">
-      <meta name="description" content="Sarab - Fast Food & Restaurant HTML Template">
-      <title>FAQ - FAA Frozen Food & Bakery</title>
-      
-      <!-- Fonts -->
-      <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet"/>
-      
-      <!-- CSS Assets -->
-      <link href="{{ asset('template-sarab/css/bootstrap.min.css') }}" rel="stylesheet"/>
-      <link href="{{ asset('template-sarab/css/aos.css') }}" rel="stylesheet"/>
-      <link href="{{ asset('template-sarab/css/swiper-bundle.min.css') }}" rel="stylesheet"/>
-      <link href="{{ asset('template-sarab/css/all.min.css') }}" rel="stylesheet"/>
-      <link href="{{ asset('template-sarab/css/magnific-popup.css') }}" rel="stylesheet"/>
-      <link href="{{ asset('template-sarab/css/style.css') }}" rel="stylesheet" />
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-   </head>
-   <body>
+        .accordion-body-custom {
+            padding: 24px !important;
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--slate);
+            background-color: var(--white);
+        }
 
-      @include('layouts.partials.navbar')
+        /* Back to Top Button style matching new theme */
+        #btt {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(15px);
+        }
 
-      <!-- FAQ Section -->
-         <div class="container">
+        #btt.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        #btt:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(234, 88, 12, 0.4);
+        }
+
+        .empty-state {
+            padding: 40px 20px;
+            text-align: center;
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            border: 2px dashed var(--border);
+        }
+    </style>
+</head>
+<body>
+
+    @include('layouts.partials.navbar')
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container">
             <div class="text-center mb-5" data-aos="fade-up">
-               <span class="slbl">FAQ</span>
-               <h2 class="stitle">Pertanyaan <span>Sering</span> Diajukan</h2>
-               <div class="sline"></div>
-               <p class="sdesc mx-auto" style="max-width:480px;">Temukan jawaban cepat untuk pertanyaan umum mengenai produk dan layanan kami.</p>
+                <div class="section-tag">Bantuan Pelanggan</div>
+                <h2 class="section-title">Pertanyaan <span>Sering</span> Diajukan</h2>
+                <p class="text-muted small mx-auto" style="max-width: 480px;">Temukan jawaban cepat untuk pertanyaan umum mengenai produk, pemesanan, dan layanan kami.</p>
             </div>
 
             <div class="row justify-content-center">
-               <div class="col-lg-8" data-aos="fade-up" data-aos-delay="100">
-                  <div class="accordion accordion-flush shadow-sm rounded" id="accordionFaq">
-                     
-                     @forelse($faqs as $index => $faq)
-                     <!-- Dynamic Item -->
-                     <div class="accordion-item border-0 mb-3 rounded shadow-sm">
-                        <h2 class="accordion-header" id="heading{{ $index }}">
-                           <button class="accordion-button {{ $index == 0 ? '' : 'collapsed' }} fw-bold rounded" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ $index }}" aria-expanded="{{ $index == 0 ? 'true' : 'false' }}" aria-controls="collapse{{ $index }}">
-                              {{ $faq->pertanyaan }}
-                           </button>
-                        </h2>
-                        <div id="collapse{{ $index }}" class="accordion-collapse collapse {{ $index == 0 ? 'show' : '' }}" aria-labelledby="heading{{ $index }}" data-bs-parent="#accordionFaq">
-                           <div class="accordion-body text-muted">
-                              {!! $faq->jawaban !!}
-                           </div>
+                <div class="col-12" data-aos="fade-up" data-aos-delay="50">
+                    <div class="custom-faq-container">
+                        <div class="accordion accordion-flush" id="accordionFaq">
+                            
+                            @forelse($faqs as $index => $faq)
+                            <!-- Item Accordion -->
+                            <div class="accordion-item accordion-item-custom">
+                                <h2 class="accordion-header" id="heading{{ $index }}">
+                                    <button class="accordion-button accordion-button-custom {{ $index == 0 ? '' : 'collapsed' }}" 
+                                            type="button" 
+                                            data-bs-toggle="collapse" 
+                                            data-bs-target="#collapse{{ $index }}" 
+                                            aria-expanded="{{ $index == 0 ? 'true' : 'false' }}" 
+                                            aria-controls="collapse{{ $index }}">
+                                        {{ $faq->pertanyaan }}
+                                    </button>
+                                </h2>
+                                <div id="collapse{{ $index }}" 
+                                     class="accordion-collapse collapse {{ $index == 0 ? 'show' : '' }}" 
+                                     aria-labelledby="heading{{ $index }}" 
+                                     data-bs-parent="#accordionFaq">
+                                    <div class="accordion-body accordion-body-custom">
+                                        {!! $faq->jawaban !!}
+                                    </div>
+                                </div>
+                            </div>
+                            @empty
+                            <div class="empty-state">
+                                <i class="bi bi-patch-question text-muted mb-3" style="font-size: 2.5rem; opacity: 0.3;"></i>
+                                <p class="text-muted mb-0">Belum ada pertanyaan yang tersedia saat ini.</p>
+                            </div>
+                            @endforelse
+
                         </div>
-                     </div>
-                     @empty
-                     <div class="text-center py-4">
-                        <p class="text-muted">Belum ada pertanyaan yang tersedia.</p>
-                     </div>
-                     @endforelse
-
-                  </div>
-               </div>
+                    </div>
+                </div>
             </div>
-         </div>
-      </section>
-      <!-- End FAQ Section -->
+        </div>
+    </section>
+    <!-- End FAQ Section -->
 
+    <!-- Back to top button -->
+    <button id="btt" aria-label="Kembali ke atas">
+        <i class="bi bi-arrow-up-short" style="font-size: 22px;"></i>
+    </button>
 
-      @include('layouts.partials.footer')
+    @include('layouts.partials.footer')
 
-      <!-- Hidden Placeholders for Compatibility with main.js -->
-      <div style="display:none;">
-         <button id="resBtn"></button>
-         <div id="resOk"></div >
-         <button id="nlBtn"></button>
-         <input id="nlEmail">
-      </div>
+    <!-- Hidden Placeholders for Compatibility with main.js -->
+    <div style="display:none;">
+        <button id="resBtn"></button>
+        <div id="resOk"></div>
+        <button id="nlBtn"></button>
+        <input id="nlEmail">
+    </div>
 
-      <script>
-         // Live Search Product
-         document.getElementById('searchInput').addEventListener('input', function() {
-            let query = this.value.toLowerCase();
-            let items = document.querySelectorAll('.mwrap');
-            
-            items.forEach(item => {
-               let title = item.querySelector('.card-title').textContent.toLowerCase();
-               let desc = item.querySelector('.text-muted').textContent.toLowerCase();
-               
-               if (title.includes(query) || desc.includes(query)) {
-                  item.classList.remove('gone');
-                  item.style.display = 'block';
-               } else {
-                  item.classList.add('gone');
-                  item.style.display = 'none';
-               }
-            });
-         });
-      </script>
-   @include('chatbot') </body>
+    <script>
+        // Back to Top Button Logic
+        const bttButton = document.getElementById('btt');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                bttButton.classList.add('show');
+            } else {
+                bttButton.classList.remove('show');
+            }
+        });
+        bttButton.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+
+    @include('chatbot') 
+</body>
 </html>

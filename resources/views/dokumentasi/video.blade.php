@@ -36,13 +36,28 @@
         @foreach($videos as $video)
         <div class="video-card">
             <div class="video-embed-wrap">
-                @php
-                    $embedUrl = str_replace('watch?v=', 'embed/', $video->url);
-                    if (str_contains($embedUrl, 'youtu.be/')) {
-                        $embedUrl = str_replace('youtu.be/', 'youtube.com/embed/', $embedUrl);
-                    }
-                @endphp
-                <iframe src="{{ $embedUrl }}" frameborder="0" allowfullscreen></iframe>
+                @if(str_contains($video->url, 'instagram.com') || str_contains($video->url, 'tiktok.com'))
+                    <!-- Tampilan khusus Instagram & TikTok agar tidak memicu error "Refused to Connect" -->
+                    <a href="{{ $video->url }}" target="_blank" class="social-cover-link">
+                        <div class="social-overlay-badge">
+                            @if(str_contains($video->url, 'instagram.com'))
+                                <i class="fab fa-instagram" style="color: #e1306c; font-size: 16px;"></i> <span>Tonton di Instagram</span>
+                            @else
+                                <i class="fab fa-tiktok" style="color: #000000; font-size: 16px;"></i> <span>Tonton di TikTok</span>
+                            @endif
+                        </div>
+                        <img src="{{ asset('template-sarab/img/frozen-banner.jpg') }}" class="social-cover-img" alt="Konten Media Sosial">
+                    </a>
+                @else
+                    <!-- Tampilan Pemutar Default untuk YouTube -->
+                    @php
+                        $embedUrl = str_replace('watch?v=', 'embed/', $video->url);
+                        if (str_contains($embedUrl, 'youtu.be/')) {
+                            $embedUrl = str_replace('youtu.be/', 'youtube.com/embed/', $embedUrl);
+                        }
+                    @endphp
+                    <iframe src="{{ $embedUrl }}" frameborder="0" allowfullscreen></iframe>
+                @endif
             </div>
             <div class="video-body">
                 <h4 class="video-title">{{ $video->judul }}</h4>
@@ -83,11 +98,11 @@
             @csrf
             <div class="form-group">
                 <label>Judul Video</label>
-                <input type="text" name="judul" required placeholder="Contoh: Profil Toko Faa 2024">
+                <input type="text" name="judul" required placeholder="Contoh: Info Promo Produk Toko FAA">
             </div>
             <div class="form-group">
-                <label>URL Video (YouTube)</label>
-                <input type="url" name="url" required placeholder="https://www.youtube.com/watch?v=...">
+                <label>URL Video / Postingan (YouTube / Instagram / TikTok)</label>
+                <input type="url" name="url" required placeholder="https://...">
             </div>
             <div class="form-group">
                 <label>Deskripsi Singkat</label>
@@ -115,7 +130,7 @@
                 <input type="text" name="judul" id="edit-judul" required>
             </div>
             <div class="form-group">
-                <label>URL Video (YouTube)</label>
+                <label>URL Video / Postingan</label>
                 <input type="url" name="url" id="edit-url" required>
             </div>
             <div class="form-group">
@@ -142,8 +157,32 @@
     .video-card { background: #fff; border-radius: 1.5rem; border: 1px solid #f1f5f9; overflow: hidden; box-shadow: 0 1px 3px rgba(15,23,42,.05); transition: all .3s; }
     .video-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(15,23,42,.1); }
     
-    .video-embed-wrap { width: 100%; aspect-ratio: 16/9; background: #000; }
+    .video-embed-wrap { width: 100%; aspect-ratio: 16/9; background: #000; overflow: hidden; position: relative; }
     .video-embed-wrap iframe { width: 100%; height: 100%; }
+
+    /* Styling Tambahan Komponen Deteksi Cover Instagram & TikTok */
+    .social-cover-link { display: block; width: 100%; height: 100%; position: relative; text-decoration: none; }
+    .social-cover-img { width: 100%; height: 100%; object-fit: cover; opacity: 0.65; transition: all 0.3s ease; }
+    .social-cover-link:hover .social-cover-img { opacity: 0.85; transform: scale(1.03); }
+    
+    .social-overlay-badge { 
+        position: absolute; 
+        top: 50%; 
+        left: 50%; 
+        transform: translate(-50%, -50%); 
+        background: rgba(255, 255, 255, 0.95); 
+        padding: 10px 18px; 
+        border-radius: 50px; 
+        font-weight: 700; 
+        font-size: 0.78rem; 
+        color: #0f172a; 
+        box-shadow: 0 4px 15px rgba(0,0,0,0.15); 
+        z-index: 5; 
+        display: flex; 
+        align-items: center; 
+        gap: 8px;
+        white-space: nowrap;
+    }
 
     .video-body { padding: 1.5rem; }
     .video-title { font-size: 1.1rem; font-weight: 800; color: #1e293b; margin: 0 0 .75rem; line-height: 1.4; }
@@ -156,7 +195,7 @@
     .btn-edit { background: #f59e0b; color: #fff; }
     .btn-delete { background: #ef4444; color: #fff; }
 
-    /* ── Modal (Sama dengan sebelumnya) ── */
+    /* ── Modal ── */
     .modal-overlay { position: fixed; inset: 0; background: rgba(15,23,42,.6); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 1rem; }
     .modal-card { background: #fff; border-radius: 1.5rem; width: 100%; max-width: 500px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); overflow: hidden; animation: zoomIn .2s ease-out; }
     @keyframes zoomIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
