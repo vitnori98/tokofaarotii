@@ -488,26 +488,26 @@
          
          <div class="col-12 col-md-6" data-aos="fade-up" data-aos-delay="100">
             <div class="card border-0 rounded-4 overflow-hidden position-relative text-white shadow-sm hover-lift" style="height: 280px; cursor: pointer;">
-               <img class="w-100 h-100" src="{{ asset('template-sarab/img/category/frozen.jpg') }}" alt="Frozen Food" style="object-fit: cover;">
+               <img class="w-100 h-100" src="{{ asset('template-sarab/img/menu/roti unyil.jpeg') }}" alt="Frozen Food" style="object-fit: cover;">
                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-end p-4" style="background: linear-gradient(to top, rgba(0, 74, 173, 0.85), rgba(0, 74, 173, 0.1));">
                   <span class="badge bg-white bg-opacity-25 blur-effect text-white rounded-pill px-3 py-2 mb-2 align-self-start small">
-                     <i class="bi bi-snowflake me-1"></i> 50+ produk
+                     <i class="bi bi-snowflake me-1"></i> 20+ produk
                   </span>
-                  <h3 class="fw-bold m-0 mb-1">Frozen Food</h3>
-                  <p class="text-white-50 m-0 small">Nugget, dimsum, sosis, & aneka beku siap masak</p>
+                  <h3 class="fw-bold m-0 mb-1" style="color: #ffffff;">Frozen Food</h3>
+                  <p class="text-white-50 m-0 small">Nugget, bakso, sosis, & aneka makanan beku siap masak lainnya.</p>
                </div>
             </div>
          </div>
 
          <div class="col-12 col-md-6" data-aos="fade-up" data-aos-delay="200">
             <div class="card border-0 rounded-4 overflow-hidden position-relative text-white shadow-sm hover-lift" style="height: 280px; cursor: pointer;">
-               <img class="w-100 h-100" src="{{ asset('template-sarab/img/category/bakery.jpg') }}" alt="Bakery" style="object-fit: cover;">
+               <img class="w-100 h-100" src="{{ asset('template-sarab/img/menu/roti all varian.jpeg') }}" alt="Bakery" style="object-fit: cover;">
                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-end p-4" style="background: linear-gradient(to top, rgba(194,65,12,0.85), rgba(194,65,12,0.1));">
                   <span class="badge bg-white bg-opacity-25 blur-effect text-white rounded-pill px-3 py-2 mb-2 align-self-start small">
-                     <i class="bi bi-egg-fried me-1"></i> 30+ produk
+                     <i class="bi bi-egg-fried me-1"></i> 15+ produk
                   </span>
-                  <h3 class="fw-bold m-0 mb-1">Bakery</h3>
-                  <p class="text-white-50 m-0 small">Roti, kue, pastri segar dipanggang setiap hari</p>
+                  <h3 class="fw-bold m-0 mb-1" style="color: #ffffff;">Bakery</h3>
+                  <p class="text-white-50 m-0 small">Roti all varian diproduksi setiap hari.</p>
                </div>
             </div>
          </div>
@@ -522,10 +522,10 @@
                   <div class="rounded-3 d-flex align-items-center justify-content-center mb-3" style="width: 40px; height: 40px; background-color: #e0f2fe; color: #004aad;">
                      <i class="bi bi-cake2"></i>
                   </div>
-                  <h5 class="fw-bold mb-1" style="color: #0c4a6e;">Kue & Dessert</h5>
-                  <p class="text-muted small m-0">Kue ulang tahun, tart, brownies</p>
+                  <h5 class="fw-bold mb-1" style="color: #0c4a6e;">Roti All Varian</h5>
+                  <p class="text-muted small m-0">Roti manis, roti tawar, dan varian lainnya</p>
                </div>
-               <span class="fw-bold small mt-3" style="color: #004aad;">20+ produk</span>
+               <span class="fw-bold small mt-3" style="color: #004aad;">8+ produk</span>
             </div>
          </div>
 
@@ -535,10 +535,10 @@
                   <div class="rounded-3 d-flex align-items-center justify-content-center mb-3" style="width: 40px; height: 40px; background-color: #dcfce7; color: #15803d;">
                      <i class="bi bi-bowl-straw"></i>
                   </div>
-                  <h5 class="fw-bold mb-1" style="color: #14532d;">Healthy Bowl</h5>
-                  <p class="text-muted small m-0">Salad, wrap, dan pilihan sehat</p>
+                  <h5 class="fw-bold mb-1" style="color: #14532d;">Bakso All Varian</h5>
+                  <p class="text-muted small m-0">Bakso sapi, bakso ayam, dan varian lainnya</p>
                </div>
-               <span class="fw-bold small mt-3" style="color: #15803d;">15+ produk</span>
+               <span class="fw-bold small mt-3" style="color: #15803d;">14+ produk</span>
             </div>
          </div>
 
@@ -548,10 +548,10 @@
                   <div class="rounded-3 d-flex align-items-center justify-content-center mb-3" style="width: 40px; height: 40px; background-color: #e0f2fe; color: #004aad;">
                      <i class="bi bi-cone-striped"></i>
                   </div>
-                  <h5 class="fw-bold mb-1" style="color: #0c4a6e;">Ice Cream</h5>
-                  <p class="text-muted small m-0">Es krim, gelato, dan sorbet premium</p>
+                  <h5 class="fw-bold mb-1" style="color: #0c4a6e;">Nugget All Varian</h5>
+                  <p class="text-muted small m-0">Nugget ikan, nugget ayam, dan varian lainnya</p>
                </div>
-               <span class="fw-bold small mt-3" style="color: #004aad;">25+ produk</span>
+               <span class="fw-bold small mt-3" style="color: #004aad;">5+ produk</span>
             </div>
          </div>
 
@@ -561,10 +561,10 @@
                   <div class="rounded-3 d-flex align-items-center justify-content-center mb-3" style="width: 40px; height: 40px; background-color: #fff4e0; color: #f97316;">
                      <i class="bi bi-sandwich"></i>
                   </div>
-                  <h5 class="fw-bold mb-1" style="color: #7c2d12;">Snack & Sandwich</h5>
-                  <p class="text-muted small m-0">Camilan dan sandwich untuk bekal</p>
+                  <h5 class="fw-bold mb-1" style="color: #7c2d12;">Sempol All Varian</h5>
+                  <p class="text-muted small m-0">Sempol ikan, sempol ayam, dan varian lainnya</p>
                </div>
-               <span class="fw-bold small mt-3" style="color: #f97316;">18+ produk</span>
+               <span class="fw-bold small mt-3" style="color: #f97316;">5+ produk</span>
             </div>
          </div>
 
@@ -587,7 +587,7 @@
                  style="background: linear-gradient(135deg, #004aad 0%, #003580 100%); min-height: 240px;">
                
                <div class="position-absolute end-0 top-50 translate-middle-y opacity-10" 
-                    style="width: 180px; height: 180px; border-radius: 50%; background: #ffffff; border: 20px solid #ffffff; margin-right: -40px;"></div>
+                    style="width: 180px; height: 180px; border-radius: 50%; background: #ffffff; background-image: url('{{ asset("template-sarab/img/icons/vrShowroomnew.jpg") }}'); background-size: contain; background-repeat: no-repeat; border: 20px solid #ffffff; margin-right: -40px;"></div>
                
                <div class="position-relative z-1 d-flex flex-column justify-content-between h-100">
                   <div>
@@ -595,7 +595,7 @@
                           style="width: 45px; height: 45px; background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">
                         <i class="bi bi-box-seam fs-5 text-white"></i>
                      </div>
-                     <h3 class="fw-bold mb-2 fs-4">VR 3D Showroom</h3>
+                     <h3 class="fw-bold mb-2 fs-4" style="color: #ffffff;">VR 3D Showroom</h3>
                      <p class="text-white-50 small mb-4" style="max-width: 85%;">Jelajahi toko kami secara virtual. Lihat produk dari segala sudut sebelum membeli.</p>
                   </div>
                   <a href="#" class="btn rounded-pill px-4 py-2 align-self-start btn-sm fw-semibold d-flex align-items-center text-white" 
@@ -611,7 +611,7 @@
                  style="background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); min-height: 240px;">
                
                <div class="position-absolute end-0 top-50 translate-middle-y opacity-10" 
-                    style="width: 180px; height: 180px; border-radius: 50%; background: #ffffff; margin-right: -30px;"></div>
+                    style="width: 180px; height: 180px; border-radius: 50%; background: #ffffff; background-image: url('{{ asset("template-sarab/img/icons/chatbot.jpg") }}'); background-size: contain; background-repeat: no-repeat; margin-right: -30px;"></div>
                
                <div class="position-relative z-1 d-flex flex-column justify-content-between h-100">
                   <div>
@@ -620,7 +620,7 @@
                         <i class="bi bi-robot fs-5 text-white"></i>
                      </div>
                      <div class="d-flex align-items-center mb-2">
-                        <h3 class="fw-bold m-0 fs-4 me-2">AI Chatbot</h3>
+                        <h3 class="fw-bold m-0 fs-4 me-2" style="color: #ffffff;">AI Chatbot</h3>
                         <span class="badge rounded-pill text-white font-monospace opacity-75 small" 
                               style="background-color: #f97316; border: 1px solid #fbbf24; font-size: 0.65rem;">
                            <i class="bi bi-sparkles me-1"></i>Beta

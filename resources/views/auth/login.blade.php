@@ -348,13 +348,13 @@
 
             <div class="brand-name">TOKO FAA</div>
             <p class="brand-tagline">
-                Sistem Manajemen Inventori & Penjualan<br>
-                Frozen Food & Bakery Terbaik untuk Bisnis Anda.
+                Sistem E-Commerce dan Profil Toko FAA<br>
+                Frozen Food & Bakery.
             </p>
             <div class="brand-badge">
-                <span class="badge-item"><i class="fas fa-box-open"></i> Inventori</span>
-                <span class="badge-item"><i class="fas fa-cash-register"></i> Penjualan</span>
-                <span class="badge-item"><i class="fas fa-chart-line"></i> Laporan</span>
+                <span class="badge-item"><i class="fas fa-shopping-cart"></i> Belanja Produk Makanan Kami</span>
+                <span class="badge-item"><i class="fas fa-robot"></i> Chatbot AI</span>
+                <span class="badge-item"><i class="fas fa-cubes"></i> VR 3D Showroom</span>
             </div>
         </div>
     </div>

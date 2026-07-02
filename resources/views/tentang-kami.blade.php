@@ -313,9 +313,9 @@
                 </div>
                 <div class="col-lg-6" data-aos="fade-left">
                     <h2 class="section-title">Sejarah Kami</h2>
-                    <p class="lead fw-bold text-primary mb-3">Berawal dari cinta untuk hidangan berkualitas.</p>
-                    <p>FAA Frozen Food & Bakery didirikan dengan misi sederhana: menyajikan kelezatan yang konsisten dan praktis bagi setiap keluarga. Berawal dari usaha rumahan di Sungai Liat, kami tumbuh dengan dedikasi pada bahan-bahan pilihan dan proses pembuatan yang higienis.</p>
-                    <p>Seiring berjalannya waktu, kami terus berinovasi dalam menghadirkan berbagai varian roti segar yang dipanggang setiap hari serta produk frozen food yang telah menjadi favorit masyarakat sekitar. Kepercayaan pelanggan adalah motivasi terbesar kami untuk terus memberikan yang terbaik.</p>
+                    <p class="lead fw-bold text-primary mb-3">FAA Frozen Food & Bakery</p>
+                    <p>FAA Frozen Food & Bakery didirikan pada Mei 2013 oleh Bapak Yadi Cahyadi di Air Hanyut, Sungailiat, Bangka Belitung. Usaha ini bermula dari inisiatif rumahan sang pemilik yang bereksperimen membuat nugget sehat karena anak-anaknya sangat menggemari jajanan tersebut. Nama "FAA" sendiri dipilih sebagai bentuk kasih sayang kepada buah hatinya, yang diambil dari inisial nama ketiga anak beliau, yaitu Fatimah, Aisyah, dan Afgan.</p>
+                    <p>Setelah produk nugget buatannya mendapat respons positif dan pesanan dari para tetangga, Bapak Yadi melihat peluang bisnis yang menjanjikan dan resmi mengomersialkan usahanya. Seiring berjalan waktu, bisnis ini terus berkembang dan bervariasi dengan menambahkan lini produk bakso serta olahan kue melalui FAA Bakery. Berawal dari usaha kecil dengan 3 orang karyawan, kini FAA telah menjadi UMKM terstruktur yang bermitra dengan PLUT Bangka Belitung dan didukung oleh jaringan reseller lokal yang luas.</p>
                 </div>
             </div>
         </div>
@@ -335,7 +335,7 @@
                             <i class="bi bi-eye"></i>
                         </div>
                         <h3 class="fw-bold mb-3 h4">Visi</h3>
-                        <p class="text-muted lh-lg m-0">Menjadi pilihan utama masyarakat dalam memenuhi kebutuhan produk bakery dan frozen food yang lezat, sehat, dan berkualitas tinggi dengan standar internasional.</p>
+                        <p class="text-muted lh-lg m-0">Menghasilkan produk yang baik dengan mengutamakan kepuasan konsumen melalui penyediaan pilihan makanan yang sehat dan harga yang terjangkau.</p>
                     </div>
                 </div>
                 <div class="col-md-6" data-aos="zoom-in" data-aos-delay="200">
@@ -345,10 +345,11 @@
                         </div>
                         <h3 class="fw-bold mb-3 h4">Misi</h3>
                         <ul class="list-unstyled text-muted lh-lg m-0">
-                            <li class="mb-2 d-flex align-items-center"><i class="bi bi-check-circle-fill text-primary me-2"></i> Menggunakan bahan baku premium dan segar.</li>
-                            <li class="mb-2 d-flex align-items-center"><i class="bi bi-check-circle-fill text-primary me-2"></i> Menjaga konsistensi rasa dan kualitas produk.</li>
-                            <li class="mb-2 d-flex align-items-center"><i class="bi bi-check-circle-fill text-primary me-2"></i> Memberikan pelayanan yang ramah dan profesional.</li>
-                            <li class="mb-2 d-flex align-items-center"><i class="bi bi-check-circle-fill text-primary me-2"></i> Terus berinovasi mengikuti selera pelanggan.</li>
+                            <li class="mb-2 d-flex align-items-center"><i class="bi bi-check-circle-fill text-primary me-2"></i> Meningkatkan kualitas produk secara berkala dengan tetap mempertahankan harga yang kompetitif.</li>
+                            <li class="mb-2 d-flex align-items-center"><i class="bi bi-check-circle-fill text-primary me-2"></i> Menyesuaikan produk makanan olahan dengan selera masyarakat setempat</li>
+                            <li class="mb-2 d-flex align-items-center"><i class="bi bi-check-circle-fill text-primary me-2"></i> Menciptakan kemasan produk yang aman dan higienis bagi konsumen.</li>
+                            <li class="mb-2 d-flex align-items-center"><i class="bi bi-check-circle-fill text-primary me-2"></i> Menjaga suasana produksi tetap nyaman serta mempertahakan standar pelayanan terbaik.</li>
+                            <li class="mb-2 d-flex align-items-center"><i class="bi bi-check-circle-fill text-primary me-2"></i> Mengutamakan kepuasan konsumen dalam setiap aspek penjualan dan distribusi.</li>
                         </ul>
                     </div>
                 </div>
@@ -379,7 +380,7 @@
                                 @if($pegawai->foto)
                                     <img src="{{ asset('storage/' . $pegawai->foto) }}" alt="{{ $pegawai->nama }}" class="team-img">
                                 @else
-                                    <img src="{{ asset('template-sarab/img/chefs/1.jpg') }}" alt="Default" class="team-img">
+                                    <img src="{{ asset('template-sarab/img/banner-toko-faa.png') }}" alt="Default" class="team-img">
                                 @endif
                             </div>
                             <div class="team-info">

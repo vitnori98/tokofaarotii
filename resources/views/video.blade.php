@@ -50,7 +50,7 @@
         .hero-bg {
             position: absolute;
             inset: 0;
-            background: url('{{ asset("template-sarab/img/frozen-banner.jpg") }}') no-repeat center center / cover;
+            background: url('{{ asset('template-sarab/img/banner-toko-faa.png') }}') no-repeat center center / cover;
             will-change: transform;
         }
 

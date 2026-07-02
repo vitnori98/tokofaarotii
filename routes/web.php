@@ -15,6 +15,7 @@ use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\DokumentasiController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SettingController;
 
 
 // Authentication Routes
@@ -264,14 +265,26 @@ Route::middleware(['auth', 'role:admin_master,pemilik'])->group(function () {
         Route::delete('/video/{video}', [DokumentasiController::class, 'destroyVideo'])->name('video.destroy');
     });
 
-    // Settings Group
-    Route::prefix('settings')->name('settings.')->group(function () {
-        Route::get('/', function () {
-            return view('settings.index');
-        })->name('index');
-        Route::post('/update', function (Request $request) {
-            return redirect()->back()->with('success', 'Pengaturan berhasil disimpan!');
-        })->name('update');
+    // ==========================================
+    // MANAGEMENT SETTINGS TOKO (PENGATURAN)
+    // ==========================================
+    Route::middleware(['auth'])->prefix('settings')->name('settings.')->group(function () {
+        // Halaman utama pengaturan toko
+        Route::get('/', [SettingController::class, 'index'])->name('index');
+        
+        // Memproses simpan/update data pengaturan toko
+        Route::put('/update', [SettingController::class, 'update'])->name('update');
+    });
+
+    // ==========================================
+    // MANAGEMENT PROFIL MANDIRI ADMIN/USER
+    // ==========================================
+    Route::middleware(['auth'])->prefix('profile')->name('profile.')->group(function () {
+        // Halaman edit profil mandiri (Tab Switcher)
+        Route::get('/', [ProfileController::class, 'edit'])->name('edit');
+        
+        // Memproses simpan/update profil & password mandiri
+        Route::put('/update', [ProfileController::class, 'update'])->name('update');
     });
 
     // Profile Group

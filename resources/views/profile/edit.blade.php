@@ -1,192 +1,218 @@
 @extends('layouts.app')
 
 @section('title', 'Profil Saya')
-@section('subtitle', 'Kelola informasi identitas dan keamanan akun Anda')
+@section('subtitle', 'Kelola informasi biodata pribadi dan keamanan akun Anda')
 
 @section('content')
 
-{{-- ── ALERT ── --}}
-@if(session('status'))
+{{-- ── ALERT NOTIFIKASI ── --}}
+@if(session('success'))
 <div class="alert-banner alert-success">
-    <div class="alert-inner"><i class="fas fa-check-circle"></i><span>{{ session('status') }}</span></div>
+    <div class="alert-inner"><i class="fas fa-check-circle"></i><span>{{ session('success') }}</span></div>
     <button onclick="this.closest('.alert-banner').remove()"><i class="fas fa-times"></i></button>
+</div>
 @endif
 
 @if($errors->any())
-<div class="alert-banner alert-danger">
+<div class="alert-banner" style="background: #fef2f2; border: 1px solid #fca5a5; color: #991b1b;">
     <div class="alert-inner">
-        <i class="fas fa-exclamation-circle"></i>
-        <ul style="margin:0; padding-left:1rem;">
+        <i class="fas fa-exclamation-circle" style="margin-top: 3px;"></i>
+        <ul style="list-style: disc; padding-left: 1rem; margin: 0;">
             @foreach($errors->all() as $error)
                 <li>{{ $error }}</li>
             @endforeach
         </ul>
     </div>
-    <button onclick="this.closest('.alert-banner').remove()"><i class="fas fa-times"></i></button>
 </div>
 @endif
 
-<div class="profile-container">
-    <div class="profile-grid">
+<div class="settings-container">
+    <div class="settings-grid">
         
-        {{-- ── PROFILE CARD ── --}}
-        <div class="profile-sidebar">
-            <div class="user-card">
-                <div class="user-avatar-large">
-                    {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
-                </div>
-                <h3 class="user-name">{{ auth()->user()->name }}</h3>
-                <p class="user-role">
-                    @php
-                        $roles = [
-                            'admin_master' => 'Admin Utama',
-                            'pemilik' => 'Pemilik',
-                            'pegawai' => 'Pegawai'
-                        ];
-                    @endphp
-                    {{ $roles[auth()->user()->role] ?? ucwords(str_replace('_', ' ', auth()->user()->role)) }}
-                </p>
-                <div class="user-meta">
-                    <div class="meta-item">
-                        <i class="far fa-envelope"></i>
-                        <span>{{ auth()->user()->email }}</span>
-                    </div>
-                    <div class="meta-item">
-                        <i class="far fa-calendar-alt"></i>
-                        <span>Bergabung {{ auth()->user()->created_at->translatedFormat('d F Y') }}</span>
-                    </div>
-                </div>
+        {{-- ── NAVIGATION SIDEBAR (TAB SWITCHER) ── --}}
+        <div class="settings-nav">
+            <div class="nav-card">
+                <button onclick="switchProfileTab('personal-info')" id="btn-personal-info" class="nav-item-btn active">
+                    <i class="fas fa-user-circle"></i>
+                    <span>Biodata Profil</span>
+                </button>
+                <button onclick="switchProfileTab('address-info')" id="btn-address-info" class="nav-item-btn">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <span>Alamat & Lokasi</span>
+                </button>
+                <button onclick="switchProfileTab('security-info')" id="btn-security-info" class="nav-item-btn">
+                    <i class="fas fa-key"></i>
+                    <span>Keamanan Akun</span>
+                </button>
             </div>
-
+            
             <div class="nav-info-card">
                 <i class="fas fa-shield-alt"></i>
-                <p>Pastikan Anda menggunakan kata sandi yang kuat dan tidak membagikan akses akun kepada orang lain.</p>
+                <p>Data profil ini bersifat rahasia. Pastikan Anda memperbarui informasi dengan data yang valid.</p>
             </div>
         </div>
 
-        {{-- ── FORMS ── --}}
-        <div class="profile-forms">
-            
-            {{-- Update Profile Information --}}
-            <div class="section-card">
-                <div class="section-header">
-                    <h3 class="section-title">Informasi Profil</h3>
-                    <p class="section-desc">Perbarui informasi dasar akun dan alamat email Anda.</p>
-                </div>
-                
-                <form method="POST" action="{{ route('profile.update') }}">
-                    @csrf
-                    @method('patch')
+        {{-- ── FORM CONTENT PRIVAT USER ── --}}
+        <div class="settings-content">
+            <form method="POST" action="{{ route('profile.update') }}">
+                @csrf
 
-                    <div class="form-group">
-                        <label class="form-label">Nama Lengkap</label>
-                        <input type="text" name="name" class="form-input" value="{{ old('name', auth()->user()->name) }}" required>
+                {{-- SECTION 1: BIODATA PROFIL --}}
+                <div id="personal-info" class="content-section">
+                    <div class="section-header">
+                        <h3 class="section-title">Biodata Profil</h3>
+                        <p class="section-desc">Atur nama, email login, serta informasi kontak pribadi Anda.</p>
                     </div>
 
-                    <div class="form-group">
-                        <label class="form-label">Alamat Email</label>
-                        <input type="email" name="email" class="form-input" value="{{ old('email', auth()->user()->email) }}" required>
-                    </div>
-
-                    <div class="form-actions">
-                        <button type="submit" class="btn-save">
-                            <i class="fas fa-save"></i> Simpan Profil
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            {{-- Update Password --}}
-            <div class="section-card mt-6">
-                <div class="section-header">
-                    <h3 class="section-title">Ubah Kata Sandi</h3>
-                    <p class="section-desc">Ganti kata sandi secara berkala untuk menjaga keamanan akun.</p>
-                </div>
-
-                <form method="POST" action="{{ route('password.update') }}">
-                    @csrf
-                    @method('put')
-
-                    <div class="form-group">
-                        <label class="form-label">Kata Sandi Saat Ini</label>
-                        <input type="password" name="current_password" class="form-input" placeholder="••••••••">
-                    </div>
-
-                    <div class="form-row">
+                    <div class="section-card">
                         <div class="form-group">
-                            <label class="form-label">Kata Sandi Baru</label>
-                            <input type="password" name="password" class="form-input" placeholder="••••••••">
+                            <label class="form-label">Nama Lengkap</label>
+                            <input type="text" name="name" class="form-input" 
+                                   value="{{ old('name', $user->name) }}" required>
                         </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Email Login</label>
+                                <div class="input-with-icon">
+                                    <i class="far fa-envelope"></i>
+                                    <input type="email" name="email" class="form-input icon-padded" 
+                                           value="{{ old('email', $user->email) }}" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Nomor HP / WhatsApp</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-phone-alt"></i>
+                                    <input type="text" name="phone_number" class="form-input icon-padded" 
+                                           value="{{ old('phone_number', $user->phone_number ?? '') }}" placeholder="Contoh: 0812345678">
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="form-group">
-                            <label class="form-label">Konfirmasi Kata Sandi Baru</label>
-                            <input type="password" name="password_confirmation" class="form-input" placeholder="••••••••">
+                            <label class="form-label">Jenis Kelamin</label>
+                            <div style="display: flex; gap: 2rem; margin-top: 0.5rem;">
+                                <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; font-weight: 600; color: #1e293b; cursor: pointer;">
+                                    <input type="radio" name="gender" value="Laki-laki" {{ old('gender', $user->gender ?? '') == 'Laki-laki' ? 'checked' : '' }} style="accent-color: #f97316;"> Laki-laki
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; font-weight: 600; color: #1e293b; cursor: pointer;">
+                                    <input type="radio" name="gender" value="Perempuan" {{ old('gender', $user->gender ?? '') == 'Perempuan' ? 'checked' : '' }} style="accent-color: #f97316;"> Perempuan
+                                </label>
+                            </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="form-actions">
-                        <button type="submit" class="btn-save btn-orange">
-                            <i class="fas fa-key"></i> Perbarui Kata Sandi
-                        </button>
+                {{-- SECTION 2: ALAMAT & LOKASI --}}
+                <div id="address-info" class="content-section d-none">
+                    <div class="section-header">
+                        <h3 class="section-title">Alamat & Lokasi</h3>
+                        <p class="section-desc">Tentukan lokasi pengantaran utama untuk mempermudah operasional pesanan.</p>
                     </div>
-                </form>
-            </div>
 
+                    <div class="section-card">
+                        <div class="form-group">
+                            <label class="form-label">Kota / Kabupaten</label>
+                            <input type="text" name="city" class="form-input" 
+                                   value="{{ old('city', $user->city ?? '') }}" placeholder="Contoh: Kota Bangka">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Alamat Lengkap</label>
+                            <textarea name="address" class="form-input" rows="4" 
+                                      placeholder="Nama jalan, nomor rumah, RT/RW, Kecamatan...">{{ old('address', $user->address ?? '') }}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- SECTION 3: KEAMANAN AKUN --}}
+                <div id="security-info" class="content-section d-none">
+                    <div class="section-header">
+                        <h3 class="section-title">Keamanan Akun</h3>
+                        <p class="section-desc">Ganti password secara berkala untuk menjaga keamanan data akun Anda.</p>
+                    </div>
+
+                    <div class="section-card">
+                        <div class="form-group">
+                            <label class="form-label">Password Saat Ini</label>
+                            <input type="password" name="current_password" class="form-input" placeholder="••••••••">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Password Baru</label>
+                                <input type="password" name="new_password" class="form-input" placeholder="Minimal 8 karakter">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Konfirmasi Password Baru</label>
+                                <input type="password" name="new_password_confirmation" class="form-input" placeholder="Ulangi password baru">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- BAR ACTION ACTION BUTTON --}}
+                <div class="form-actions-bar">
+                    <button type="reset" class="btn-reset">Reset Perubahan</button>
+                    <button type="submit" class="btn-save">
+                        <i class="fas fa-save"></i> Simpan Semua Perubahan
+                    </button>
+                </div>
+            </form>
         </div>
+
     </div>
 </div>
 
+{{-- ── TAMBAHAN STYLING COMPATIBILITY ── --}}
 <style>
-    .profile-container { max-width: 1000px; margin: 0 auto; }
-    .profile-grid { display: grid; grid-template-columns: 320px 1fr; gap: 2rem; align-items: start; }
-
-    /* ── Sidebar Card ── */
-    .user-card { background: #fff; border-radius: 1.5rem; border: 1px solid #f1f5f9; padding: 2rem; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
-    .user-avatar-large { width: 80px; height: 80px; background: linear-gradient(135deg, #f97316, #ea580c); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: 800; margin: 0 auto 1.25rem; box-shadow: 0 8px 16px rgba(249, 115, 22, 0.2); }
-    .user-name { font-size: 1.25rem; font-weight: 800; color: #1e293b; margin: 0 0 .25rem; }
-    .user-role { font-size: .85rem; font-weight: 700; color: #f97316; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 1.5rem; }
-    
-    .user-meta { border-top: 1px solid #f1f5f9; padding-top: 1.5rem; display: flex; flex-direction: column; gap: .75rem; text-align: left; }
-    .meta-item { display: flex; align-items: center; gap: .75rem; color: #64748b; font-size: .85rem; font-weight: 500; }
-    .meta-item i { font-size: 1rem; color: #94a3b8; width: 20px; text-align: center; }
-
-    .nav-info-card { margin-top: 1.5rem; padding: 1.25rem; background: #fff7ed; border: 1px solid #ffedd5; border-radius: 1.25rem; display: flex; gap: .75rem; }
-    .nav-info-card i { color: #f97316; font-size: 1rem; margin-top: 2px; }
-    .nav-info-card p { margin: 0; font-size: .75rem; color: #9a3412; font-weight: 600; line-height: 1.5; }
-
-    /* ── Form Cards ── */
-    .section-card { background: #fff; border-radius: 1.5rem; border: 1px solid #f1f5f9; padding: 1.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
-    .mt-6 { margin-top: 1.5rem; }
-    
-    .section-header { margin-bottom: 1.5rem; }
-    .section-title { font-size: 1.1rem; font-weight: 800; color: #1e293b; margin: 0 0 .25rem; }
-    .section-desc { font-size: .85rem; color: #64748b; margin: 0; }
-
-    .form-group { margin-bottom: 1.25rem; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
-    .form-label { display: block; font-size: .8rem; font-weight: 700; color: #475569; margin-bottom: .5rem; text-transform: uppercase; letter-spacing: .05em; }
-    
-    .form-input { width: 100%; padding: .75rem 1rem; border: 2px solid #f1f5f9; border-radius: .875rem; font-size: .9rem; font-weight: 500; color: #1e293b; transition: all .2s; box-sizing: border-box; }
-    .form-input:focus { border-color: #f97316; outline: none; background: #fff; box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.08); }
-
-    .form-actions { display: flex; justify-content: flex-end; margin-top: 1.5rem; }
-    .btn-save { background: #f97316; color: #fff; border: none; padding: .75rem 1.5rem; border-radius: .875rem; font-size: .9rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: .625rem; transition: all .2s; }
-    .btn-save:hover { background: #ea580c; transform: translateY(-2px); box-shadow: 0 8px 16px rgba(249, 115, 22, 0.2); }
-    
-    /* ── Alert ── */
-    .alert-banner { display:flex;align-items:flex-start;justify-content:space-between;gap:.75rem;padding:.875rem 1.125rem;border-radius:.75rem;margin-bottom:2rem;font-size:.85rem;font-weight:600; }
-    .alert-success { background:#f0fdf4;border:1px solid #bbf7d0;color:#166534; }
-    .alert-danger { background:#fef2f2;border:1px solid #fee2e2;color:#991b1b; }
-    .alert-inner { display:flex;align-items:flex-start;gap:.5rem; }
-    .alert-banner button { background:none;border:none;cursor:pointer;color:inherit;opacity:.6; }
-
-    @media (max-width: 900px) {
-        .profile-grid { grid-template-columns: 1fr; }
-        .form-row { grid-template-columns: 1fr; }
+    /* Styling tombol Navigasi agar identik dengan desain setelan CSS bawaan Anda */
+    .nav-item-btn { 
+        display: flex; 
+        align-items: center; 
+        gap: .875rem; 
+        padding: 1rem 1.25rem; 
+        color: #64748b; 
+        font-size: .85rem; 
+        font-weight: 700; 
+        transition: all .2s; 
+        border: none;
+        background: none;
+        width: 100%;
+        text-align: left;
+        cursor: pointer;
+        border-left: 3px solid transparent; 
     }
+    .nav-item-btn i { font-size: 1rem; width: 20px; text-align: center; }
+    .nav-item-btn:hover { background: #f8fafc; color: #f97316; }
+    .nav-item-btn.active { background: #fff7ed; color: #f97316; border-left-color: #f97316; }
+
+    /* Helper Class Sembunyikan Section */
+    .d-none { display: none !important; }
 </style>
 
+{{-- ── JAVASCRIPT SWITCHER TANPA RELOAD ── --}}
 <script>
-    // Auto-dismiss alerts
+    function switchProfileTab(tabId) {
+        // 1. Sembunyikan seluruh section konten form profil
+        document.querySelectorAll('.content-section').forEach(section => {
+            section.classList.add('d-none');
+        });
+
+        // 2. Tampilkan section tab yang aktif dipilih
+        document.getElementById(tabId).classList.remove('d-none');
+
+        // 3. Matikan status active dari semua button sidebar
+        document.querySelectorAll('.nav-item-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+
+        // 4. Nyalakan status active pada button yang sedang di-klik
+        document.getElementById('btn-' + tabId).classList.add('active');
+    }
+
+    // Auto dismiss alert bawaan sistem Anda
     setTimeout(() => {
         document.querySelectorAll('.alert-banner').forEach(el => {
             el.style.transition = 'opacity .4s';

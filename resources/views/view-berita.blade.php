@@ -59,7 +59,7 @@
         .hero-bg {
             position: absolute;
             inset: 0;
-            background-image: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-image: url('{{ asset('template-sarab/img/banner-toko-faa.png') }}');
             background-size: cover;
             background-position: center;
             will-change: transform;
@@ -565,7 +565,7 @@
                         @if($featured->gambar)
                             <img src="{{ asset('storage/' . $featured->gambar) }}" alt="{{ $featured->judul }}">
                         @else
-                            <img src="{{ asset('template-sarab/img/blog/1.jpg') }}" alt="Default">
+                            <img src="{{ asset('template-sarab/img/banner-toko-faa.png') }}" alt="Default">
                         @endif
                         <div class="img-badge-top">Sorotan Utama</div>
                     </div>
